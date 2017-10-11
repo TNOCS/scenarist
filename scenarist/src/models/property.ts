@@ -1,6 +1,6 @@
 export type PropertyType = 'number' | 'text' | 'textarea' | 'option';
 
-export interface IPropertyType {
+export interface IProperty {
   id: string;
   title: string;
   description?: string;

@@ -24,7 +24,7 @@
         <div>
           <md-input md-label="Name" md-value.bind="activeProperty.title"></md-input>
           <md-input md-label="Description" md-value.bind="activeProperty.description"></md-input>
-          <select md-input md-label="Description" md-value.bind="activeProperty.propertyType"></select>
+          <select md-input md-label="Type" md-value.bind="activeProperty.propertyType"></select>
           <select md-select="label: select a value" value.two-way="activeProperty.propertyType">
             <option value="" disabled selected>select an item</option>
             <option value="text">text</option>
@@ -42,9 +42,6 @@
         <button md-button class="modal-trigger" href="#deletePropModal">
           <i class="material-icons">delete</i>
         </button>
-        <!-- <button md-button click.delegate="deleteProperty()">
-          <i class="material-icons">delete</i>
-        </button> -->
         <button md-button click.delegate="saveProperty()">
           <i class="material-icons">save</i>
         </button>

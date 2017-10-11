@@ -1,0 +1,59 @@
+<template>
+  <div class="col s12 m6">
+    <md-card md-title="EntityType types">
+      <md-collection>
+        <md-collection-item class="accent-text" repeat.for="entityType of entityTypes">
+          ${ entityType.title }
+          <div class="secondary-content">
+            <a href="#!" click.delegate="selectEntityType(entityType)">
+              <i class="material-icons">mode_edit</i>
+            </a>
+          </div>
+        </md-collection-item>
+      </md-collection>
+    </md-card>
+    <div class="button-row right">
+      <button md-button click.delegate="addEntityType()">
+        <i class="material-icons">add</i>
+      </button>
+    </div>
+  </div>
+
+  <div class="col s12 m6">
+    <div show.bind="showEntityTypeEditor">
+      <md-card md-title="Edit entity type">
+        <div>
+          <md-input md-label="Name" md-value.bind="activeEntityType.title"></md-input>
+          <md-input md-label="Description" md-value.bind="activeEntityType.description"></md-input>
+          <md-input md-label="Image name" md-value.bind="activeEntityType.imageUrl"></md-input>
+          <md-input md-label="Color" md-value.bind="activeEntityType.color"></md-input>
+          <select multiple md-select="label: select a value" value.two-way="activeEntityType.propertyIds">
+            <option value="" disabled selected>- Select properties -</option>
+            <option value="${property.id}" repeat.for="property of state.properties">${property.title}</option>
+          </select>
+        </div>
+      </md-card>
+      <div class="button-row right">
+        <button md-button class="modal-trigger" href="#deleteEntityTypeModal">
+          <i class="material-icons">delete</i>
+        </button>
+        <button md-button click.delegate="saveEntityType()">
+          <i class="material-icons">save</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="deleteEntityTypeModal" md-modal md-modal.ref="modal">
+    <div class="modal-content">
+      <h4>Delete entity type?</h4>
+      <p>Do you really want to delete "${activeEntityType.title}"?</p>
+    </div>
+    <div class="modal-footer">
+      <button click.delegate="deleteEntityType()" md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">OK</button>
+      <button md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Cancel</button>
+    </div>
+  </div>
+
+</template>

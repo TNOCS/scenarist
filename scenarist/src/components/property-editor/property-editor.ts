@@ -1,46 +1,40 @@
-import { IPropertyType } from './../../models/property';
+import { State } from './../../models/state';
+import { IProperty } from './../../models/property';
 import { inject } from 'aurelia-framework';
 import { Endpoint, Rest } from 'aurelia-api';
 // import 'fetch';
 import { MdToastService } from 'aurelia-materialize-bridge';
 
-@inject(Endpoint.of('db'), MdToastService)
+@inject(State, Endpoint.of('db'), MdToastService)
 export class PropertyEditorCustomElement {
-  public properties: IPropertyType[];
-  public activeProperty: IPropertyType;
+  public properties: IProperty[];
+  public activeProperty: IProperty;
   public showPropertyEditor = false;
+  private api = 'properties';
 
-  private rest: Rest;
-  private toast;
-
-  constructor(rest: Rest, toast) {
-    this.rest = rest;
-    this.toast = toast;
-  }
+  constructor(private state: State, private rest: Rest, private toast: MdToastService) {}
 
   public attached() {
-    return this.rest.find('properties')
-      .then(pt => this.properties = pt);
+    return this.rest.find(this.api)
+      .then(pt => this.properties = this.state.properties = pt);
   }
 
-  public selectProperty(selected: IPropertyType) {
+  public selectProperty(selected: IProperty) {
     this.activeProperty = this.activeProperty === selected ? null : selected;
     this.showPropertyEditor = this.activeProperty ? true : null;
-    console.log('Select property clicked');
   }
 
   public addProperty() {
-    this.activeProperty = {} as IPropertyType;
+    this.activeProperty = {} as IProperty;
     this.showPropertyEditor = true;
     this.properties.push(this.activeProperty);
-    console.log('Add property clicked');
   }
 
   public deleteProperty() {
     const index = this.properties.indexOf(this.activeProperty);
     if (index < 0) { return console.warn('Cannot find property! Ignoring.'); }
     this.rest
-      .destroy('properties', this.activeProperty.id)
+      .destroy(this.api, this.activeProperty.id)
       .then(() => {
         this.properties.splice(index, 1);
         this.activeProperty = null;
@@ -53,12 +47,12 @@ export class PropertyEditorCustomElement {
   public saveProperty() {
     if (this.activeProperty.id) {
       this.rest
-        .update('properties', this.activeProperty.id, this.activeProperty)
+        .update(this.api, this.activeProperty.id, this.activeProperty)
         .then(() => this.toastMessage('Update successfull.'))
         .catch(m => this.toastMessage('Error updating property!\n' + m, true));
     } else {
       this.rest
-        .post('properties', this.activeProperty)
+        .post(this.api, this.activeProperty)
         .then(prop => {
           this.activeProperty = prop;
           this.toastMessage('Created successfully.');
