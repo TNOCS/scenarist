@@ -1,0 +1,62 @@
+{
+  "properties": [
+    {
+      "id": "1",
+      "title": "Name",
+      "description": "The name of my entity.",
+      "propertyType": "text",
+      "defaultValue": "",
+      "unit": "",
+      "options": ""
+    },
+    {
+      "id": "2",
+      "title": "Description",
+      "description": "Describe the function of this entity.",
+      "propertyType": "textarea",
+      "defaultValue": "",
+      "unit": "",
+      "options": []
+    },
+    {
+      "propertyType": "option",
+      "title": "Faction",
+      "description": "Blue forces, red or neutral",
+      "defaultValue": "blue",
+      "options": "blue\nred\nneutral",
+      "id": "HkVSKjon-"
+    },
+    {
+      "propertyType": "text",
+      "title": "Another property",
+      "description": "Whatever",
+      "defaultValue": "My prop",
+      "unit": "m",
+      "id": "HyPitio3-"
+    }
+  ],
+  "entityTypes": [
+    {
+      "id": "",
+      "title": "",
+      "description": "",
+      "app6a": "",
+      "imageUrl": "",
+      "faction": "",
+      "color": "",
+      "propertyIds": []
+    }
+  ],
+  "entities": [
+    {
+      "id": 0,
+      "entityId": "test",
+      "title": "my test title",
+      "description": "my test description",
+      "callSign": "my test call sign",
+      "properties": {
+        "a": "b"
+      }
+    }
+  ]
+}

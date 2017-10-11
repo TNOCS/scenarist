@@ -1,0 +1,37 @@
+{
+    "properties": [{
+        "id": "1",
+        "title": "Name",
+        "description": "The name of the entity.",
+        "propertyType": "text",
+        "defaultValue": "",
+        "unit": "",
+        "options": []
+    }, {
+        "id": "2",
+        "title": "Description",
+        "description": "Describe the function of this entity.",
+        "propertyType": "textarea",
+        "defaultValue": "",
+        "unit": "",
+        "options": []
+    }],
+    "entityTypes": [{
+        "id": "",
+        "title": "",
+        "description": "",
+        "app6a": "",
+        "imageUrl": "",
+        "faction": "",
+        "color": "",
+        "propertyIds": []
+    }],
+    "entities": [{
+        "id": 0,
+        "entityId": "test",
+        "title": "my test title",
+        "description": "my test description",
+        "callSign": "my test call sign",
+        "properties": { "a": "b" }
+    }]
+}

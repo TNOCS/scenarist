@@ -1,0 +1,22 @@
+{
+    "name": "rest-server",
+    "version": "1.0.0",
+    "description": "A simple wrapper around json-server to store the scenario's and entities.",
+    "main": "dist/server",
+    "typings": "dist/server",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc -w",
+        "start": "node ."
+    },
+    "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
+    "license": "MIT",
+    "dependencies": {
+        "json-server": "^0.12.0"
+    },
+    "devDependencies": {
+        "@types/express": "^4.0.37",
+        "@types/node": "^8.0.33",
+        "typescript": "^2.5.3"
+    }
+}

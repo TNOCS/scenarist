@@ -1,0 +1,12 @@
+<template bindable="router">
+  <md-navbar>
+    <a href="#" class="brand-logo right">
+      <span>Scenario Manager</span>
+    </a>
+    <ul class="hide-on-med-and-down left">
+      <li md-waves repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+        <a href.bind="row.href">${row.title}</a>
+      </li>
+    </ul>
+  </md-navbar>
+</template>
