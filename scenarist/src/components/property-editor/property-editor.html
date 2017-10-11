@@ -1,21 +1,20 @@
 <template>
   <div class="col s12 m6">
-    <md-collection>
-      <md-collection-item class="accent-text" repeat.for="property of properties">
-        ${ property.title }
-        <div class="secondary-content">
-          <a href="#!" click.delegate="selectProperty(property)">
-            <i class="material-icons">mode_edit</i>
-          </a>
-        </div>
-      </md-collection-item>
-    </md-collection>
+    <md-card md-title="Properties">
+      <md-collection>
+        <md-collection-item class="accent-text" repeat.for="property of properties">
+          ${ property.title }
+          <div class="secondary-content">
+            <a href="#!" click.delegate="selectProperty(property)">
+              <i class="material-icons">mode_edit</i>
+            </a>
+          </div>
+        </md-collection-item>
+      </md-collection>
+    </md-card>
     <div class="button-row right">
       <button md-button click.delegate="addProperty()">
         <i class="material-icons">add</i>
-      </button>
-      <button md-button click.delegate="deleteProperty()">
-        <i class="material-icons">delete</i>
       </button>
     </div>
   </div>
@@ -40,10 +39,29 @@
         </div>
       </md-card>
       <div class="button-row right">
+        <button md-button class="modal-trigger" href="#deletePropModal">
+          <i class="material-icons">delete</i>
+        </button>
+        <!-- <button md-button click.delegate="deleteProperty()">
+          <i class="material-icons">delete</i>
+        </button> -->
         <button md-button click.delegate="saveProperty()">
           <i class="material-icons">save</i>
         </button>
       </div>
     </div>
   </div>
+
+  <!-- MODALS -->
+  <div id="deletePropModal" md-modal md-modal.ref="modal">
+    <div class="modal-content">
+      <h4>Delete property?</h4>
+      <p>Do you really want to delete "${activeProperty.title}"?</p>
+    </div>
+    <div class="modal-footer">
+      <button click.delegate="deleteProperty()" md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">OK</button>
+      <button md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Cancel</button>
+    </div>
+  </div>
+
 </template>
