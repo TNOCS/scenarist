@@ -24,8 +24,7 @@
         <div>
           <md-input md-label="Name" md-value.bind="activeProperty.title"></md-input>
           <md-input md-label="Description" md-value.bind="activeProperty.description"></md-input>
-          <select md-input md-label="Type" md-value.bind="activeProperty.propertyType"></select>
-          <select md-select="label: select a value" value.two-way="activeProperty.propertyType">
+          <select md-select="label: select type" value.two-way="activeProperty.propertyType">
             <option value="" disabled selected>select an item</option>
             <option value="text">text</option>
             <option value="textarea">textarea</option>
