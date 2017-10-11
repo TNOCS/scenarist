@@ -12,7 +12,32 @@ import 'jquery';
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } });
 
-export function configure(aurelia: Aurelia) {
+const waitForMaterialize = () => {
+  return new Promise((resolve, reject) => {
+    let iterations = 0;
+    const handler = window.setInterval(() => {
+      iterations++;
+      let ma = (window as any).Materialize;
+      if (
+        ma.elementOrParentIsFixed &&
+        ma.escapeHash &&
+        ma.fadeInImage &&
+        ma.guid &&
+        ma.scrollFire &&
+        ma.showStaggeredList &&
+        ma.toast &&
+        ma.updateTextFields
+      ) {
+        // log(`waited ${iterations} iterations for Materialize to finish loading`);
+        window.clearInterval(handler);
+        resolve();
+      }
+    }, 1);
+  });
+};
+
+export async function configure(aurelia: Aurelia) {
+  await waitForMaterialize();
   aurelia.use
     .standardConfiguration()
     // .globalResources(PLATFORM.moduleName('./components/property-editor/property-editor'))
