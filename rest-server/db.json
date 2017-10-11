@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "Name",
-      "description": "The name of my entity.",
+      "description": "The name of my important entity.",
       "propertyType": "text",
       "defaultValue": "",
       "unit": "",
@@ -17,46 +17,33 @@
       "defaultValue": "",
       "unit": "",
       "options": []
-    },
-    {
-      "propertyType": "option",
-      "title": "Faction",
-      "description": "Blue forces, red or neutral",
-      "defaultValue": "blue",
-      "options": "blue\nred\nneutral",
-      "id": "HkVSKjon-"
-    },
-    {
-      "propertyType": "text",
-      "title": "Another property",
-      "description": "Whatever",
-      "defaultValue": "My prop",
-      "unit": "m",
-      "id": "HyPitio3-"
     }
   ],
   "entityTypes": [
     {
-      "id": "",
-      "title": "",
-      "description": "",
+      "id": "BkvzrCjn-",
+      "title": "Tank",
+      "description": "My very own tank",
       "app6a": "",
-      "imageUrl": "",
+      "imageUrl": "bla",
       "faction": "",
-      "color": "",
-      "propertyIds": []
+      "color": "red",
+      "propertyIds": [
+        "1",
+        "2"
+      ]
     }
   ],
   "entities": [
     {
-      "id": 0,
-      "entityId": "test",
-      "title": "my test title",
-      "description": "my test description",
-      "callSign": "my test call sign",
-      "properties": {
-        "a": "b"
-      }
+      "id": 1,
+      "title": "Tank",
+      "description": "Sherman tank",
+      "app6a": "",
+      "imageUrl": "tank",
+      "faction": "",
+      "color": "#f00",
+      "propertyIds": []
     }
   ]
 }
