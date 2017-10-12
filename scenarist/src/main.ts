@@ -1,5 +1,7 @@
 /// <reference types="aurelia-loader-webpack/src/webpack-hot-interface"/>
 // we want font-awesome to load as soon as possible to show the fa-spinner
+import '../static/css/leaflet.css';
+import '../static/css/styles.css';
 import '../static/sass/materialize.scss';
 import '../static/js/bin/materialize';
 import 'material-design-icons/iconfont/material-icons.css';
