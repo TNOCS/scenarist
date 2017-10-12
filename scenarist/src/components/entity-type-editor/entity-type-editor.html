@@ -1,57 +1,59 @@
 <template>
   <require from="../mil-symbol-editor/mil-symbol-editor"></require>
+  <div class="row">
 
-  <div class="col s12 m4">
-    <md-card md-title="Entity types">
-      <md-collection>
-        <md-collection-item class="accent-text" repeat.for="entityType of entityTypes">
-          ${ entityType.title }
-          <div class="secondary-content">
-            <a href="#!" click.delegate="selectEntityType(entityType)">
-              <i class="material-icons">mode_edit</i>
-            </a>
-          </div>
-        </md-collection-item>
-      </md-collection>
-    </md-card>
-    <div class="button-row right">
-      <button md-button click.delegate="addEntityType()">
-        <i class="material-icons">add</i>
-      </button>
-    </div>
-  </div>
-
-  <div class="col s12 m4">
-    <div show.bind="showEntityTypeEditor">
-      <md-card md-title="Edit entity type">
-        <div>
-          <md-input md-label="Name" md-value.bind="activeEntityType.title"></md-input>
-          <md-input md-label="Description" md-value.bind="activeEntityType.description"></md-input>
-          <md-input md-label="Image name" md-value.bind="activeEntityType.imageUrl"></md-input>
-          <md-input md-label="Color" md-value.bind="activeEntityType.color"></md-input>
-          <select multiple md-select="label: select properties" value.two-way="activeEntityType.propertyIds">
-            <option value="" disabled selected>- Select properties -</option>
-            <option value="${property.id}" repeat.for="property of state.properties">${property.title}</option>
-          </select>
-        </div>
+    <div class="col s12 m4">
+      <md-card md-title="Entity types">
+        <md-collection>
+          <md-collection-item class="accent-text" repeat.for="entityType of entityTypes">
+            ${ entityType.title }
+            <div class="secondary-content">
+              <a href="#!" click.delegate="selectEntityType(entityType)">
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
       </md-card>
       <div class="button-row right">
-        <button md-button class="modal-trigger" href="#deleteEntityTypeModal">
-          <i class="material-icons">delete</i>
-        </button>
-        <button md-button click.delegate="saveEntityType()">
-          <i class="material-icons">save</i>
+        <button md-button click.delegate="addEntityType()">
+          <i class="material-icons">add</i>
         </button>
       </div>
     </div>
-  </div>
 
-  <div class="col s12 m4">
-    <div show.bind="showEntityTypeEditor">
-      <mil-symbol-editor entity-type.bind="activeEntityType"></mil-symbol-editor>
+    <div class="col s12 m4">
+      <div show.bind="showEntityTypeEditor">
+        <md-card md-title="Edit entity type">
+          <div>
+            <md-input md-label="Name" md-value.bind="activeEntityType.title"></md-input>
+            <md-input md-label="Description" md-value.bind="activeEntityType.description"></md-input>
+            <md-input md-label="Image name" md-value.bind="activeEntityType.imageUrl"></md-input>
+            <md-input md-label="Color" md-value.bind="activeEntityType.color"></md-input>
+            <select multiple md-select="label: select properties" value.two-way="activeEntityType.propertyIds">
+              <option value="" disabled selected>- Select properties -</option>
+              <option value="${property.id}" repeat.for="property of state.properties">${property.title}</option>
+            </select>
+          </div>
+        </md-card>
+        <div class="button-row right">
+          <button md-button class="modal-trigger" href="#deleteEntityTypeModal">
+            <i class="material-icons">delete</i>
+          </button>
+          <button md-button click.delegate="saveEntityType()">
+            <i class="material-icons">save</i>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <div class="col s12 m4">
+      <div show.bind="showEntityTypeEditor">
+        <mil-symbol-editor entity-type.bind="activeEntityType"></mil-symbol-editor>
+      </div>
+    </div>
+
+  </div>
 
   <!-- MODALS -->
   <div id="deleteEntityTypeModal" md-modal md-modal.ref="modal">

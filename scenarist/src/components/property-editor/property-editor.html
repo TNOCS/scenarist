@@ -1,49 +1,51 @@
 <template>
-  <div class="col s12 m6">
-    <md-card md-title="Properties">
-      <md-collection>
-        <md-collection-item class="accent-text" repeat.for="property of properties">
-          ${ property.title }
-          <div class="secondary-content">
-            <a href="#!" click.delegate="selectProperty(property)">
-              <i class="material-icons">mode_edit</i>
-            </a>
-          </div>
-        </md-collection-item>
-      </md-collection>
-    </md-card>
-    <div class="button-row right">
-      <button md-button click.delegate="addProperty()">
-        <i class="material-icons">add</i>
-      </button>
-    </div>
-  </div>
-  <div class="col s12 m6">
-    <div show.bind="showPropertyEditor">
-      <md-card md-title="Edit property">
-        <div>
-          <md-input md-label="Name" md-value.bind="activeProperty.title"></md-input>
-          <md-input md-label="Description" md-value.bind="activeProperty.description"></md-input>
-          <select md-select="label: select type" value.two-way="activeProperty.propertyType">
-            <option value="" disabled selected>select an item</option>
-            <option value="text">text</option>
-            <option value="textarea">textarea</option>
-            <option value="number">number</option>
-            <option value="option">option</option>
-          </select>
-          <md-input md-label="Default value" md-value.bind="activeProperty.defaultValue"></md-input>
-          <md-input md-label="Unit" md-value.bind="activeProperty.unit"></md-input>
-          <md-input show.bind="activeProperty.propertyType === 'option'" md-label="Options (one on each line)" md-text-area="true"
-            md-value.bind="activeProperty.options"></md-input>
-        </div>
+  <div class="row">
+    <div class="col s12 m6">
+      <md-card md-title="Properties">
+        <md-collection>
+          <md-collection-item class="accent-text" repeat.for="property of properties">
+            ${ property.title }
+            <div class="secondary-content">
+              <a href="#!" click.delegate="selectProperty(property)">
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
       </md-card>
       <div class="button-row right">
-        <button md-button class="modal-trigger" href="#deletePropModal">
-          <i class="material-icons">delete</i>
+        <button md-button click.delegate="addProperty()">
+          <i class="material-icons">add</i>
         </button>
-        <button md-button click.delegate="saveProperty()">
-          <i class="material-icons">save</i>
-        </button>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div show.bind="showPropertyEditor">
+        <md-card md-title="Edit property">
+          <div>
+            <md-input md-label="Name" md-value.bind="activeProperty.title"></md-input>
+            <md-input md-label="Description" md-value.bind="activeProperty.description"></md-input>
+            <select md-select="label: select type" value.two-way="activeProperty.propertyType">
+              <option value="" disabled selected>select an item</option>
+              <option value="text">text</option>
+              <option value="textarea">textarea</option>
+              <option value="number">number</option>
+              <option value="option">option</option>
+            </select>
+            <md-input md-label="Default value" md-value.bind="activeProperty.defaultValue"></md-input>
+            <md-input md-label="Unit" md-value.bind="activeProperty.unit"></md-input>
+            <md-input show.bind="activeProperty.propertyType === 'option'" md-label="Options (one on each line)" md-text-area="true"
+              md-value.bind="activeProperty.options"></md-input>
+          </div>
+        </md-card>
+        <div class="button-row right">
+          <button md-button class="modal-trigger" href="#deletePropModal">
+            <i class="material-icons">delete</i>
+          </button>
+          <button md-button click.delegate="saveProperty()">
+            <i class="material-icons">save</i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
