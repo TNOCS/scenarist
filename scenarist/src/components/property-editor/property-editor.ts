@@ -1,3 +1,4 @@
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { State } from './../../models/state';
 import { IProperty } from './../../models/property';
 import { inject } from 'aurelia-framework';
@@ -5,18 +6,18 @@ import { Endpoint, Rest } from 'aurelia-api';
 // import 'fetch';
 import { MdToastService } from 'aurelia-materialize-bridge';
 
-@inject(State, Endpoint.of('db'), MdToastService)
+@inject(State, Endpoint.of('db'), MdToastService, EventAggregator)
 export class PropertyEditorCustomElement {
   public properties: IProperty[];
   public activeProperty: IProperty;
   public showPropertyEditor = false;
   private api = 'properties';
 
-  constructor(private state: State, private rest: Rest, private toast: MdToastService) {}
+  constructor(private state: State, private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {}
 
   public attached() {
-    return this.rest.find(this.api)
-      .then(pt => this.properties = this.state.properties = pt);
+    this.properties = this.state.properties;
+    this.ea.subscribe('propertiesUpdated', () => this.properties = this.state.properties);
   }
 
   public selectProperty(selected: IProperty) {

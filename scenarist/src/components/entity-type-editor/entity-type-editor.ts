@@ -1,3 +1,4 @@
+import { EventAggregator } from 'aurelia-event-aggregator';
 import { IEntityType } from './../../models/entity';
 import { State } from './../../models/state';
 import { inject } from 'aurelia-framework';
@@ -5,18 +6,18 @@ import { Endpoint, Rest } from 'aurelia-api';
 // import 'fetch';
 import { MdToastService } from 'aurelia-materialize-bridge';
 
-@inject(State, Endpoint.of('db'), MdToastService)
+@inject(State, Endpoint.of('db'), MdToastService, EventAggregator)
 export class EntityTypeEditorCustomElement {
   public entityTypes: IEntityType[];
   public activeEntityType: IEntityType;
   public showEntityTypeEditor = false;
   private api = 'entityTypes';
 
-  constructor(private state: State, private rest: Rest, private toast: MdToastService) {}
+  constructor(private state: State, private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {}
 
   public attached() {
-    return this.rest.find(this.api)
-      .then(et => this.entityTypes = this.state.entityTypes = et);
+    this.entityTypes = this.state.entityTypes;
+    this.ea.subscribe('entityTypesUpdated', () => this.entityTypes = this.state.entityTypes);
   }
 
   public selectEntityType(selected: IEntityType) {
