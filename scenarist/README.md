@@ -25,6 +25,7 @@ NOTE: The backend REST service, which can be found in `../rest-server`, should b
 - [optional] Create/edit/delete factions (id, name, color, [line type]) so we can easily visualise different factions on the map
 - Create new entity type (id, name, image or AAP6 code so we can generate it, faction, and a list of attribute ids)
 - ? What do we do when we change/delete an existing entity. Do we also remove it from existing tracks that are using it?
+- Copy the mil-symbol-editor from here: https://www.spatialillusions.com/unitgenerator.html. It allows you to create the SIDC code based on a number of questions.
 
 ## Scenario editor GUI
 - Create/edit/delete scenario

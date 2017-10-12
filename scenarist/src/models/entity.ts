@@ -3,8 +3,15 @@ export interface IEntityType {
   title: string;
   description?: string;
   app6a?: string;
-  imageUrl?: string;
-  faction?: string;
+  imgDataUrl?: string;
+  /**
+   * The APP6B, MIL-STD-2525C or MIL-STD-2525D code.
+   * See https://www.spatialillusions.com/unitgenerator.html
+   *
+   * @type {string}
+   * @memberof IEntityType
+   */
+  sidc?: string;
   color?: string;
   propertyIds: string[];
 }

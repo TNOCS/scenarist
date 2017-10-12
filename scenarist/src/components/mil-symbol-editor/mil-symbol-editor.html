@@ -1,0 +1,14 @@
+<template>
+  <md-card md-title="Edit symbol">
+    <img src.bind="entityType.imgDataUrl" alt="Enity image">
+    <div>
+      <md-input md-label="SIDC" md-value.bind="entityType.sidc"></md-input>
+    </div>
+  </md-card>
+  <div class="button-row right">
+    <button md-button click.delegate="redraw()">
+      <i class="material-icons">refresh</i>
+    </button>
+  </div>
+
+</template>
