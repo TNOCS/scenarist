@@ -1,0 +1,22 @@
+{
+  "name": "soap-server",
+  "version": "0.0.1",
+  "description": "SOAP server for nvg files",
+  "main": "dist/server.js",
+  "author": "Rinze Bruining",
+  "license": "MIT",
+  "dependencies": {
+    "@types/body-parser": "^1.16.5",
+    "@types/fs-extra": "^4.0.2",
+    "@types/http-server": "^0.10.0",
+    "@types/soap": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "config": "^1.26.2",
+    "express": "^4.16.2",
+    "fs-extra": "^4.0.2",
+    "http": "^0.0.0",
+    "http-server": "^0.10.0",
+    "node": "^8.3.0",
+    "soap": "^0.22.0"
+  }
+}

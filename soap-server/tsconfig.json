@@ -1,0 +1,22 @@
+{
+  "version": "2.5.3",
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "noLib": false,
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "filesGlob": [
+    "./config/**/*.ts",
+    "./**/*.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

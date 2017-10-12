@@ -1,0 +1,20 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <GetCapabilitiesResponse xmlns="http://tide.act.nato.int/wsdl/2009/nvg">
+            <nvg_capabilities version="1.5.0" xmlns="http://tide.act.nato.int/schemas/2009/10/nvg">
+                <select name="Situation Overlays" id="Situation Overlays" list="true" multiple="true">
+                    <values>
+                        <value id="0" name="BFT"/>
+                        <value id="1" name="Friendly Actors"/>
+                        <value id="2" name="Other Actors"/>
+                        <value id="3" name="Events"/>
+                        <value id="4" name="Obstacles"/>
+                        <value id="5" name="Miscellaneous"/>
+                        <value id="6" name="Fire Mission"/>
+                        <value id="7" name="FS Coordination"/>
+                    </values>
+                </select>
+            </nvg_capabilities>
+        </GetCapabilitiesResponse>
+    </s:Body>
+</s:Envelope>

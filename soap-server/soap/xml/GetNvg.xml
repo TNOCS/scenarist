@@ -1,0 +1,101 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <GetNvgResponse xmlns="http://tide.act.nato.int/wsdl/2009/nvg">
+            <nvg version="1.5.0" xmlns="http://tide.act.nato.int/schemas/2009/10/nvg">
+                <g uri="0" label="BFT"/>
+                <g uri="1" label="Friendly Actors">
+                    <point uri="{3023e252-f8db-0006-0000-000000000000}" label="Kim" symbol="app6a:SFG-UCECS---BE-" x="5.5294195" y="52.6365548">
+                        <ExtendedData>
+                            <SimpleData key="Created">11153300Z OCT 2017</SimpleData>
+                            <SimpleData key="CreatedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="EliasId">{3023e252-f8db-0006-0000-000000000000}</SimpleData>
+                            <SimpleData key="Hostility">Friend</SimpleData>
+                            <SimpleData key="IsDeleted">False</SimpleData>
+                            <SimpleData key="LastModified">11153300Z OCT 2017</SimpleData>
+                            <SimpleData key="LastModifiedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="Name">Kim</SimpleData>
+                            <SimpleData key="SymbolCode">SFG-UCECS---BE-</SimpleData>
+                            <SimpleData key="ActivityStatus">Not specified</SimpleData>
+                            <SimpleData key="CombatEffectiveness">Not Specified</SimpleData>
+                            <SimpleData key="HqRole">Not Specified</SimpleData>
+                            <SimpleData key="IsFeint">False</SimpleData>
+                            <SimpleData key="IsHeadQuarter">False</SimpleData>
+                            <SimpleData key="IsTaskForce">False</SimpleData>
+                            <SimpleData key="Nationality">Belgium</SimpleData>
+                            <SimpleData key="OperationalStatus">Not specified</SimpleData>
+                            <SimpleData key="ReinforcementStatus">Not Specified</SimpleData>
+                            <SimpleData key="Size">Not Specified (-)</SimpleData>
+                        </ExtendedData>
+                    </point>
+                    <point uri="{3023e252-f8db-0491-0000-000000000000}" symbol="app6a:SFG-UCIA-------" x="4.9148101" y="52.2085749">
+                        <ExtendedData>
+                            <SimpleData key="Created">12144300Z OCT 2017</SimpleData>
+                            <SimpleData key="CreatedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="EliasId">{3023e252-f8db-0491-0000-000000000000}</SimpleData>
+                            <SimpleData key="Hostility">Friend</SimpleData>
+                            <SimpleData key="IsDeleted">False</SimpleData>
+                            <SimpleData key="LastModified">12144300Z OCT 2017</SimpleData>
+                            <SimpleData key="LastModifiedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="SymbolCode">SFG-UCIA-------</SimpleData>
+                            <SimpleData key="ActivityStatus">Not specified</SimpleData>
+                            <SimpleData key="CombatEffectiveness">Not Specified</SimpleData>
+                            <SimpleData key="HqRole">Not Specified</SimpleData>
+                            <SimpleData key="IsFeint">False</SimpleData>
+                            <SimpleData key="IsHeadQuarter">False</SimpleData>
+                            <SimpleData key="IsTaskForce">False</SimpleData>
+                            <SimpleData key="Nationality">Not Specified</SimpleData>
+                            <SimpleData key="OperationalStatus">Not specified</SimpleData>
+                            <SimpleData key="ReinforcementStatus">Not Specified</SimpleData>
+                            <SimpleData key="Size">Not Specified (-)</SimpleData>
+                        </ExtendedData>
+                    </point>
+                </g>
+                <g uri="2" label="Other Actors"/>
+                <g uri="3" label="Events"/>
+                <g uri="4" label="Obstacles">
+                    <polygon uri="{3023e252-f8db-0007-0000-000000000000}" points="5.4492509,50.8543369 6.5350118,50.9394944 5.8317983,51.5837073 5.3423649,51.3278085">
+                        <ExtendedData>
+                            <SimpleData key="Created">11153400Z OCT 2017</SimpleData>
+                            <SimpleData key="CreatedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="EliasId">{3023e252-f8db-0007-0000-000000000000}</SimpleData>
+                            <SimpleData key="Hostility">Friend</SimpleData>
+                            <SimpleData key="IsDeleted">False</SimpleData>
+                            <SimpleData key="LastModified">11153400Z OCT 2017</SimpleData>
+                            <SimpleData key="LastModifiedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="SymbolCode">AFO-03--------X</SimpleData>
+                            <SimpleData key="DemolitionStatus">Not Specified</SimpleData>
+                            <SimpleData key="IsFeint">False</SimpleData>
+                            <SimpleData key="MilitaryLoadClassification">Not Specified</SimpleData>
+                            <SimpleData key="Nationality">Not Specified</SimpleData>
+                            <SimpleData key="OperationalStatus">Not specified</SimpleData>
+                            <SimpleData key="Passability">Not Specified</SimpleData>
+                            <SimpleData key="StageOfReadiness">Not Specified</SimpleData>
+                            <SimpleData key="MineType">Not specified</SimpleData>
+                            <SimpleData key="NvgTranslationRemark">Could not translate ELIAS symbol AFO-03--------X[Object, Obstacle, Minefield, AntiTank] to a app6a symbol</SimpleData>
+                        </ExtendedData>
+                    </polygon>
+                </g>
+                <g uri="5" label="Miscellaneous">
+                    <point uri="{3023e252-f8db-048d-0000-000000000000}" label="AIRB" symbol="app6a:SFG-IMA---H----" x="4.0964587" y="52.1085645">
+                        <ExtendedData>
+                            <SimpleData key="Created">12144100Z OCT 2017</SimpleData>
+                            <SimpleData key="CreatedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="EliasId">{3023e252-f8db-048d-0000-000000000000}</SimpleData>
+                            <SimpleData key="Hostility">Friend</SimpleData>
+                            <SimpleData key="IsDeleted">False</SimpleData>
+                            <SimpleData key="LastModified">12144100Z OCT 2017</SimpleData>
+                            <SimpleData key="LastModifiedBy">rinze (MULAN)</SimpleData>
+                            <SimpleData key="Name">AIRB</SimpleData>
+                            <SimpleData key="SymbolCode">SFG-IMA---H----</SimpleData>
+                            <SimpleData key="IsFeint">False</SimpleData>
+                            <SimpleData key="Nationality">Not Specified</SimpleData>
+                            <SimpleData key="OperationalStatus">Not specified</SimpleData>
+                        </ExtendedData>
+                    </point>
+                </g>
+                <g uri="6" label="Fire Mission"/>
+                <g uri="7" label="FS Coordination"/>
+            </nvg>
+        </GetNvgResponse>
+    </s:Body>
+</s:Envelope>
