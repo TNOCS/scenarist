@@ -1,0 +1,7 @@
+{
+    "Soap": {
+        "port": 3001,
+        "wsdlFile": "./wsdl/schema.wsdl",
+        "xmlFolder": "./soap/xml"
+    }
+}
