@@ -1,8 +1,8 @@
 import { IModel } from './model';
 
 export interface IScenario extends IModel {
-  startTime?: Date;
-  endTime?: Date;
+  start?: { data: Date; time: Date }
+  end?: { data: Date; time: Date }
   trackIds?: string[] | number[];
   layers?: {
     baseIds?;

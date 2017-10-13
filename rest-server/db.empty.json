@@ -38,8 +38,8 @@
         "id": 1,
         "title": "My first scenario",
         "description": "",
-        "startTime": "",
-        "endTime": "",
+        "start": { "date": "", "time": "" },
+        "end": { "date": "", "time": "" },
         "trackIds": [],
         "layers": {
             "baseIds": [],

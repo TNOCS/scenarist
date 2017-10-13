@@ -25,17 +25,15 @@
           <div>
             <md-input md-label="Name" md-value.bind="activeScenario.title"></md-input>
             <md-input md-label="Description" md-value.bind="activeScenario.description"></md-input>
-            <select md-select="label: select type" value.two-way="activeScenario.scenarioType">
-              <option value="" disabled selected>select an item</option>
-              <option value="text">text</option>
-              <option value="textarea">textarea</option>
-              <option value="number">number</option>
-              <option value="option">option</option>
-            </select>
-            <md-input md-label="Default value" md-value.bind="activeScenario.defaultValue"></md-input>
-            <md-input md-label="Unit" md-value.bind="activeScenario.unit"></md-input>
-            <md-input show.bind="activeScenario.scenarioType === 'option'" md-label="Options (one on each line)" md-text-area="true"
-              md-value.bind="activeScenario.options"></md-input>
+            <md-input md-label="Start time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
+            <div ref="dpWrapper">
+              <input md-datepicker="container.bind: dpWrapper; value.two-way: activeScenario.start.date;" type="date" placeholder="pick a start date" />
+            </div>
+            <md-input md-label="End time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
+            <div ref="dpWrapper2">
+              <input md-datepicker="container.bind: dpWrapper2; value.two-way: activeScenario.end.date;" type="date" placeholder="pick an end date" />
+            </div>
+            <!-- <input md-timepicker="value.bind: activeScenario.start.time;" placeholder="pick a start time" /> -->
           </div>
         </md-card>
         <div class="button-row right">
