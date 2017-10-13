@@ -8,7 +8,7 @@ export class App {
 
     config.title = 'Scenario Manager';
     config.map([
-      { route: ['', 'welcome'], name: 'welcome', moduleId: PLATFORM.moduleName('./components/home/home'), nav: true, title: 'Home' },
+      { route: ['', 'home'], name: 'welcome', moduleId: PLATFORM.moduleName('./components/select-scenario/select-scenario'), nav: true, title: 'Home' },
       { route: ['scenario'], name: 'scenario', moduleId: PLATFORM.moduleName('./components/scenario-editor/scenario-editor'), nav: true, title: 'Scenario' },
       { route: ['entities'], name: 'entities', moduleId: PLATFORM.moduleName('./components/entity-type-editor/entity-type-editor'), nav: true, title: 'Entities' },
       { route: ['properties'], name: 'properties', moduleId: PLATFORM.moduleName('./components/property-editor/property-editor'), nav: true, title: 'Properties' }
