@@ -49,13 +49,24 @@
         }
     }],
     "baseLayers": [{
-        "id": "OSM Tiles",
-        "title": "Open Street Map tiles",
-        "description": "",
-        "type": "tile",
-        "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-        "options": {
-            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+            "id": "OSM Tiles",
+            "title": "Open Street Map tiles",
+            "description": "",
+            "type": "tile",
+            "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+            "options": {
+                "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+            }
+        },
+        {
+            "id": "google",
+            "title": "Google satellite",
+            "description": "Google satellite images",
+            "type": "tile",
+            "url": "http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}",
+            "options": {
+                "attribution": "&copy; <a href='www.google.com'>Google</a>"
+            }
         }
-    }]
+    ]
 }

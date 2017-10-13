@@ -1,101 +1,101 @@
 {
-  "properties": [
-    {
-      "id": "1",
-      "title": "Name",
-      "description": "The name of my important entity.",
-      "propertyType": "text",
-      "defaultValue": "",
-      "unit": "",
-      "options": ""
-    },
-    {
-      "id": "2",
-      "title": "Description",
-      "description": "Describe the function of this entity.",
-      "propertyType": "textarea",
-      "defaultValue": "",
-      "unit": "",
-      "options": []
-    }
-  ],
-  "entityTypes": [
-    {
-      "id": "BkvzrCjn-",
-      "title": "Tank",
-      "description": "My very own tank",
-      "app6a": "",
-      "imgDataUrl": "data:image/png;base64,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",
-      "faction": "",
-      "color": "red",
-      "propertyIds": [
-        "1",
-        "2"
-      ],
-      "sidc": "SHAPM-----EN---"
-    }
-  ],
-  "entities": [
-    {
-      "id": 1,
-      "title": "Tank",
-      "description": "Sherman tank",
-      "app6a": "",
-      "imageUrl": "tank",
-      "faction": "",
-      "color": "#f00",
-      "propertyIds": []
-    }
-  ],
-  "scenarios": [
-    {
-      "id": 1,
-      "title": "My first scenario",
-      "description": "",
-      "startTime": "",
-      "endTime": "",
-      "trackIds": [],
-      "layers": {
-        "baseIds": [
-          "OSM Tiles"
+    "properties": [{
+            "id": "1",
+            "title": "Name",
+            "description": "The name of my important entity.",
+            "propertyType": "text",
+            "defaultValue": "",
+            "unit": "",
+            "options": ""
+        },
+        {
+            "id": "2",
+            "title": "Description",
+            "description": "Describe the function of this entity.",
+            "propertyType": "textarea",
+            "defaultValue": "",
+            "unit": "",
+            "options": []
+        }
+    ],
+    "entityTypes": [{
+        "id": "BkvzrCjn-",
+        "title": "Tank",
+        "description": "My very own tank",
+        "app6a": "",
+        "imgDataUrl": "data:image/png;base64,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",
+        "faction": "",
+        "color": "red",
+        "propertyIds": [
+            "1",
+            "2"
         ],
-        "overlayIds": []
-      },
-      "center": {
-        "lat": "51.5",
-        "lng": "5.4"
-      },
-      "zoom": "15",
-      "start": {
-        "date": "2017-10-12T22:00:00.000Z",
-        "time": "08:00"
-      },
-      "end": {
-        "date": "2017-10-12T22:00:00.000Z",
-        "time": "10:00"
-      }
-    }
-  ],
-  "baseLayers": [
-    {
-      "id": "OSM Tiles",
-      "title": "Open Street Map tiles",
-      "description": "Requires Internet access.",
-      "type": "tile",
-      "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-      "options": {
-        "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-      }
-    },
-    {
-      "type": "tile",
-      "title": "MBtiles",
-      "description": "Local tile service",
-      "url": "http://localhost:3000/",
-      "options": {
-        "attribution": "&copy; <a href='http://www.tno.nl'>TNO</a>"
-      },
-      "id": "rJ17-NCnW"
-    }
-  ]
+        "sidc": "SHAPM-----EN---"
+    }],
+    "entities": [{
+        "id": 1,
+        "title": "Tank",
+        "description": "Sherman tank",
+        "app6a": "",
+        "imageUrl": "tank",
+        "faction": "",
+        "color": "#f00",
+        "propertyIds": []
+    }],
+    "scenarios": [{
+        "id": 1,
+        "title": "My first scenario",
+        "description": "",
+        "startTime": "",
+        "endTime": "",
+        "trackIds": [],
+        "layers": {
+            "baseIds": "google",
+            "overlayIds": []
+        },
+        "center": {
+            "lat": "51.5",
+            "lng": "5.4"
+        },
+        "zoom": "15",
+        "start": {
+            "date": "2017-10-12T22:00:00.000Z",
+            "time": "08:00"
+        },
+        "end": {
+            "date": "2017-10-12T22:00:00.000Z",
+            "time": "10:00"
+        }
+    }],
+    "baseLayers": [{
+            "id": "OSM Tiles",
+            "title": "Open Street Map tiles",
+            "description": "Requires Internet access.",
+            "type": "tile",
+            "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+            "options": {
+                "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+            }
+        },
+        {
+            "id": "google",
+            "title": "Google satellite",
+            "description": "Google satellite images",
+            "type": "tile",
+            "url": "http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}",
+            "options": {
+                "attribution": "&copy; <a href='www.google.com'>Google</a>"
+            }
+        },
+        {
+            "type": "tile",
+            "title": "MBtiles",
+            "description": "Local tile service",
+            "url": "http://localhost:3000/",
+            "options": {
+                "attribution": "&copy; <a href='http://www.tno.nl'>TNO</a>"
+            },
+            "id": "rJ17-NCnW"
+        }
+    ]
 }
