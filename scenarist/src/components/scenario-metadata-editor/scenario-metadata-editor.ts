@@ -4,7 +4,7 @@ import { State, ModelType } from './../../models/state';
 import { inject } from 'aurelia-framework';
 
 @inject(State, EventAggregator)
-export class ScenarioEditorCustomElement {
+export class ScenarioMetadataEditor {
   public scenarios: IScenario[];
   public activeScenario: IScenario;
   public showScenarioSelector = false;
