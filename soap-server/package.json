@@ -17,6 +17,6 @@
     "http": "^0.0.0",
     "http-server": "^0.10.0",
     "node": "^8.3.0",
-    "soap": "^0.22.0"
+    "soap": "https://github.com/rinzeb/node-soap#v0.22.2"
   }
 }

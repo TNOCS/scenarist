@@ -15,6 +15,8 @@ export namespace Soap {
         private GetCapabilitiesXml;
         private GetNvgXml;
 
+        private counter = 1;
+
         constructor(private xmlFolder = './xml') {
             this.GetCapabilitiesXml = fs.readFileSync(path.join(xmlFolder, 'GetCapabilities.xml'), 'utf8');
             this.GetNvgXml = fs.readFileSync(path.join(xmlFolder, 'GetNvg.xml'), 'utf8');
@@ -59,8 +61,40 @@ export namespace Soap {
         }
 
         GetNvg(args, cb, headers, req) {
+            this.counter += 1;
             return {
-                _xml: this.GetNvgXml
+                // _xml: this.GetNvgXml
+                attributes: {
+                    xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
+                },
+                nvg: {
+                    attributes: {
+                        version: "1.5.0",
+                        xmlns: "http://tide.act.nato.int/schemas/2009/10/nvg"
+                    },
+                    g: [{
+                            attributes: {
+                                uri: "0",
+                                label: "BFT"
+                            }
+                        },
+                        {
+                            attributes: {
+                                uri: "1",
+                                label: "BFT"
+                            },
+                            point: {
+                                attributes: {
+                                    uri: "{3023e252-f8db-0006-0000-000000000000}",
+                                    label: "Kim",
+                                    symbol: "app6a:SFG-UCECS---BE-",
+                                    x: "5.5294195",
+                                    y: (52.6365548 - 0.05*this.counter).toFixed(6)
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         }
 
