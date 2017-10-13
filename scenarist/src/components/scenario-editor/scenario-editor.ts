@@ -1,5 +1,54 @@
-export class ScenarioEditorCustomElement {
+import { State } from './../../models/state';
+import { defaultLayers, defaultMapOptions } from './../aurelia-leaflet/aurelia-leaflet-defaults';
+import { ILayerDefinition } from 'models/layer';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import { inject } from 'aurelia-dependency-injection';
+import { IScenario } from './../../models/scenario';
+import { MapOptions } from 'leaflet';
+
+@inject(State, EventAggregator)
+export class ScenarioEditor {
+  public isActive = false;
+  public scenario: IScenario;
+  public mapOptions: MapOptions = defaultMapOptions;
+  public layers: { base: ILayerDefinition[], overlay?: ILayerDefinition[] } = defaultLayers;
+  public leafletMapEvents = ['load', 'click', 'dblclick'];
+  public withLayerControl = true;
+  public withScaleControl = true;
+  private isInitialized = false;
+
+  constructor(private state: State, private ea: EventAggregator) {
+    this.ea.subscribe('aurelia-leaflet', (payload) => {
+      console.log(payload);
+    });
+    // this.ea.subscribe('activeScenarioChanged', scenario => this.activeScenarioChanged(scenario));
+    this.resizeMap();
+  }
+
   public attached() {
+    this.resizeMap();
+  }
+
+  public activate() {
+    const scenario = this.state.activeScenarioId
+    ? this.state.scenarios.filter(s => s.id === this.state.activeScenarioId)[0]
+    : null;
+    this.activeScenarioChanged(scenario);
+  }
+
+  public activeScenarioChanged(scenario: IScenario) {
+    this.scenario = scenario;
+    this.isActive = this.scenario ? true : false;
+    if (this.isActive) {
+      this.mapOptions = {
+        center: this.scenario.center,
+        zoom: this.scenario.zoom
+      };
+      this.layers = { base: this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0) };
+    }
+  }
+
+  private resizeMap() {
     const mapMargin = 65;
     const map = $('#map');
     const w = $(window);
@@ -7,16 +56,11 @@ export class ScenarioEditorCustomElement {
     const resize = () => {
       const height = w.height();
       map.css('height', height - mapMargin);
-      // map.css('margin-top', 50);
-      // if (w.width() >= 980) {
-      //   map.css('height', height - mapMargin);
-      //   map.css('margin-top', 50);
-      // } else {
-      //   map.css('height', height - (mapMargin + 12));
-      //   map.css('margin-top', -21);
-      // }
     };
-    w.on('resize', resize);
+    if (!this.isInitialized) {
+      w.on('resize', resize);
+    }
     resize();
+    this.isInitialized = true;
   }
 }

@@ -24,6 +24,7 @@ export class ScenarioMetadataEditor {
       this.scenarios = this.state.scenarios;
       if (scenario) { this.activeScenario = this.scenarios.filter(l => l.id === scenario.id)[0]; }
     });
+    this.baseLayers = this.state.baseLayers;
     this.ea.subscribe(`baseLayersUpdated`, (scenario: IScenario) => {
       this.baseLayers = this.state.baseLayers;
     });

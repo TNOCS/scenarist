@@ -1,5 +1,6 @@
 <template>
   <require from="../aurelia-leaflet/aurelia-leaflet"></require>
-  <leaflet style="margin-bottom: -20px;"></leaflet>
+  <leaflet style="margin-bottom: -20px;" map-options.bind="mapOptions" layers.bind="layers" map-events.bind="leafletMapEvents"
+    with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl"></leaflet>
   <!-- <leaflet style="width: 100%; height: 100%; position: absolute; top: 0; margin-top: 60px; left: 0; z-index: -1;"></leaflet> -->
 </template>
