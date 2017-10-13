@@ -36,9 +36,9 @@ export class State {
     this.store.activeScenarioId = id;
     if (id) {
       const s = this.store.scenarios.filter(s => s.id === id)[0];
-      this.ea.publish('activeScenarioChanged', { id, title: s.title });
+      this.ea.publish('activeScenarioChanged', s);
     } else {
-      this.ea.publish('activeScenarioChanged', { id, title: '' });
+      this.ea.publish('activeScenarioChanged', null);
     }
   }
 
