@@ -25,35 +25,51 @@
           <div>
             <md-input md-label="Name" md-value.bind="activeScenario.title"></md-input>
             <md-input md-label="Description" md-value.bind="activeScenario.description"></md-input>
-            <md-input md-label="Start time" md-type="time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
-            <div ref="dpWrapper">
-              <input md-datepicker="container.bind: dpWrapper; value.two-way: activeScenario.start.date;" type="date" placeholder="pick a start date" />
-            </div>
-            <md-input md-label="End time" md-type="time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
-            <div ref="dpWrapper2">
-              <input md-datepicker="container.bind: dpWrapper2; value.two-way: activeScenario.end.date;" type="date" placeholder="pick an end date" />
-            </div>
+            <md-card md-title="Time settings">
+              <div>
+                <md-input md-label="Start time" md-type="time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
+                <div ref="dpWrapper">
+                  <input md-datepicker="container.bind: dpWrapper; value.two-way: activeScenario.start.date;" type="date" placeholder="pick a start date"/>
+                </div>
+                <md-input md-label="End time" md-type="time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
+                <div ref="dpWrapper2">
+                  <input md-datepicker="container.bind: dpWrapper2; value.two-way: activeScenario.end.date;" type="date" placeholder="pick an end date"/>
+                </div>
+              </div>
+            </md-card>
             <!-- <input md-timepicker="value.bind: activeScenario.start.time;" placeholder="pick a start time" /> -->
-            <select md-select="label: select zoom level" value.two-way="activeScenario.zoom">
-              <option value="" disabled selected>low level of detail</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-              <option value="19">19</option>
-              <option value="20">20</option>
-              <option value="20">20</option>
-              <option value="21">21</option>
-              <option value="22">22</option>
-              <option value="" disabled>high level of detail</option>
-            </select>
-            <md-input md-label="Center latitude" md-type="number" md-value.bind="activeScenario.center.lat" md-placeholder="51.00"></md-input>
-            <md-input md-label="Center longitude" md-type="number" md-value.bind="activeScenario.center.lng" md-placeholder="5.00"></md-input>
+            <md-card md-title="Map details">
+              <div>
+                <div class="row">
+                  <md-input class="col s6" md-label="latitude" md-type="number" md-value.bind="activeScenario.center.lat" md-placeholder="51.00"></md-input>
+                  <md-input class="col s6" md-label="longitude" md-type="number" md-value.bind="activeScenario.center.lng" md-placeholder="5.00"></md-input>
+                </div>
+                <div class="row">
+                  <select class="col s3" md-select="label: zoom level" value.two-way="activeScenario.zoom">
+                    <option value="" disabled selected>low level of detail</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="" disabled>high level of detail</option>
+                  </select>
+                  <select class="col s9" multiple md-select="" value.two-way="activeScenario.layers.baseIds">
+                    <option value="" disabled selected>Select base layer</option>
+                    <option value="${layer.id}" repeat.for="layer of baseLayers">${layer.title}</option>
+                  </select>
+                </div>
+              </div>
+            </md-card>
           </div>
         </md-card>
         <div class="button-row right">

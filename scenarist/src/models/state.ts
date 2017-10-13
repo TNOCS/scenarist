@@ -1,3 +1,4 @@
+import { ILayerDefinition } from './../components/aurelia-leaflet/aurelia-leaflet-defaults';
 import { IModel } from './model';
 import { IScenario } from './scenario';
 import { EventAggregator } from 'aurelia-event-aggregator';
@@ -7,7 +8,7 @@ import { IEntityType } from './entity';
 import { Endpoint, Rest } from 'aurelia-api';
 import { MdToastService } from 'aurelia-materialize-bridge';
 
-export type ModelType = 'properties' | 'entityTypes' | 'scenarios';
+export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers';
 
 @inject(Endpoint.of('db'), MdToastService, EventAggregator)
 export class State {
@@ -15,21 +16,25 @@ export class State {
     entityTypes: IEntityType[];
     properties: IProperty[];
     scenarios: IScenario[];
+    baseLayers: ILayerDefinition[];
   } = {
     entityTypes: [],
     properties: [],
-    scenarios: []
+    scenarios: [],
+    baseLayers: []
   };
 
   public get entityTypes() { return this.store.entityTypes.map(this.clone) as IEntityType[]; }
   public get properties() { return this.store.properties.map(this.clone) as IProperty[]; }
   public get scenarios() { return this.store.scenarios.map(this.clone) as IScenario[]; }
+  public get baseLayers() { return this.store.baseLayers.map(this.clone) as ILayerDefinition[]; }
 
   constructor(private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {
     this.rest.find('properties').then(p => this.store.properties = p).then(() => ea.publish('propertiesUpdated'));
     this.rest.find('entityTypes').then(et => this.store.entityTypes = et).then(() => ea.publish('entityTypesUpdated'));
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
+    this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
   }
 
   public save(modelType: ModelType, model: IModel) {

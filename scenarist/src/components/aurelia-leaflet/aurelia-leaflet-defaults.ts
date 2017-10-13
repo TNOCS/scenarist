@@ -1,9 +1,7 @@
+import { IModel } from './../../models/model';
 import { MapOptions } from 'leaflet';
 
-export interface ILayerDefinition {
-  id: string;
-  title?: string;
-  description?: string;
+export interface ILayerDefinition extends IModel {
   type: string;
   url: string;
   options: {
@@ -23,6 +21,7 @@ export const defaultLayers: { base: ILayerDefinition[], overlay: ILayerDefinitio
   base: [
     {
       id: 'OSM Tiles',
+      title: 'OSM Tiles',
       type: 'tile',
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       options: {

@@ -56,12 +56,14 @@
       "endTime": "",
       "trackIds": [],
       "layers": {
-        "baseIds": [],
+        "baseIds": [
+          "OSM Tiles"
+        ],
         "overlayIds": []
       },
       "center": {
-        "lat": "51",
-        "lng": "5"
+        "lat": "51.5",
+        "lng": "5.4"
       },
       "zoom": "15",
       "start": {
