@@ -1,23 +1,23 @@
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { State } from './../../models/state';
+import { State, ModelType } from './../../models/state';
 import { IProperty } from './../../models/property';
 import { inject } from 'aurelia-framework';
-import { Endpoint, Rest } from 'aurelia-api';
-// import 'fetch';
-import { MdToastService } from 'aurelia-materialize-bridge';
 
-@inject(State, Endpoint.of('db'), MdToastService, EventAggregator)
+@inject(State, EventAggregator)
 export class PropertyEditorCustomElement {
   public properties: IProperty[];
   public activeProperty: IProperty;
   public showPropertyEditor = false;
-  private api = 'properties';
+  private modelType: ModelType = 'entityTypes';
 
-  constructor(private state: State, private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {}
+  constructor(private state: State, private ea: EventAggregator) {}
 
   public attached() {
     this.properties = this.state.properties;
-    this.ea.subscribe('propertiesUpdated', () => this.properties = this.state.properties);
+    this.ea.subscribe(`${this.modelType}Updated`, (prop: IProperty) => {
+      this.properties = this.state.properties;
+      if (prop) { this.activeProperty = prop; }
+    });
   }
 
   public selectProperty(selected: IProperty) {
@@ -28,42 +28,15 @@ export class PropertyEditorCustomElement {
   public addProperty() {
     this.activeProperty = {} as IProperty;
     this.showPropertyEditor = true;
-    this.properties.push(this.activeProperty);
+    this.state.save(this.modelType, this.activeProperty);
   }
 
   public deleteProperty() {
-    const index = this.properties.indexOf(this.activeProperty);
-    if (index < 0) { return console.warn('Cannot find property! Ignoring.'); }
-    this.rest
-      .destroy(this.api, this.activeProperty.id)
-      .then(() => {
-        this.properties.splice(index, 1);
-        this.activeProperty = null;
-        this.showPropertyEditor = false;
-        this.toastMessage('Delete successfull.');
-      })
-      .catch(m => this.toastMessage('Error deleting property!\n' + m, true));
+    this.showPropertyEditor = false;
+    this.state.delete(this.modelType, this.activeProperty);
   }
 
   public saveProperty() {
-    if (this.activeProperty.id) {
-      this.rest
-        .update(this.api, this.activeProperty.id, this.activeProperty)
-        .then(() => this.toastMessage('Update successfull.'))
-        .catch(m => this.toastMessage('Error updating property!\n' + m, true));
-    } else {
-      this.rest
-        .post(this.api, this.activeProperty)
-        .then(prop => {
-          this.activeProperty = prop;
-          this.toastMessage('Created successfully.');
-        })
-        .catch(m => this.toastMessage('Error creating property!\n' + m, true));
-    }
+    this.state.save(this.modelType, this.activeProperty);
   }
-
-  private toastMessage(msg: string, isError = false) {
-    this.toast.show(msg, isError ? 2000 : 4000, isError ? 'red' : 'green');
-  }
-
 }

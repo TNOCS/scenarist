@@ -1,7 +1,6 @@
-export interface IEntityType {
-  id: number;
-  title: string;
-  description?: string;
+import { IModel } from './model';
+
+export interface IEntityType extends IModel {
   app6a?: string;
   imgDataUrl?: string;
   /**
@@ -17,7 +16,7 @@ export interface IEntityType {
 }
 
 export interface IEntity {
-  id: number;
+  id: string | number;
   entityId: string;
   title: string;
   callSign?: string;

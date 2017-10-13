@@ -1,0 +1,63 @@
+<template>
+  <div class="row">
+    <div class="col s12 m6">
+      <md-card md-title="Scenarios">
+        <md-collection>
+          <md-collection-item class="accent-text" repeat.for="scenario of scenarios">
+            ${ scenario.title }
+            <div class="secondary-content">
+              <a href="#!" click.delegate="selectScenario(scenario)">
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
+      </md-card>
+      <div class="button-row right">
+        <button md-button click.delegate="addScenario()">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div show.bind="showScenarioSelector">
+        <md-card md-title="Edit scenario">
+          <div>
+            <md-input md-label="Name" md-value.bind="activeScenario.title"></md-input>
+            <md-input md-label="Description" md-value.bind="activeScenario.description"></md-input>
+            <md-input md-label="Start time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
+            <div ref="dpWrapper">
+              <input md-datepicker="container.bind: dpWrapper; value.two-way: activeScenario.start.date;" type="date" placeholder="pick a start date" />
+            </div>
+            <md-input md-label="End time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
+            <div ref="dpWrapper2">
+              <input md-datepicker="container.bind: dpWrapper2; value.two-way: activeScenario.end.date;" type="date" placeholder="pick an end date" />
+            </div>
+            <!-- <input md-timepicker="value.bind: activeScenario.start.time;" placeholder="pick a start time" /> -->
+          </div>
+        </md-card>
+        <div class="button-row right">
+          <button md-button class="modal-trigger" href="#deleteScenarioModal">
+            <i class="material-icons">delete</i>
+          </button>
+          <button md-button click.delegate="saveScenario()">
+            <i class="material-icons">save</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="deleteScenarioModal" md-modal md-modal.ref="modal">
+    <div class="modal-content">
+      <h4>Delete scenario?</h4>
+      <p>Do you really want to delete "${activeScenario.title}"?</p>
+    </div>
+    <div class="modal-footer">
+      <button click.delegate="deleteScenario()" md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">OK</button>
+      <button md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Cancel</button>
+    </div>
+  </div>
+
+</template>

@@ -46,5 +46,27 @@
       "color": "#f00",
       "propertyIds": []
     }
+  ],
+  "scenarios": [
+    {
+      "id": 1,
+      "title": "My first scenario",
+      "description": "",
+      "startTime": "",
+      "endTime": "",
+      "trackIds": [],
+      "layers": {
+        "baseIds": [],
+        "overlayIds": []
+      },
+      "start": {
+        "date": "2017-10-12T22:00:00.000Z",
+        "time": "08:00"
+      },
+      "end": {
+        "date": "2017-10-12T22:00:00.000Z",
+        "time": "10:00"
+      }
+    }
   ]
 }

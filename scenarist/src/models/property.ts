@@ -1,9 +1,7 @@
+import { IModel } from './model';
 export type PropertyType = 'number' | 'text' | 'textarea' | 'option';
 
-export interface IProperty {
-  id: string;
-  title: string;
-  description?: string;
+export interface IProperty extends IModel {
   propertyType: PropertyType;
   defaultValue?: string | number;
   unit?: string;
