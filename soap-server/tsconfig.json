@@ -7,10 +7,12 @@
     "noImplicitAny": false,
     "removeComments": false,
     "noLib": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "allowJs": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "soap/nvg.js"
   ],
   "filesGlob": [
     "./config/**/*.ts",

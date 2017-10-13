@@ -1,8 +1,9 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import {
+    GeojsonToNvgConverter,
+    IFeatureCollection
+} from './GeojsonToNvgConverter';
 
 export namespace Soap {
-
     export interface ISoapConfig {
         wsdlRoute: string;
         xmlFolder: string;
@@ -11,20 +12,14 @@ export namespace Soap {
     }
 
     export class SoapService {
-
-        private GetCapabilitiesXml;
-        private GetNvgXml;
-
-        private counter = 1;
+        private nvgConverter = new GeojsonToNvgConverter();
 
         constructor(private xmlFolder = './xml') {
-            this.GetCapabilitiesXml = fs.readFileSync(path.join(xmlFolder, 'GetCapabilities.xml'), 'utf8');
-            this.GetNvgXml = fs.readFileSync(path.join(xmlFolder, 'GetNvg.xml'), 'utf8');
+
         }
 
         GetCapabilities(args, cb, headers, req) {
             return {
-                // _xml: this.GetCapabilitiesXml
                 attributes: {
                     xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
                 },
@@ -35,25 +30,18 @@ export namespace Soap {
                     },
                     select: {
                         attributes: {
-                            name: "Situation Overlays",
-                            id: "Situation Overlays",
+                            name: "Simulation Overlay",
+                            id: "Simulation Overlay",
                             list: "true",
-                            multiple: "true"
+                            multiple: "false"
                         },
                         values: {
                             value: [{
-                                    attributes: {
-                                        id: "0",
-                                        name: "BFT"
-                                    }
-                                },
-                                {
-                                    attributes: {
-                                        id: "1",
-                                        name: "Friendly Actors"
-                                    }
+                                attributes: {
+                                    id: "0",
+                                    name: "Selected Scenario"
                                 }
-                            ]
+                            }]
                         }
                     }
                 }
@@ -61,41 +49,7 @@ export namespace Soap {
         }
 
         GetNvg(args, cb, headers, req) {
-            this.counter += 1;
-            return {
-                // _xml: this.GetNvgXml
-                attributes: {
-                    xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
-                },
-                nvg: {
-                    attributes: {
-                        version: "1.5.0",
-                        xmlns: "http://tide.act.nato.int/schemas/2009/10/nvg"
-                    },
-                    g: [{
-                            attributes: {
-                                uri: "0",
-                                label: "BFT"
-                            }
-                        },
-                        {
-                            attributes: {
-                                uri: "1",
-                                label: "BFT"
-                            },
-                            point: {
-                                attributes: {
-                                    uri: "{3023e252-f8db-0006-0000-000000000000}",
-                                    label: "Kim",
-                                    symbol: "app6a:SFG-UCECS---BE-",
-                                    x: "5.5294195",
-                                    y: (52.6365548 - 0.05*this.counter).toFixed(6)
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
+            return this.nvgConverter.convert(this.getTestJson());
         }
 
         public NvgSoapService = {
@@ -108,6 +62,88 @@ export namespace Soap {
                         return this.GetNvg(args, cb, headers, req);
                     }
                 }
+            }
+        }
+
+        private getTestJson(): IFeatureCollection {
+            return {
+                "type": "FeatureCollection",
+                "features": [{
+                        "type": "Feature",
+                        "id": "{bbwerdsfger-000}",
+                        "properties": {
+                            "Name": "Piet",
+                            "icon": "app6a:SHF-GS------GM-"
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                5.0734375,
+                                52.38901106223458
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "id": "{werdsfger-000}",
+                        "properties": {
+                            "Name": "Pietsland",
+                            "icon": "app6a:SHF-GS------GM-"
+                        },
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                                [
+                                    [
+                                        5.339012145996094,
+                                        52.40032417190779
+                                    ],
+                                    [
+                                        5.327339172363281,
+                                        52.36092526159479
+                                    ],
+                                    [
+                                        5.413856506347656,
+                                        52.31225685947289
+                                    ],
+                                    [
+                                        5.433769226074218,
+                                        52.373083994540266
+                                    ],
+                                    [
+                                        5.339012145996094,
+                                        52.40032417190779
+                                    ]
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "id": "{mnwedhfgger-000}",
+                        "properties": {
+                            "Name": "Pietslijn",
+                            "icon": "app6a:GFC-BOAWS-----X"
+                        },
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": [
+                                [
+                                    5.398063659667969,
+                                    52.41163438166172
+                                ],
+                                [
+                                    5.3551483154296875,
+                                    52.41791657858491
+                                ],
+                                [
+                                    5.310859680175781,
+                                    52.41205322263206
+                                ]
+                            ]
+                        }
+                    }
+                ]
             }
         }
     }
