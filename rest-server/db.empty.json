@@ -33,5 +33,17 @@
         "description": "my test description",
         "callSign": "my test call sign",
         "properties": { "a": "b" }
+    }],
+    "scenarios": [{
+        "id": 1,
+        "title": "My first scenario",
+        "description": "",
+        "startTime": "",
+        "endTime": "",
+        "trackIds": [],
+        "layers": {
+            "baseIds": [],
+            "overlayIds": []
+        }
     }]
 }
