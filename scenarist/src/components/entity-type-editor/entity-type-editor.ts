@@ -16,7 +16,7 @@ export class EntityTypeEditorCustomElement {
     this.entityTypes = this.state.entityTypes;
     this.ea.subscribe(`${this.modelType}Updated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
-      if (et) { this.activeEntityType = et; }
+      if (et) { this.activeEntityType = this.entityTypes.filter(e => e.id === et.id)[0]; }
     });
   }
 

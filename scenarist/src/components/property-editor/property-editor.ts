@@ -16,7 +16,7 @@ export class PropertyEditorCustomElement {
     this.properties = this.state.properties;
     this.ea.subscribe(`${this.modelType}Updated`, (prop: IProperty) => {
       this.properties = this.state.properties;
-      if (prop) { this.activeProperty = prop; }
+      if (prop) { this.activeProperty = this.properties.filter(p => p.id === prop.id)[0]; }
     });
   }
 

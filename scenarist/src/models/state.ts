@@ -1,4 +1,3 @@
-import { ILayerDefinition } from './../components/aurelia-leaflet/aurelia-leaflet-defaults';
 import { IModel } from './model';
 import { IScenario } from './scenario';
 import { EventAggregator } from 'aurelia-event-aggregator';
@@ -7,17 +6,20 @@ import { IProperty } from './property';
 import { IEntityType } from './entity';
 import { Endpoint, Rest } from 'aurelia-api';
 import { MdToastService } from 'aurelia-materialize-bridge';
+import { ILayerDefinition } from 'models/layer';
 
 export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers';
 
 @inject(Endpoint.of('db'), MdToastService, EventAggregator)
 export class State {
   private store: {
+    activeScenarioId: string | number;
     entityTypes: IEntityType[];
     properties: IProperty[];
     scenarios: IScenario[];
     baseLayers: ILayerDefinition[];
   } = {
+    activeScenarioId: null,
     entityTypes: [],
     properties: [],
     scenarios: [],
@@ -29,12 +31,27 @@ export class State {
   public get scenarios() { return this.store.scenarios.map(this.clone) as IScenario[]; }
   public get baseLayers() { return this.store.baseLayers.map(this.clone) as ILayerDefinition[]; }
 
+  public get activeScenarioId() { return this.store.activeScenarioId; }
+  public set activeScenarioId(id: string | number) {
+    this.store.activeScenarioId = id;
+    if (id) {
+      const s = this.store.scenarios.filter(s => s.id === id)[0];
+      this.ea.publish('activeScenarioChanged', { id, title: s.title });
+    } else {
+      this.ea.publish('activeScenarioChanged', { id, title: '' });
+    }
+  }
+
   constructor(private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {
     this.rest.find('properties').then(p => this.store.properties = p).then(() => ea.publish('propertiesUpdated'));
     this.rest.find('entityTypes').then(et => this.store.entityTypes = et).then(() => ea.publish('entityTypesUpdated'));
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
     this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
+  }
+
+  public getModel(modelType: ModelType) {
+    return (this.store[modelType] as IModel[]).map(this.clone);
   }
 
   public save(modelType: ModelType, model: IModel) {

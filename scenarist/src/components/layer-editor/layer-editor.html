@@ -1,0 +1,63 @@
+<template>
+  <div class="row">
+    <div class="col s12 m6">
+      <md-card md-title="Base Layers">
+        <md-collection>
+          <md-collection-item class="accent-text" repeat.for="layer of layers">
+            ${ layer.title }
+            <div class="secondary-content">
+              <a href="#!" click.delegate="selectLayer(layer)">
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
+      </md-card>
+      <div class="button-row right">
+        <button md-button click.delegate="addLayer()">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="col s12 m6">
+      <div show.bind="showLayerEditor">
+        <md-card md-title="Edit layer">
+          <div>
+            <md-input md-label="Name" md-value.bind="activeLayer.title"></md-input>
+            <md-input md-label="Description" md-value.bind="activeLayer.description"></md-input>
+            <select md-select="label: select type" value.two-way="activeLayer.type">
+              <option value="" disabled selected>select a layer type</option>
+              <option value="tile">tile</option>
+              <option value="geoJSON">geoJSON</option>
+              <option value="wms">wms</option>
+            </select>
+            <md-input md-label="URL" md-input="url" md-value.bind="activeLayer.url"></md-input>
+            <md-input md-label="Attribution" md-value.bind="activeLayer.options.attribution"></md-input>
+          </div>
+        </md-card>
+        <div class="button-row right">
+          <button md-button class="modal-trigger" href="#deleteLayerModal">
+            <i class="material-icons">delete</i>
+          </button>
+          <button md-button click.delegate="saveLayer()">
+            <i class="material-icons">save</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="deleteLayerModal" md-modal md-modal.ref="modal">
+    <div class="modal-content">
+      <h4>Delete layer?</h4>
+      <p>Do you really want to delete "${activeLayer.title}"?</p>
+    </div>
+    <div class="modal-footer">
+      <button click.delegate="deleteLayer()" md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">OK</button>
+      <button md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Cancel</button>
+    </div>
+  </div>
+
+</template>
