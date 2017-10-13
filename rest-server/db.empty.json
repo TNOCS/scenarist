@@ -41,9 +41,21 @@
         "start": { "date": "", "time": "" },
         "end": { "date": "", "time": "" },
         "trackIds": [],
+        "center": { "lat": 51, "lng": 5 },
+        "zoom": 15,
         "layers": {
             "baseIds": [],
             "overlayIds": []
+        }
+    }],
+    "baseLayers": [{
+        "id": "OSM Tiles",
+        "title": "Open Street Map tiles",
+        "description": "",
+        "type": "tile",
+        "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+        "options": {
+            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         }
     }]
 }

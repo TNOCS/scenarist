@@ -2,6 +2,8 @@ import { MapOptions } from 'leaflet';
 
 export interface ILayerDefinition {
   id: string;
+  title?: string;
+  description?: string;
   type: string;
   url: string;
   options: {
