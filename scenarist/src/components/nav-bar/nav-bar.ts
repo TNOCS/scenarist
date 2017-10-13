@@ -1,3 +1,4 @@
+import { IScenario } from './../../models/scenario';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { bindable, inject } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
@@ -21,9 +22,9 @@ export class NavBarCustomElement {
     //   // onOpen: function(el) { /* Do Stuff* / }, // A function to be called when sideNav is opened
     //   // onClose: function(el) { /* Do Stuff* / }, // A function to be called when sideNav is closed
     // });
-    this.ea.subscribe('activeScenarioChanged', (data: { id: string | number, title: string }) => {
-      this.activeScenarioLabel = data && data.title
-        ? `${data.title} | `
+    this.ea.subscribe('activeScenarioChanged', (scenario: IScenario) => {
+      this.activeScenarioLabel = scenario && scenario.title
+        ? `${scenario.title} | `
         : '';
     });
   }
