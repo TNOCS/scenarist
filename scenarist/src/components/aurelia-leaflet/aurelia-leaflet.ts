@@ -117,13 +117,13 @@ export class AureliaLeafletCustomElement {
           this.map.on(eventName, (e) => this.eventAggregator.publish('aurelia-leaflet', Object.assign(e, { map: this.map })));
         }
       }
-      if (oldEvents !== null) {
+      if (oldEvents !== null && oldEvents && oldEvents.filter) {
         for (let removedEvent of oldEvents.filter((e) => newEvents.indexOf(e) === -1)) {
           this.map.off(removedEvent);
         }
       }
       // if (!this.eventsBound.resolved) {
-      //   this.eventsBoundResolve();
+      this.eventsBoundResolve();
       // }
     });
   }
