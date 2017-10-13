@@ -1,13 +1,5 @@
-import { IModel } from './../../models/model';
+import { ILayerDefinition } from '../../models/layer';
 import { MapOptions } from 'leaflet';
-
-export interface ILayerDefinition extends IModel {
-  type: string;
-  url: string;
-  options: {
-    attribution: string;
-  };
-}
 
 export const defaultMapOptions: MapOptions = {
   center: {

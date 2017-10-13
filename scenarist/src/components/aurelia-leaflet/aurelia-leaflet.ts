@@ -1,9 +1,10 @@
 import { customElement, useView, bindable, inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { AureliaLeafletException } from './aurelia-leaflet-exceptions';
-import { defaultMapOptions, defaultLayers, ILayerDefinition } from './aurelia-leaflet-defaults';
+import { defaultMapOptions, defaultLayers } from './aurelia-leaflet-defaults';
 import LayerFactory from './aurelia-leaflet-factory';
 import * as Leaflet from 'leaflet';
+import { ILayerDefinition } from 'models/layer';
 
 @customElement('leaflet')
 @useView('./aurelia-leaflet.html')
