@@ -80,12 +80,22 @@
     {
       "id": "OSM Tiles",
       "title": "Open Street Map tiles",
-      "description": "",
+      "description": "Requires Internet access.",
       "type": "tile",
       "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       "options": {
         "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
       }
+    },
+    {
+      "type": "tile",
+      "title": "MBtiles",
+      "description": "Local tile service",
+      "url": "http://localhost:3000/",
+      "options": {
+        "attribution": "&copy; <a href='http://www.tno.nl'>TNO</a>"
+      },
+      "id": "rJ17-NCnW"
     }
   ]
 }
