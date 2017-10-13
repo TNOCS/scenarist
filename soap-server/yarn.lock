@@ -758,9 +758,27 @@ sntp@2.x.x:
   dependencies:
     hoek "4.x.x"
 
-soap@^0.22.0:
+"soap@https://github.com/rinzeb/node-soap#v0.22.1":
   version "0.22.0"
-  resolved "https://registry.yarnpkg.com/soap/-/soap-0.22.0.tgz#9e9d76b132d1e21f70ba41999aa972cd6114d6b5"
+  resolved "https://github.com/rinzeb/node-soap#e6d61bc1fc8b76a499b6c150dfc807bc9a16be50"
+  dependencies:
+    bluebird "^3.5.0"
+    concat-stream "^1.5.1"
+    debug "^2.6.9"
+    ejs "~2.5.5"
+    finalhandler "^1.0.3"
+    lodash "^3.10.1"
+    request ">=2.9.0"
+    sax ">=0.6"
+    selectn "^0.9.6"
+    serve-static "^1.11.1"
+    strip-bom "~0.3.1"
+    uuid "^3.1.0"
+    xml-crypto "~0.8.0"
+
+"soap@https://github.com/rinzeb/node-soap#v0.22.2":
+  version "0.22.2"
+  resolved "https://github.com/rinzeb/node-soap#c77bac25663e599931192a9ea1e84ae48ec6d07c"
   dependencies:
     bluebird "^3.5.0"
     concat-stream "^1.5.1"

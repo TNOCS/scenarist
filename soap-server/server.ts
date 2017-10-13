@@ -30,7 +30,8 @@ app.listen(soapConfig.port, () => {
     var soapServer = soap.listen(app, {
         path: soapConfig.wsdlRoute, 
         services: soapService.NvgSoapService, 
-        xml: wsdl
+        xml: wsdl,
+        skipXmlDeclaration: true
     }
     );
     soapServer.log = (type, data) => {
