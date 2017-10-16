@@ -1,0 +1,15 @@
+{
+  "name": "player-server",
+  "version": "0.0.1",
+  "description": "Reads a scenario with entities and tracks from a source, interpolates the situation at a certain timestamp and exports it to a feature collection.",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^8.0.34",
+    "compression": "^1.7.1",
+    "config": "^1.26.2",
+    "express": "^4.16.2",
+    "node": "^8.3.0",
+    "path": "^0.12.7"
+  }
+}
