@@ -4,7 +4,7 @@ import { ILayerDefinition } from 'models/layer';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
-import { MapOptions } from 'leaflet';
+import { MapOptions, Map } from 'leaflet';
 
 @inject(State, EventAggregator)
 export class ScenarioEditor {
@@ -16,11 +16,10 @@ export class ScenarioEditor {
   public withLayerControl = true;
   public withScaleControl = true;
   private isInitialized = false;
+  private map: Map;
 
   constructor(private state: State, private ea: EventAggregator) {
-    this.ea.subscribe('aurelia-leaflet', (payload) => {
-      console.log(payload);
-    });
+    this.ea.subscribe('aurelia-leaflet', (ev) => this.mapEvent(ev));
     // this.ea.subscribe('activeScenarioChanged', scenario => this.activeScenarioChanged(scenario));
     this.resizeMap();
   }
@@ -48,6 +47,16 @@ export class ScenarioEditor {
     }
   }
 
+  public mapEvent(ev: { type: string, [key: string]: any }) {
+    switch (ev.type) {
+      case 'load':
+        this.map = ev.map as Map;
+        break;
+      default:
+        console.log(ev);
+        break;
+    }
+  }
   private resizeMap() {
     const mapMargin = 65;
     const map = $('#map');
