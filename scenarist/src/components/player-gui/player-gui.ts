@@ -4,7 +4,7 @@ import { IProperty } from './../../models/property';
 import { inject } from 'aurelia-framework';
 
 @inject(State, EventAggregator)
-export class PropertyEditorCustomElement {
+export class PlayerGUI {
   public properties: IProperty[];
   public activeProperty: IProperty;
   public showPropertyEditor = false;
