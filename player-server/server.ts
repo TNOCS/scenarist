@@ -31,6 +31,12 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Primary app routes.
  */
 app.get('/', scenarioController.index);
+app.get('/play/:scenarioId', scenarioController.play);
+app.get('/pause/:scenarioId', scenarioController.pause);
+app.get('/stop/:scenarioId', scenarioController.stop);
+app.get('/speed/:scenarioId', scenarioController.speed);
+app.get('/reload/:scenarioId', scenarioController.reload);
+app.get('/scenarios', scenarioController.scenarios);
 
 /**
  * Start Express server.
