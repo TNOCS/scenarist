@@ -12,6 +12,7 @@ export class App {
       { route: ['scenario'], name: 'scenario', moduleId: PLATFORM.moduleName('./components/scenario-editor/scenario-editor'), nav: true, title: 'Scenario' },
       { route: ['entities'], name: 'entities', moduleId: PLATFORM.moduleName('./components/entity-type-editor/entity-type-editor'), nav: true, title: 'Entities' },
       { route: ['properties'], name: 'properties', moduleId: PLATFORM.moduleName('./components/property-editor/property-editor'), nav: true, title: 'Properties' },
+      { route: ['player'], name: 'player', moduleId: PLATFORM.moduleName('./components/player-gui/player-gui'), nav: true, title: 'Player' },
       { route: ['layers/:layertype'], name: 'layers', moduleId: PLATFORM.moduleName('./components/layer-editor/layer-editor'), nav: false, title: 'Layers' }
     ]);
   }

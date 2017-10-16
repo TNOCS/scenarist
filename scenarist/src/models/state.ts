@@ -35,7 +35,7 @@ export class State {
   public set activeScenarioId(id: string | number) {
     this.store.activeScenarioId = id;
     if (id) {
-      const s = this.store.scenarios.filter(s => s.id === id)[0];
+      const s = this.clone(this.store.scenarios.filter(s => s.id === id).shift());
       this.ea.publish('activeScenarioChanged', s);
     } else {
       this.ea.publish('activeScenarioChanged', null);

@@ -8,7 +8,7 @@ export class PropertyEditorCustomElement {
   public properties: IProperty[];
   public activeProperty: IProperty;
   public showPropertyEditor = false;
-  private modelType: ModelType = 'entityTypes';
+  private modelType: ModelType = 'properties';
 
   constructor(private state: State, private ea: EventAggregator) {}
 

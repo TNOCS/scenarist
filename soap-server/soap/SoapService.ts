@@ -52,6 +52,10 @@ export namespace Soap {
             return this.nvgConverter.convert(this.getTestJson());
         }
 
+        /**
+         * The structure required for node-soap to find the correct SOAP-commands.
+         * Do not change the names of the keys!!!
+         */
         public NvgSoapService = {
             NvgV15WebService: {
                 Soap_NVGPortType2009: {
@@ -73,7 +77,7 @@ export namespace Soap {
                         "id": "{bbwerdsfger-000}",
                         "properties": {
                             "Name": "Piet",
-                            "icon": "app6a:SHF-GS------GM-"
+                            "icon": "app6a:SHGAUCATW-MO---"
                         },
                         "geometry": {
                             "type": "Point",
