@@ -22,6 +22,12 @@ export interface IProperty {
     [key: string]: any;
 }
 
+export const ICON_PROPERTY = 'icon';
+
+/**
+ * The JSON-structure that node-soap converts into a valid
+ * nvg-format according to the GetNvgResponse schema
+ */
 export const nvgStructure = {
     attributes: {
         xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
@@ -40,6 +46,10 @@ export const nvgStructure = {
     }
 }
 
+/**
+ * The JSON-structure that node-soap converts into a valid
+ * nvg-feature, e.g. a point, polyline or polygon.
+ */
 export const geomNvgStructure = {
     attributes: {},
     ExtendedData: {}
@@ -103,7 +113,7 @@ export class GeojsonToNvgConverter {
         res.attributes['y'] = f.geometry.coordinates[1];
         res.attributes['uri'] = f.id;
         res.attributes['label'] = f.id;
-        res.attributes['symbol'] = f.properties['icon'];
+        res.attributes['symbol'] = f.properties[ICON_PROPERTY];
         res['ExtendedData'] = {
             SimpleData: []
         };
@@ -126,7 +136,7 @@ export class GeojsonToNvgConverter {
         res.attributes['points'] = pointsString;
         res.attributes['uri'] = f.id;
         res.attributes['label'] = f.id;
-        res.attributes['symbol'] = f.properties['icon'];
+        res.attributes['symbol'] = f.properties[ICON_PROPERTY];
         res['ExtendedData'] = {
             SimpleData: []
         };
