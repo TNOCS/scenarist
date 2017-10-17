@@ -1,7 +1,17 @@
+import * as http from 'http';
+import * as requestJson from 'request-json';
 import {
     GeojsonToNvgConverter,
     IFeatureCollection
 } from './GeojsonToNvgConverter';
+import {
+    ScenariosToNvgConverter
+} from './ScenariosToNvgConverter';
+import {
+    IPlayerConfig
+} from './IPlayerConfig';
+import * as httpcodes from 'http-status-codes';
+const testJson = require('./TestJson.json');
 
 export namespace Soap {
     export interface ISoapConfig {
@@ -13,43 +23,40 @@ export namespace Soap {
 
     export class SoapService {
         private nvgConverter = new GeojsonToNvgConverter();
+        private scenariosConverter = new ScenariosToNvgConverter();
+        private requestClient;
 
-        constructor(private xmlFolder = './xml') {
-
+        constructor(private playerOptions: IPlayerConfig) {
+            this.requestClient = new requestJson.createClient(playerOptions.host);
         }
 
         GetCapabilities(args, cb, headers, req) {
-            return {
-                attributes: {
-                    xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
-                },
-                nvg_capabilities: {
-                    attributes: {
-                        version: "1.5.0",
-                        xmlns: "http://tide.act.nato.int/schemas/2009/10/nvg"
-                    },
-                    select: {
-                        attributes: {
-                            name: "Simulation Overlay",
-                            id: "Simulation Overlay",
-                            list: "true",
-                            multiple: "false"
-                        },
-                        values: {
-                            value: [{
-                                attributes: {
-                                    id: "0",
-                                    name: "Selected Scenario"
-                                }
-                            }]
-                        }
-                    }
-                }
-            }
+            this.GetScenarios(args, cb, headers, req, (scenarios: any[]) => {
+                cb(this.scenariosConverter.convert(scenarios));
+            });
         }
 
         GetNvg(args, cb, headers, req) {
-            return this.nvgConverter.convert(this.getTestJson());
+            this.GetSituation(args, cb, headers, req, (ftCollection: IFeatureCollection) => {
+                cb(this.nvgConverter.convert(ftCollection));
+            });
+        }
+
+        private GetScenarios(args, cb, headers, req, innerCb) {
+            let opts: requestJson.CoreOptions = {
+                timeout: 5000
+            };
+            this.requestClient.get(this.playerOptions.scenarioRoute, opts, (err, res, body) => {
+                if (err || res.statusCode !== httpcodes.OK) {
+                    innerCb();
+                    return;
+                }
+                innerCb(body);
+            });
+        }
+
+        private GetSituation(args, cb, headers, req, innerCb) {
+            innerCb(this.getTestJson());
         }
 
         /**
@@ -70,85 +77,7 @@ export namespace Soap {
         }
 
         private getTestJson(): IFeatureCollection {
-            return {
-                "type": "FeatureCollection",
-                "features": [{
-                        "type": "Feature",
-                        "id": "{bbwerdsfger-000}",
-                        "properties": {
-                            "Name": "Piet",
-                            "icon": "app6a:SHGAUCATW-MO---"
-                        },
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [
-                                5.0734375,
-                                52.38901106223458
-                            ]
-                        }
-                    },
-                    {
-                        "type": "Feature",
-                        "id": "{werdsfger-000}",
-                        "properties": {
-                            "Name": "Pietsland",
-                            "icon": "app6a:SHF-GS------GM-"
-                        },
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
-                                    [
-                                        5.339012145996094,
-                                        52.40032417190779
-                                    ],
-                                    [
-                                        5.327339172363281,
-                                        52.36092526159479
-                                    ],
-                                    [
-                                        5.413856506347656,
-                                        52.31225685947289
-                                    ],
-                                    [
-                                        5.433769226074218,
-                                        52.373083994540266
-                                    ],
-                                    [
-                                        5.339012145996094,
-                                        52.40032417190779
-                                    ]
-                                ]
-                            ]
-                        }
-                    },
-                    {
-                        "type": "Feature",
-                        "id": "{mnwedhfgger-000}",
-                        "properties": {
-                            "Name": "Pietslijn",
-                            "icon": "app6a:GFC-BOAWS-----X"
-                        },
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": [
-                                [
-                                    5.398063659667969,
-                                    52.41163438166172
-                                ],
-                                [
-                                    5.3551483154296875,
-                                    52.41791657858491
-                                ],
-                                [
-                                    5.310859680175781,
-                                    52.41205322263206
-                                ]
-                            ]
-                        }
-                    }
-                ]
-            }
+            return testJson;
         }
     }
 }

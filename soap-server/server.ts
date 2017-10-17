@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as config from 'config';
 import {Soap} from './soap/SoapService';
+import {IPlayerConfig} from './soap/IPlayerConfig';
 
 var soapConfig: Soap.ISoapConfig = config.get('Soap');
 if (!soapConfig.wsdlRoute) soapConfig.wsdlRoute = '/wsdl';
@@ -12,9 +13,14 @@ if (!soapConfig.wsdlFile) soapConfig.wsdlFile = './wsdl/schema.wsdl';
 if (!soapConfig.xmlFolder) soapConfig.xmlFolder = './xml';
 if (!soapConfig.port) soapConfig.port = 3001;
 
+var playerConfig: IPlayerConfig = config.get('ScenarioDB');
+if (!playerConfig.host) playerConfig.host = 'http://localhost:3002';
+if (!playerConfig.scenarioRoute) playerConfig.scenarioRoute = '/scenarios';
+if (!playerConfig.entityRoute) playerConfig.entityRoute = '/entities';
+
 var wsdl = fs.readFileSync(soapConfig.wsdlFile, 'utf8');
 
-var soapService = new Soap.SoapService(soapConfig.xmlFolder);
+var soapService = new Soap.SoapService(playerConfig);
 
 var app = express();
 //body parser middleware are supported (optional)

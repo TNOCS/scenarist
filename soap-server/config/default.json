@@ -3,5 +3,10 @@
         "port": 3001,
         "wsdlFile": "./wsdl/schema.wsdl",
         "xmlFolder": "./soap/xml"
+    },
+    "ScenarioDB": {
+        "host": "http://localhost:3002",
+        "scenarioRoute": "/scenarios",
+        "entityRoute": "/entities"
     }
 }
