@@ -2,6 +2,9 @@ import * as http from 'http';
 import * as xml2js from 'xml2js';
 import * as requestJson from 'request-json';
 import {
+    IScenarioState
+} from '../models/playstate';
+import {
     GeojsonToNvgConverter,
     IFeatureCollection
 } from './GeojsonToNvgConverter';
@@ -48,7 +51,7 @@ export namespace Soap {
         }
 
         GetCapabilities(args, cb, headers, req) {
-            this.GetScenarios(args, cb, headers, req, (scenarios: any[]) => {
+            this.GetScenarios(args, cb, headers, req, (scenarios) => {
                 cb(this.scenariosConverter.convert(scenarios));
             });
         }
@@ -60,7 +63,7 @@ export namespace Soap {
                 return;
             }
             this.parseFilter(req.body.toString(), (err, result) => {
-                console.log(JSON.stringify(result, null, 2));
+                // console.log(JSON.stringify(result, null, 2));
                 let selectionObj, scenarioId;
                 var selectionArr = this.findNestedKey(result, 'select_response');
                 if (selectionArr && Array.isArray(selectionArr)) {
@@ -139,6 +142,10 @@ export namespace Soap {
         }
 
         private GetSituation(args, cb, headers, req, scenarioId, innerCb) {
+            if (!scenarioId) {
+                innerCb();
+                return;
+            };
             let opts: requestJson.CoreOptions = {
                 timeout: 5000
             };

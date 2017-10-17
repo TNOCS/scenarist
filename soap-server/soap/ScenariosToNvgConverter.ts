@@ -1,6 +1,6 @@
 import {
-    IScenario
-} from '../models/scenario';
+    IScenarioState
+} from '../models/playstate';
 /**
  * The JSON-structure that node-soap converts into a valid
  * nvg-format according to the GetCapabilities schema
@@ -37,19 +37,24 @@ export interface IScenarioNvgStructure {
     }
 };
 
+export interface IScenarioStateData {
+    [id: string]: IScenarioState;
+}
+
 export class ScenariosToNvgConverter {
 
     constructor() {}
 
-    convert(scenarios: IScenario[]): any {
-        if (!scenarios) scenarios = [];
+    convert(scenarios: IScenarioStateData): any {
+        if (!scenarios) scenarios = {};
         var result = JSON.parse(JSON.stringify(nvgStructure));
         var nvgScenarios = [];
-        scenarios.forEach((scen: IScenario) => {
+        Object.keys(scenarios).forEach((scenKey: string) => {
+            let scen: IScenarioState = scenarios[scenKey];
             let scenObj: IScenarioNvgStructure = {
                 attributes: {
                     name: scen.title,
-                    id: scen.id.toString()
+                    id: scenKey.toString()
                 }
             }
             nvgScenarios.push(scenObj);

@@ -46,6 +46,7 @@ export async function configure(aurelia: Aurelia) {
     .feature(PLATFORM.moduleName('resources/index'))
     .plugin(PLATFORM.moduleName('aurelia-api'), config => {
       config.registerEndpoint('db', 'http://localhost:3000/');
+      config.registerEndpoint('player', 'http://localhost:3002/');
     });
 
   aurelia.use.plugin(PLATFORM.moduleName('aurelia-materialize-bridge'), bridge => {
