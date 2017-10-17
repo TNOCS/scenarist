@@ -22,7 +22,7 @@ export class ScenarioMetadataEditor {
     if (this.activeScenario) { this.showScenarioSelector = true; }
     this.ea.subscribe(`${this.modelType}Updated`, (scenario: IScenario) => {
       this.scenarios = this.state.scenarios;
-      if (scenario) { this.activeScenario = this.scenarios.filter(l => l.id === scenario.id)[0]; }
+      if (scenario) { this.activeScenario = this.scenarios.filter(l => l.id === scenario.id).shift(); }
     });
     this.baseLayers = this.state.baseLayers;
     this.ea.subscribe(`baseLayersUpdated`, (scenario: IScenario) => {

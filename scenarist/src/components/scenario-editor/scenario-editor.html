@@ -1,9 +1,46 @@
 <template>
   <require from="../aurelia-leaflet/aurelia-leaflet"></require>
   <require from="../timeline/timeline"></require>
+  <require from="../../resources/value-converters/number-format"></require>
 
-  <leaflet style="margin-bottom: -20px;" map-options.bind="mapOptions" layers.bind="layers" map-events.bind="leafletMapEvents"
-    with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl"></leaflet>
-
+  <div class="row">
+    <div class="col m2"></div>
+    <leaflet class="col m8" style="margin-bottom: -20px;" map-options.bind="mapOptions" layers.bind="layers" map-events.bind="leafletMapEvents"
+      with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl"></leaflet>
+    <div class="col m2"></div>
+  </div>
   <timeline></timeline>
+
+  <div id="modal1" md-modal md-modal.ref="infoBox">
+    <div class="modal-content">
+      <h4>Location</h4>
+      <p>Latitude: ${clickLocation.lat | numberFormat:'0.000000'}, longitude: ${clickLocation.lng | numberFormat:'0.000000'}</p>
+    </div>
+    <div class="modal-footer">
+      <a show.bind="scenario" click.delegate="newEntity()" md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Create</a>
+      <a md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Close</a>
+    </div>
+  </div>
+
+  <div id="modal2" md-modal md-modal.ref="entityCollection">
+    <div class="modal-content">
+      <h4>Create a new entity</h4>
+      <md-card md-title="Entity types">
+        <md-collection>
+          <md-collection-item class="accent-text avatar" repeat.for="entityType of entityTypes">
+            <img src.bind="entityType.imgDataUrl" alt="" class="rect-avatar">
+            <span class="title">${ entityType.title }</span>
+            <div class="secondary-content modal-close">
+              <a href="#!" click.delegate="createEntity(entityType)">
+                  <i class="material-icons">add_location</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
+      </md-card>
+    </div>
+    <div class="modal-footer">
+      <a md-button="flat: true;" md-waves="color: accent;" class="modal-action modal-close">Cancel</a>
+    </div>
+  </div>
 </template>

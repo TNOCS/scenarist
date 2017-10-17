@@ -1,3 +1,13 @@
 /* .leaflet-container {
     height: 100vh;
 } */
+
+.rect-avatar {
+    position: absolute;
+    height: 42px;
+    width: auto;
+    overflow: hidden;
+    left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
