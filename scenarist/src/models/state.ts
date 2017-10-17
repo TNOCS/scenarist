@@ -1,3 +1,4 @@
+import { ITrack } from './track';
 import { IModel } from './model';
 import { IScenario } from './scenario';
 import { EventAggregator } from 'aurelia-event-aggregator';
@@ -8,7 +9,7 @@ import { Endpoint, Rest } from 'aurelia-api';
 import { MdToastService } from 'aurelia-materialize-bridge';
 import { ILayerDefinition } from 'models/layer';
 
-export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers';
+export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers' | 'tracks';
 
 @inject(Endpoint.of('db'), MdToastService, EventAggregator)
 export class State {
@@ -18,18 +19,26 @@ export class State {
     properties: IProperty[];
     scenarios: IScenario[];
     baseLayers: ILayerDefinition[];
+    /**
+     * Tracks belonging to the active scenario
+     *
+     * @type {ITrack[]}
+     */
+    tracks: ITrack[];
   } = {
     activeScenarioId: null,
     entityTypes: [],
     properties: [],
     scenarios: [],
-    baseLayers: []
+    baseLayers: [],
+    tracks: []
   };
 
   public get entityTypes() { return this.store.entityTypes.map(this.clone) as IEntityType[]; }
   public get properties() { return this.store.properties.map(this.clone) as IProperty[]; }
   public get scenarios() { return this.store.scenarios.map(this.clone) as IScenario[]; }
   public get baseLayers() { return this.store.baseLayers.map(this.clone) as ILayerDefinition[]; }
+  public get tracks() { return this.store.tracks.map(this.clone) as ITrack[]; }
 
   public get activeScenarioId() { return this.store.activeScenarioId; }
   public set activeScenarioId(id: string | number) {
@@ -48,6 +57,7 @@ export class State {
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
     this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
+    this.rest.find('tracks').then(t => this.store.tracks = t).then(() => ea.publish('tracksUpdated'));
   }
 
   public getModel(modelType: ModelType) {
@@ -81,8 +91,12 @@ export class State {
     this.rest
       .post(modelType, model)
       .then((created: IModel) => {
-        this.toastMessage('Created successfully.');
         (this.store[modelType] as IModel[]).push(created);
+        if (modelType === 'tracks') {
+          this.addTrackToScenario(created as ITrack);
+        } else {
+          this.toastMessage('Created successfully.');
+        }
         this.ea.publish(`${modelType}Updated`, created);
       })
       .catch(m => this.toastMessage(`Error creating ${modelType}!\n` + m, true));
@@ -100,6 +114,13 @@ export class State {
         this.ea.publish(`${modelType}Updated`, updated);
       })
       .catch(m => this.toastMessage(`Error updating ${modelType}!\n` + m, true));
+  }
+
+  private addTrackToScenario(track: ITrack) {
+    const scenario = this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift();
+    if (!scenario) { return; }
+    scenario.trackIds.push(track.id as string);
+    this.save('scenarios', scenario);
   }
 
   private toastMessage(msg: string, isError = false) {
