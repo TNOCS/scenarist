@@ -12,10 +12,12 @@
   },
   "exclude": [
     "node_modules",
-    "soap/nvg.js"
+    "soap/nvg.js",
+    "soap/findFirstRecursive.js"
   ],
   "filesGlob": [
     "./config/**/*.ts",
+    "./models/**/*.ts",
     "./**/*.ts"
   ],
   "atom": {

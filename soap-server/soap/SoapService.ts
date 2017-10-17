@@ -1,7 +1,19 @@
+import * as http from 'http';
+import * as xml2js from 'xml2js';
+import * as requestJson from 'request-json';
 import {
     GeojsonToNvgConverter,
     IFeatureCollection
 } from './GeojsonToNvgConverter';
+import {
+    ScenariosToNvgConverter
+} from './ScenariosToNvgConverter';
+import {
+    IPlayerConfig
+} from './IPlayerConfig';
+import * as httpcodes from 'http-status-codes';
+import * as soap from 'soap';
+const testJson = require('./TestJson.json');
 
 export namespace Soap {
     export interface ISoapConfig {
@@ -13,43 +25,132 @@ export namespace Soap {
 
     export class SoapService {
         private nvgConverter = new GeojsonToNvgConverter();
+        private scenariosConverter = new ScenariosToNvgConverter();
+        private requestClient;
+        private xmlParser = new xml2js.Parser();
 
-        constructor(private xmlFolder = './xml') {
+        private lastScenarioUpdate: number = 0;
+        private scenarioCache;
 
+        constructor(private playerOptions: IPlayerConfig) {
+            this.requestClient = new requestJson.createClient(playerOptions.host);
+            this.updateScenarioCache();
+        }
+
+        private updateScenarioCache() {
+            this.GetScenarios(null, null, null, null, (result) => {
+                if (!result) {
+                    console.warn(`Error getting scenarios from the player.`);
+                } else {
+                    console.log(`Scenarios update success.`);
+                }
+            });
         }
 
         GetCapabilities(args, cb, headers, req) {
-            return {
-                attributes: {
-                    xmlns: "http://tide.act.nato.int/wsdl/2009/nvg"
-                },
-                nvg_capabilities: {
-                    attributes: {
-                        version: "1.5.0",
-                        xmlns: "http://tide.act.nato.int/schemas/2009/10/nvg"
-                    },
-                    select: {
-                        attributes: {
-                            name: "Simulation Overlay",
-                            id: "Simulation Overlay",
-                            list: "true",
-                            multiple: "false"
-                        },
-                        values: {
-                            value: [{
-                                attributes: {
-                                    id: "0",
-                                    name: "Selected Scenario"
-                                }
-                            }]
+            this.GetScenarios(args, cb, headers, req, (scenarios: any[]) => {
+                cb(this.scenariosConverter.convert(scenarios));
+            });
+        }
+
+        GetNvg(args, cb, headers, req) {
+            if (!req || !req.body) {
+                console.warn('No nvg-filter supplied');
+                cb(null);
+                return;
+            }
+            this.parseFilter(req.body.toString(), (err, result) => {
+                console.log(JSON.stringify(result, null, 2));
+                let selectionObj, scenarioId;
+                var selectionArr = this.findNestedKey(result, 'select_response');
+                if (selectionArr && Array.isArray(selectionArr)) {
+                    selectionObj = selectionArr[0];
+                    Object.keys(selectionObj).forEach((key) => {
+                        if (key.indexOf('selected') >= 0) {
+                            scenarioId = selectionObj[key][0];
                         }
+                    }); 
+                }
+                if (scenarioId == null) {
+                    console.warn(`Could not extract scenario id from nvg-filter. Send nothing.`);
+                }
+                this.GetSituation(args, cb, headers, req, scenarioId, (ftCollection: IFeatureCollection) => {
+                    cb(this.nvgConverter.convert(ftCollection));
+                });
+            });
+        }
+
+        private findNestedKey(tree, findKey) {
+            let found = false;
+            let result;
+            const findKeys = Object.keys(tree);
+            findKeys.forEach((key) => {
+                if (key.indexOf(findKey) >= 0) {
+                    found = true;
+                    result = tree[key];
+                } else {
+                    found = false;
+                }
+            });
+            if (found) {
+                return result;
+            } else {
+                findKeys.forEach((key) => {
+                    if (typeof tree[key] === 'object') {
+                        result = this.findNestedKey(tree[key], findKey);
+                        found = true;
                     }
+                });
+                if (found) {
+                    return result;
                 }
             }
         }
 
-        GetNvg(args, cb, headers, req) {
-            return this.nvgConverter.convert(this.getTestJson());
+        private parseFilter(input: string, cb: Function) {
+            this.xmlParser.parseString(input, (err, data) => {
+                if (err) {
+                    console.warn(`Error parsing xml: ${err}`);
+                    cb(err);
+                    return;
+                }
+                cb(err, data);
+            });
+        }
+
+        private GetScenarios(args, cb, headers, req, innerCb) {
+            // If the scenarios were recently updated, return the cached values
+            if ((Date.now() - this.lastScenarioUpdate) < this.playerOptions.scenarioUpdateDebounceSeconds * 1000) {
+                innerCb(this.scenarioCache);
+                return;
+            }
+            let opts: requestJson.CoreOptions = {
+                timeout: 5000
+            };
+            this.requestClient.get(this.playerOptions.scenarioRoute, opts, (err, res, body) => {
+                if (err || res.statusCode !== httpcodes.OK) {
+                    innerCb();
+                    return;
+                }
+                this.scenarioCache = body;
+                this.lastScenarioUpdate = Date.now();
+                innerCb(body);
+            });
+        }
+
+        private GetSituation(args, cb, headers, req, scenarioId, innerCb) {
+            let opts: requestJson.CoreOptions = {
+                timeout: 5000
+            };
+            let urlPath = `${this.playerOptions.currentSituationRoute}/${scenarioId}`;
+            this.requestClient.get(urlPath, opts, (err, res, body) => {
+                if (err || res.statusCode !== httpcodes.OK) {
+                    innerCb();
+                    return;
+                }
+                innerCb(body);
+                // innerCb(this.getTestJson());
+            });
         }
 
         /**
@@ -70,85 +171,7 @@ export namespace Soap {
         }
 
         private getTestJson(): IFeatureCollection {
-            return {
-                "type": "FeatureCollection",
-                "features": [{
-                        "type": "Feature",
-                        "id": "{bbwerdsfger-000}",
-                        "properties": {
-                            "Name": "Piet",
-                            "icon": "app6a:SHGAUCATW-MO---"
-                        },
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [
-                                5.0734375,
-                                52.38901106223458
-                            ]
-                        }
-                    },
-                    {
-                        "type": "Feature",
-                        "id": "{werdsfger-000}",
-                        "properties": {
-                            "Name": "Pietsland",
-                            "icon": "app6a:SHF-GS------GM-"
-                        },
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
-                                    [
-                                        5.339012145996094,
-                                        52.40032417190779
-                                    ],
-                                    [
-                                        5.327339172363281,
-                                        52.36092526159479
-                                    ],
-                                    [
-                                        5.413856506347656,
-                                        52.31225685947289
-                                    ],
-                                    [
-                                        5.433769226074218,
-                                        52.373083994540266
-                                    ],
-                                    [
-                                        5.339012145996094,
-                                        52.40032417190779
-                                    ]
-                                ]
-                            ]
-                        }
-                    },
-                    {
-                        "type": "Feature",
-                        "id": "{mnwedhfgger-000}",
-                        "properties": {
-                            "Name": "Pietslijn",
-                            "icon": "app6a:GFC-BOAWS-----X"
-                        },
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": [
-                                [
-                                    5.398063659667969,
-                                    52.41163438166172
-                                ],
-                                [
-                                    5.3551483154296875,
-                                    52.41791657858491
-                                ],
-                                [
-                                    5.310859680175781,
-                                    52.41205322263206
-                                ]
-                            ]
-                        }
-                    }
-                ]
-            }
+            return testJson;
         }
     }
 }
