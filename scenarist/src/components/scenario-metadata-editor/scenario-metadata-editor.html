@@ -27,6 +27,7 @@
           <div>
             <md-input md-label="Name" md-value.bind="activeScenario.title"></md-input>
             <md-input md-label="Description" md-value.bind="activeScenario.description"></md-input>
+            <md-input md-label="Tracks" disabled md-value.one-way="activeScenario.trackIds.length"></md-input>
             <div class="collapsible-basic-use">
               <ul md-collapsible md-collapsible.ref="collapsible">
                 <li>

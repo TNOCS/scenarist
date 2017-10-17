@@ -5,7 +5,7 @@ export interface IScenario extends IModel {
   end?: { data: Date; time: Date };
   center?: { lat: number; lng: number; };
   zoom?: number;
-  trackIds?: string[] | number[];
+  trackIds?: number[];
   layers?: {
     baseIds?;
     overlayIds?;
