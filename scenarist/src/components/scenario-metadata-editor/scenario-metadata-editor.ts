@@ -1,5 +1,5 @@
 import { IScenario } from './../../models/scenario';
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { State, ModelType } from './../../models/state';
 import { inject } from 'aurelia-framework';
 import { ILayerDefinition } from 'models/layer';
@@ -11,23 +11,29 @@ export class ScenarioMetadataEditor {
   public activeScenario: IScenario;
   public showScenarioSelector = false;
   private modelType: ModelType = 'scenarios';
+  private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) {}
 
-  public activate() {
-    this.scenarios = this.state.scenarios;
-    this.activeScenario = this.state.activeScenarioId
-      ? this.scenarios.filter(s => s.id === this.state.activeScenarioId)[0]
-      : null;
-    if (this.activeScenario) { this.showScenarioSelector = true; }
-    this.ea.subscribe(`${this.modelType}Updated`, (scenario: IScenario) => {
+  public attached() {
+    this.subscriptions.push(this.ea.subscribe(`${this.modelType}Updated`, (scenario: IScenario) => {
       this.scenarios = this.state.scenarios;
       if (scenario) { this.activeScenario = this.scenarios.filter(l => l.id === scenario.id).shift(); }
-    });
-    this.baseLayers = this.state.baseLayers;
-    this.ea.subscribe(`baseLayersUpdated`, (scenario: IScenario) => {
+    }));
+    this.subscriptions.push(this.ea.subscribe(`baseLayersUpdated`, (scenario: IScenario) => {
       this.baseLayers = this.state.baseLayers;
-    });
+    }));
+  }
+
+  public detached() {
+    this.subscriptions.forEach(s => s.dispose());
+  }
+
+  public activate() {
+    this.scenarios = this.state.scenarios;
+    this.activeScenario = this.state.scenario;
+    if (this.activeScenario) { this.showScenarioSelector = true; }
+    this.baseLayers = this.state.baseLayers;
   }
 
   public selectScenario(selected: IScenario) {

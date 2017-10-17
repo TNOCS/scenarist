@@ -1,4 +1,4 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { State, ModelType } from './../../models/state';
 import { IProperty } from './../../models/property';
 import { inject } from 'aurelia-framework';
@@ -9,15 +9,20 @@ export class PropertyEditorCustomElement {
   public activeProperty: IProperty;
   public showPropertyEditor = false;
   private modelType: ModelType = 'properties';
+  private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) {}
 
   public attached() {
     this.properties = this.state.properties;
-    this.ea.subscribe(`${this.modelType}Updated`, (prop: IProperty) => {
+    this.subscriptions.push(this.ea.subscribe(`${this.modelType}Updated`, (prop: IProperty) => {
       this.properties = this.state.properties;
       if (prop) { this.activeProperty = this.properties.filter(p => p.id === prop.id)[0]; }
-    });
+    }));
+  }
+
+  public detached() {
+    this.subscriptions.forEach(s => s.dispose());
   }
 
   public selectProperty(selected: IProperty) {

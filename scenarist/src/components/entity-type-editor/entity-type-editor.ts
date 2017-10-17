@@ -1,4 +1,4 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { IEntityType } from './../../models/entity';
 import { State, ModelType } from './../../models/state';
 import { inject } from 'aurelia-framework';
@@ -9,15 +9,20 @@ export class EntityTypeEditorCustomElement {
   public activeEntityType: IEntityType;
   public showEntityTypeEditor = false;
   private modelType: ModelType = 'entityTypes';
+  private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) {}
 
   public attached() {
     this.entityTypes = this.state.entityTypes;
-    this.ea.subscribe(`${this.modelType}Updated`, (et: IEntityType) => {
+    this.subscriptions.push(this.ea.subscribe(`${this.modelType}Updated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
       if (et) { this.activeEntityType = this.entityTypes.filter(e => e.id === et.id)[0]; }
-    });
+    }));
+  }
+
+  public detached() {
+    this.subscriptions.forEach(s => s.dispose());
   }
 
   public selectEntityType(selected: IEntityType) {

@@ -1,4 +1,4 @@
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { ILayerDefinition } from 'models/layer';
 import { inject } from 'aurelia-framework';
 import { State, ModelType } from 'models/state';
@@ -9,17 +9,25 @@ export class LayerEditor {
   public layers: ILayerDefinition[];
   public activeLayer: ILayerDefinition;
   public showLayerEditor = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) {}
+
+  public attached() {
+    this.subscriptions.push(this.ea.subscribe(`${this.modelType}Updated`, (layer: ILayerDefinition) => {
+      this.layers = this.state.getModel(this.modelType) as ILayerDefinition[];
+      if (layer) { this.activeLayer = this.layers.filter(l => l.id === layer.id)[0]; }
+    }));
+  }
+
+  public detached() {
+    this.subscriptions.forEach(s => s.dispose());
+  }
 
   public activate(params: { layertype: ModelType}) {
     this.modelType = params.layertype;
     if (!this.modelType) { return; }
     this.layers = this.state.getModel(this.modelType) as ILayerDefinition[];
-    this.ea.subscribe(`${this.modelType}Updated`, (layer: ILayerDefinition) => {
-      this.layers = this.state.getModel(this.modelType) as ILayerDefinition[];
-      if (layer) { this.activeLayer = this.layers.filter(l => l.id === layer.id)[0]; }
-    });
   }
 
   public selectLayer(selected: ILayerDefinition) {
