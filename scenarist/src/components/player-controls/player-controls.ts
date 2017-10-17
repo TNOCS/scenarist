@@ -40,7 +40,8 @@ export class PlayerControlsCustomElement {
 
   public play() {
     let urlPath = `play/${this.activePlayScenario}`;
-    this.rest.find(urlPath).then(ps => {this.playStates.set(ps.id, ps));
+    this.rest.find(urlPath).then(ps => {
+      this.playStates.set(ps.id, ps);
+    });
   }
-
 }
