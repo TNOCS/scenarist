@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
 import * as soap from 'soap';
 import * as http from 'http-server';
+import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as config from 'config';
@@ -24,6 +25,7 @@ var wsdl = fs.readFileSync(soapConfig.wsdlFile, 'utf8');
 var soapService = new Soap.SoapService(playerConfig);
 
 var app = express();
+app.use(cors());
 //body parser middleware are supported (optional)
 app.use(bodyParser.raw({
     type: () => {

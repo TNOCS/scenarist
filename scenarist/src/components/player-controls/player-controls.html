@@ -1,14 +1,46 @@
 <template>
   Player
-  <div class="button-row">
-    <button md-button="floating: true;" click.delegate="play()">
-      <i class="material-icons">play_arrow</i>
-    </button>
-    <button md-button="floating: true;" click.delegate="pause()">
-      <i class="material-icons">pause</i>
-    </button>
-    <button md-button="floating: true;" click.delegate="stop()">
-      <i class="material-icons">stop</i>
-    </button>
+  <div class="row">
+    <div class="col s12 m6">
+      <md-card md-title="Scenarios">
+        <md-collection>
+          <md-collection-item class="accent-text" repeat.for="[id, ps] of playStates">
+            ${ ps.title }
+            <div class="secondary-content">
+              <a href="#!" click.delegate="selectScenario(id)">
+                <i class="material-icons">input</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
+      </md-card>
+    </div>
+  </div>
+
+  <div class="row" show.bind="!showPlayerControls">
+    <div class="col s12 m6">
+      <md-card md-title="No scenario selected">
+        <div>
+          Select the scenario you want to play in the 'Scenarios' tab.
+        </div>
+      </md-card>
+    </div>
+  </div>
+  <div class="row" show.bind="showPlayerControls">
+    <div class="col s12 m6">
+      <md-card md-title="Player controls">
+        <div class="button-row">
+          <button md-button="floating: true;" click.delegate="play()">
+            <i class="material-icons">play_arrow</i>
+          </button>
+          <button md-button="floating: true;" click.delegate="pause()">
+            <i class="material-icons">pause</i>
+          </button>
+          <button md-button="floating: true;" click.delegate="stop()">
+            <i class="material-icons">stop</i>
+          </button>
+        </div>
+      </md-card>
+    </div>
   </div>
 </template>

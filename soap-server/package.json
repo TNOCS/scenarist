@@ -13,6 +13,7 @@
     "@types/soap": "^0.18.0",
     "body-parser": "^1.18.2",
     "config": "^1.26.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "fs-extra": "^4.0.2",
     "http": "^0.0.0",

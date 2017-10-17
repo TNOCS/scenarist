@@ -3,6 +3,7 @@
  */
 import * as express from 'express';
 import * as compression from 'compression';
+import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as config from 'config';
@@ -35,6 +36,7 @@ import {
  */
 const app = express();
 app.set('port', playerConfig.port);
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

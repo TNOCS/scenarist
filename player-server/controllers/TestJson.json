@@ -5,13 +5,28 @@
             "id": "{bbwerdsfger-000}",
             "properties": {
                 "Name": "Piet",
-                "icon": "app6a:SHGAUCATW-MO---"
+                "icon": "app6a:SHGAUCATW-MO---",
+                "Nationality": "Germany"
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    5.0734375,
-                    52.38901106223458
+                    5.0034375,
+                    52.68901106223458
+                ]
+            }
+        }, {
+            "type": "Feature",
+            "id": "{myftqwer-001}",
+            "properties": {
+                "Name": "Kees",
+                "icon": "app6a:SFGPUCDMM--DBE-"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.7734375,
+                    51.88901106223458
                 ]
             }
         },
@@ -55,7 +70,7 @@
             "id": "{mnwedhfgger-000}",
             "properties": {
                 "Name": "Pietslijn",
-                "icon": "app6a:GFC-BOAWS-----X"
+                "icon": "app6a:GFC-BOAWS---GMX"
             },
             "geometry": {
                 "type": "LineString",
