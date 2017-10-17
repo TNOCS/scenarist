@@ -11,3 +11,13 @@
     display: inline-block;
     vertical-align: middle;
 }
+
+.orbat {
+    z-index: 10000;
+    background: transparent;
+    width: 17%;
+    background: transparent;
+    position: absolute;
+    left: 20px;
+    top: 70px;
+}

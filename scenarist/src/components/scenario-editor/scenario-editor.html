@@ -1,12 +1,13 @@
 <template>
   <require from="../aurelia-leaflet/aurelia-leaflet"></require>
   <require from="../timeline/timeline"></require>
+  <require from="../orbat-control/orbat-control"></require>
   <require from="../../resources/value-converters/number-format"></require>
 
   <div class="row">
-    <div class="col m2"></div>
-    <leaflet class="col m8" style="margin-bottom: -20px;" map-options.bind="mapOptions" layers.bind="layers" map-events.bind="leafletMapEvents"
-      with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl"></leaflet>
+    <orbat-control class="orbat"></orbat-control>
+    <leaflet class="col m10" style="margin-bottom: -20px; padding: 0" map-options.bind="mapOptions" layers.bind="layers" map-events.bind="leafletMapEvents"
+      with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl" with-zoom-control.bind="withZoomControl"></leaflet>
     <div class="col m2"></div>
   </div>
   <timeline></timeline>

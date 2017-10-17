@@ -1,12 +1,12 @@
-import { ITrack } from './../../models/track';
+import { ITrack, ITrackView } from './../../models/track';
 import { IEntityType } from './../../models/entity';
 import { State } from './../../models/state';
 import { defaultLayers, defaultMapOptions } from './../aurelia-leaflet/aurelia-leaflet-defaults';
 import { ILayerDefinition } from 'models/layer';
-import { EventAggregator } from 'aurelia-event-aggregator';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
-import { MapOptions, Map, layerGroup, marker, icon, Point } from 'leaflet';
+import { MapOptions, Map, icon, Point } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
 
 @inject(State, EventAggregator)
@@ -15,9 +15,10 @@ export class ScenarioEditor {
   public scenario: IScenario;
   public entityTypes: IEntityType[];
   public mapOptions: MapOptions = defaultMapOptions;
-  public layers: { base: ILayerDefinition[], overlay?: ILayerDefinition[] | L.LayerGroup } = defaultLayers;
+  public layers: { base: ILayerDefinition[], overlay?: ILayerDefinition[] } = defaultLayers;
   public leafletMapEvents = ['load', 'click', 'dblclick'];
-  public withLayerControl = true;
+  public withLayerControl = false;
+  public withZoomControl = false;
   public withScaleControl = true;
   public clickLocation: L.LatLng;
   private tracks: ITrack[];
@@ -25,6 +26,7 @@ export class ScenarioEditor {
   private map: Map;
   private entityCollection: MdModal;
   private infoBox: MdModal;
+  private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) {
     this.ea.subscribe('aurelia-leaflet', (ev) => this.mapEvent(ev));
@@ -34,19 +36,22 @@ export class ScenarioEditor {
 
   public attached() {
     this.resizeMap();
+    this.subscriptions.push(this.ea.subscribe('trackVisibilityChanged', (track: ITrackView) => this.trackVisibilityChanged(track)));
+    this.subscriptions.push(this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
+      this.entityTypes = this.state.entityTypes;
+    }));
+    this.subscriptions.push(this.ea.subscribe(`scenariosUpdated`, (s: IScenario) => {
+      if (s) { this.activeScenarioChanged(s); }
+    }));
+  }
+
+  public detached() {
+    this.subscriptions.forEach(s => s.dispose());
   }
 
   public activate() {
     this.entityTypes = this.state.entityTypes;
-    this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
-      this.entityTypes = this.state.entityTypes;
-    });
-    const scenario = this.state.activeScenarioId
-      ? this.state.scenarios.filter(s => s.id === this.state.activeScenarioId)[0]
-      : null;
-    this.ea.subscribe(`scenariosUpdated`, (s: IScenario) => {
-      if (s) { this.activeScenarioChanged(s); }
-    });
+    const scenario = this.state.scenario;
     this.activeScenarioChanged(scenario);
   }
 
@@ -59,19 +64,9 @@ export class ScenarioEditor {
         center: this.scenario.center,
         zoom: this.scenario.zoom
       };
-      this.tracks = this.state.tracks.filter(t => scenario.trackIds.includes(t.id as string));
+      this.tracks = this.state.tracks.filter(t => scenario.trackIds.includes(t.id as number));
       // const overlay: ILayerDefinition[] = [];
-      const overlay: ILayerDefinition[] = this.tracks.map(t => {
-        const et = this.entityTypes.filter(et => et.id === t.entityTypeId).shift();
-        const iconHeight = 32;
-        const iconScale = iconHeight / et.iconSize[1]
-        const iconSize = new Point(iconScale * et.iconSize[0] * iconScale, iconHeight);
-        const id = t.title || t.id;
-        const f = t.features.shift();
-        const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
-        const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
-        return { type: 'marker', latLng, id, options } as ILayerDefinition;
-      });
+      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
       this.layers = { base, overlay };
     }
@@ -131,5 +126,31 @@ export class ScenarioEditor {
     }
     resize();
     this.isInitialized = true;
+  }
+
+  private createMarker(track: ITrack) {
+    const et = this.entityTypes.filter(e => e.id === track.entityTypeId).shift();
+    const iconHeight = 32;
+    const iconScale = iconHeight / et.iconSize[1];
+    const iconSize = new Point(iconScale * et.iconSize[0] * iconScale, iconHeight);
+    const id = track.title || track.id;
+    const f = track.features.shift() || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
+    const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
+    return { type: 'marker', latLng, id, options } as ILayerDefinition;
+  }
+
+  private trackVisibilityChanged(track: ITrackView) {
+    console.log('track changed');
+    console.log(track);
+    const base = this.layers.base;
+    let overlay: ILayerDefinition[];
+    if (track.isVisible) {
+      this.layers.overlay.push(this.createMarker(track));
+      overlay = this.layers.overlay;
+    } else {
+      overlay = this.layers.overlay.filter(l => l.id !== track.id);
+    }
+    this.layers = { base, overlay };
   }
 }

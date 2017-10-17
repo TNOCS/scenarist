@@ -1,0 +1,17 @@
+<template>
+  <md-card md-title="Entities">
+    <md-collection>
+      <md-collection-item repeat.for="track of tracks">
+        ${track.title || track.id}
+        <div class="secondary-content">
+          <a show.bind="track.isVisible" href="#!" click.delegate="toggleVisibility(track)">
+            <i class="material-icons">visibility</i>
+          </a>
+          <a show.bind="!track.isVisible" href="#!" click.delegate="toggleVisibility(track)">
+            <i class="material-icons">visibility_off</i>
+          </a>
+        </div>
+      </md-collection-item>
+    </md-collection>
+  </md-card>
+</template>
