@@ -6,7 +6,8 @@ export const defaultMapOptions: MapOptions = {
     lat: 51.3686498,
     lng: 5.53918250
   },
-  zoom: 13
+  zoom: 13,
+  zoomControl: false
 };
 
 export const defaultLayers: { base: ILayerDefinition[], overlay: ILayerDefinition[] } = {
