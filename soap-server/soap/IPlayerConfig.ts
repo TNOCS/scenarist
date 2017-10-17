@@ -1,5 +1,6 @@
 export interface IPlayerConfig {
     host: string;
+    scenarioUpdateDebounceSeconds: number;
     scenarioRoute: string;
-    entityRoute: string;
+    currentSituationRoute: string;
 }

@@ -28,7 +28,7 @@ if (!dbConfig.entityRoute) dbConfig.entityRoute = '/entityTypes';
  */
 import {
   ScenarioController
-} from './controllers/scenario';
+} from './controllers/ScenarioController';
 
 /**
  * Create Express server.
@@ -60,7 +60,7 @@ app.get('/pause/:scenarioId', (req, res) => {
 app.get('/stop/:scenarioId', (req, res) => {
   scenarioController.stop(req, res)
 });
-app.get('/speed/:scenarioId', (req, res) => {
+app.get('/speed/:scenarioId/:speed', (req, res) => {
   scenarioController.speed(req, res)
 });
 app.get('/reload/:scenarioId', (req, res) => {
@@ -68,6 +68,9 @@ app.get('/reload/:scenarioId', (req, res) => {
 });
 app.get('/scenarios', (req, res) => {
   scenarioController.scenarios(req, res);
+});
+app.get('/current/:scenarioId', (req, res) => {
+  scenarioController.current(req, res);
 });
 
 /**

@@ -19,7 +19,7 @@ export const nvgStructure = {
                 name: "Simulation Overlay",
                 id: "Simulation Overlay",
                 list: "true",
-                multiple: "true"
+                multiple: "false" // true to select multiple scenarios
             },
             values: {}
         }

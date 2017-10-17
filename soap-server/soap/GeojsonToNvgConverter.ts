@@ -66,7 +66,10 @@ export class GeojsonToNvgConverter {
     constructor() {}
 
     convert(input: IFeatureCollection): any {
-        if (!input) return;
+        if (!input) input = < IFeatureCollection > {
+            type: 'FeatureCollection',
+            features: []
+        };
         var fts: IFeature[];
         if (Array.isArray(input)) {
             fts = input;

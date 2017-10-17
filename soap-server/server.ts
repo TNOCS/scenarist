@@ -13,10 +13,11 @@ if (!soapConfig.wsdlFile) soapConfig.wsdlFile = './wsdl/schema.wsdl';
 if (!soapConfig.xmlFolder) soapConfig.xmlFolder = './xml';
 if (!soapConfig.port) soapConfig.port = 3001;
 
-var playerConfig: IPlayerConfig = config.get('ScenarioDB');
+var playerConfig: IPlayerConfig = config.get('Player');
 if (!playerConfig.host) playerConfig.host = 'http://localhost:3002';
+if (!playerConfig.scenarioUpdateDebounceSeconds) playerConfig.scenarioUpdateDebounceSeconds = 5;
 if (!playerConfig.scenarioRoute) playerConfig.scenarioRoute = '/scenarios';
-if (!playerConfig.entityRoute) playerConfig.entityRoute = '/entities';
+if (!playerConfig.currentSituationRoute) playerConfig.currentSituationRoute = '/current';
 
 var wsdl = fs.readFileSync(soapConfig.wsdlFile, 'utf8');
 

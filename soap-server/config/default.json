@@ -4,9 +4,10 @@
         "wsdlFile": "./wsdl/schema.wsdl",
         "xmlFolder": "./soap/xml"
     },
-    "ScenarioDB": {
+    "Player": {
         "host": "http://localhost:3002",
+        "scenarioUpdateDebounceSeconds": 5, 
         "scenarioRoute": "/scenarios",
-        "entityRoute": "/entities"
+        "playRoute": "/play"
     }
 }
