@@ -4,6 +4,7 @@ import { AureliaLeafletException } from './aurelia-leaflet-exceptions';
 import { defaultMapOptions, defaultLayers } from './aurelia-leaflet-defaults';
 import LayerFactory from './aurelia-leaflet-factory';
 import * as Leaflet from 'leaflet';
+import { Map } from 'leaflet';
 import { ILayerDefinition } from 'models/layer';
 
 @customElement('leaflet')
@@ -21,7 +22,8 @@ export class AureliaLeafletCustomElement {
     base: {},
     overlay: {}
   };
-  private map;
+  private isAttached = false;
+  private map: Map;
   private L;
   private layerFactory;
   private layerControl;
@@ -63,6 +65,7 @@ export class AureliaLeafletCustomElement {
       }
       this.mapOptions.center = center;
       this.attachLayers();
+      this.isAttached = true;
 
       if (this.map) {
         this.mapInitResolve();
@@ -83,7 +86,12 @@ export class AureliaLeafletCustomElement {
     });
   }
 
+  public detached() {
+    this.isAttached = false;
+  }
+
   public layersChanged(newLayers, oldLayers) {
+    if (!this.isAttached) { return; }
     if (oldLayers && oldLayers !== null) {
       this.removeOldLayers(oldLayers.base, 'base');
       this.removeOldLayers(oldLayers.overlay, 'overlay');
@@ -98,9 +106,8 @@ export class AureliaLeafletCustomElement {
     this.mapInit.then(() => {
       if (oldOptions) {
         if (this.mapOptions.center !== oldOptions.center) {
-          this.map.setView(this.mapOptions.center);
-        }
-        if (this.mapOptions.zoom !== oldOptions.zoom) {
+          this.map.setView(this.mapOptions.center, this.mapOptions.zoom);
+        } else if (this.mapOptions.zoom !== oldOptions.zoom) {
           this.map.setZoom(this.mapOptions.zoom);
         }
         if (this.mapOptions.maxBounds !== oldOptions.maxBounds) {

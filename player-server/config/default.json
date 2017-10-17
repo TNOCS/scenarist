@@ -1,5 +1,10 @@
 {
     "Player": {
         "port": 3002
+    },
+    "Database": {
+        "host": "http://localhost:3000",
+        "scenarioRoute": "/scenarios",
+        "entityRoute": "/entityTypes"
     }
 }

@@ -9,6 +9,7 @@
     "@types/body-parser": "^1.16.5",
     "@types/fs-extra": "^4.0.2",
     "@types/http-server": "^0.10.0",
+    "@types/request": "^2.0.6",
     "@types/soap": "^0.18.0",
     "body-parser": "^1.18.2",
     "config": "^1.26.2",
@@ -16,7 +17,12 @@
     "fs-extra": "^4.0.2",
     "http": "^0.0.0",
     "http-server": "^0.10.0",
+    "http-status-codes": "^1.3.0",
     "node": "^8.3.0",
-    "soap": "https://github.com/rinzeb/node-soap#v0.22.2"
+    "obj-traverse": "https://github.com/rinzeb/obj-traverse#1.0.1",
+    "request": "^2.83.0",
+    "request-json": "^0.6.2",
+    "soap": "https://github.com/rinzeb/node-soap#v0.22.2",
+    "xml2js": "^0.4.19"
   }
 }

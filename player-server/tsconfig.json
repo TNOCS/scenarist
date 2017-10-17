@@ -16,6 +16,7 @@
     "filesGlob": [
       "./config/**/*.ts",
       "./controllers/**/*.ts",
+      "./models/**/*.ts",
       "./**/*.ts"
     ],
     "atom": {

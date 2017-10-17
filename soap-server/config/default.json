@@ -3,5 +3,11 @@
         "port": 3001,
         "wsdlFile": "./wsdl/schema.wsdl",
         "xmlFolder": "./soap/xml"
+    },
+    "Player": {
+        "host": "http://localhost:3002",
+        "scenarioUpdateDebounceSeconds": 5, 
+        "scenarioRoute": "/scenarios",
+        "playRoute": "/play"
     }
 }

@@ -72,14 +72,6 @@ export class ScenarioEditor {
         const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
         return { type: 'marker', latLng, id, options } as ILayerDefinition;
       });
-      // this.tracks.forEach(t => {
-      //   const f = t.features.shift();
-      //   overlay[t.title] = [marker({ lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] })];
-      // });
-      // const overlay = layerGroup(this.tracks.map(t => {
-      //   const f = t.features.shift();
-      //   return { 'd': marker({ lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }) };
-      // }));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
       this.layers = { base, overlay };
     }
