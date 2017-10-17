@@ -17,6 +17,7 @@ export class AureliaLeafletCustomElement {
   @bindable public mapOptions: Leaflet.MapOptions;
   @bindable public withLayerControl: boolean;
   @bindable public withScaleControl: boolean;
+  @bindable public withZoomControl: boolean;
 
   public attachedLayers = {
     base: {},
@@ -28,6 +29,7 @@ export class AureliaLeafletCustomElement {
   private layerFactory;
   private layerControl;
   private scaleControl;
+  private zoomControl;
   private mapContainer: string;
   private mapInit: Promise<{}>;
   private mapInitResolve: (value?: {} | PromiseLike<{}>) => void;
@@ -169,6 +171,23 @@ export class AureliaLeafletCustomElement {
     }
   }
 
+  public withZoomControlChanged(newValue) {
+    if (newValue === false) {
+      this.mapInit.then(() => {
+        if (this.zoomControl) {
+          this.map.removeControl(this.zoomControl);
+        }
+      });
+    } else {
+      this.mapInit.then(() => {
+        if (this.zoomControl) {
+          this.map.removeControl(this.zoomControl);
+        }
+        this.zoomControl = this.L.control.zoom(newValue).addTo(this.map);
+      });
+    }
+  }
+
   public attachLayers() {
     let layersToAttach = {
       base: {},
@@ -176,11 +195,15 @@ export class AureliaLeafletCustomElement {
     };
     if (this.layers.hasOwnProperty('base')) {
       for (let layer of this.layers.base) {
-        layersToAttach.base[this.getLayerId(layer)] = this.layerFactory.getLayer(layer);
+        const id = this.getLayerId(layer);
+        if (this.attachedLayers.base.hasOwnProperty(id)) { continue; }
+        layersToAttach.base[id] = this.layerFactory.getLayer(layer);
       }
     }
     if (this.layers.hasOwnProperty('overlay')) {
       for (let layer of this.layers.overlay) {
+        const id = this.getLayerId(layer);
+        if (this.attachedLayers.overlay.hasOwnProperty(id)) { continue; }
         layersToAttach.overlay[this.getLayerId(layer)] = this.layerFactory.getLayer(layer);
       }
     }
