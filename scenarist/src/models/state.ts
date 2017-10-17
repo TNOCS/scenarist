@@ -26,13 +26,13 @@ export class State {
      */
     tracks: ITrack[];
   } = {
-    activeScenarioId: null,
-    entityTypes: [],
-    properties: [],
-    scenarios: [],
-    baseLayers: [],
-    tracks: []
-  };
+      activeScenarioId: null,
+      entityTypes: [],
+      properties: [],
+      scenarios: [],
+      baseLayers: [],
+      tracks: []
+    };
 
   public get entityTypes() { return this.store.entityTypes.map(this.clone) as IEntityType[]; }
   public get properties() { return this.store.properties.map(this.clone) as IProperty[]; }
@@ -49,6 +49,15 @@ export class State {
     } else {
       this.ea.publish('activeScenarioChanged', null);
     }
+  }
+
+  /**
+   * Get (a copy of) the active scenario
+   */
+  public get scenario() {
+    return this.store.activeScenarioId
+      ? this.clone(this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift())
+      : null;
   }
 
   constructor(private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {
@@ -119,7 +128,7 @@ export class State {
   private addTrackToScenario(track: ITrack) {
     const scenario = this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift();
     if (!scenario) { return; }
-    scenario.trackIds.push(track.id as string);
+    scenario.trackIds.push(track.id as number);
     this.save('scenarios', scenario);
   }
 
