@@ -16,5 +16,6 @@ export class MilSymbolEditorCustomElement {
     const canvas = sym.asCanvas();
     this.entityType.imgDataUrl = canvas.toDataURL();
     this.entityType.iconSize = new Point(canvas.width, canvas.height);
+    // TODO Also set the center point of the icon
   }
 }
