@@ -17,6 +17,13 @@
       "defaultValue": "",
       "unit": "",
       "options": ""
+    },
+    {
+      "id": "Sym_LNS6Z",
+      "title": "Missiles",
+      "propertyType": "number",
+      "description": "Number of missiles",
+      "defaultValue": "5"
     }
   ],
   "entityTypes": [
@@ -29,8 +36,7 @@
       "faction": "",
       "color": "red",
       "propertyIds": [
-        "1",
-        "2"
+        "Sym_LNS6Z"
       ],
       "sidc": "SHAPM-----EN---",
       "iconSize": {
@@ -105,10 +111,16 @@
               5.398939132428495,
               51.50270552998373
             ]
+          },
+          "properties": {
+            "1": "",
+            "2": ""
           }
         }
       ],
-      "id": 1
+      "id": 1,
+      "title": "Sherman",
+      "description": "Tank"
     },
     {
       "entityTypeId": "BkvzrCjn-",
@@ -120,10 +132,15 @@
               5.39881038639578,
               51.50460217343415
             ]
+          },
+          "properties": {
+            "Sym_LNS6Z": "15"
           }
         }
       ],
-      "id": 2
+      "id": 2,
+      "title": "Pfanzer",
+      "description": "Howitzer"
     },
     {
       "entityTypeId": "BkvzrCjn-",

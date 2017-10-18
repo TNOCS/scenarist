@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/moment": "^2.13.0"
+  }
+}

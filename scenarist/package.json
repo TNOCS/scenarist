@@ -3,8 +3,8 @@
     "description": "A simulation scenario editor.",
     "version": "0.1.0",
     "repository": {
-        "type": "???",
-        "url": "???"
+        "type": "git",
+        "url": "https://github.com/TNOCS/scenarist"
     },
     "license": "MIT",
     "dependencies": {
