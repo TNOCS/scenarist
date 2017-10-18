@@ -6,7 +6,7 @@ import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
-import { MapOptions, Map, icon, Point, Marker } from 'leaflet';
+import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
 
 @inject(State, EventAggregator)
@@ -27,6 +27,7 @@ export class ScenarioEditor {
   private entityCollection: MdModal;
   private infoBox: MdModal;
   private subscriptions: Subscription[] = [];
+  private static DefaultMarkerOpacity = 0.7;
 
   constructor(private state: State, private ea: EventAggregator) {}
 
@@ -134,15 +135,16 @@ export class ScenarioEditor {
     const id = track.title || track.id;
     const f = track.features.shift() || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
     const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
-    const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
+    const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }), opacity: ScenarioEditor.DefaultMarkerOpacity }; // http://leafletjs.com/examples/custom-icons/
     return { type: 'marker', latLng, id, options, click: this.markerClicked(track.id) } as ILayerDefinition;
   }
 
   private markerClicked(trackId: string | number) {
-    return (marker: Marker) => {
+    return (me: LeafletMouseEvent) => {
       this.tracks.some(t => {
         if (t.id !== trackId) { return false; }
         t.isSelected = !t.isSelected;
+        (me.target as Marker).setOpacity(t.isSelected ? 1 : ScenarioEditor.DefaultMarkerOpacity);
         return true;
       });
     };
