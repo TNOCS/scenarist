@@ -84,15 +84,18 @@ export default class LayerFactory {
     if (!layer.hasOwnProperty('latLng')) {
       throw new AureliaLeafletException('No latLng given for layer.type "marker"');
     }
-    let marker = this.L.marker(layer.latLng, layer.options);
+    const marker = this.L.marker(layer.latLng, layer.options);
     if (layer.hasOwnProperty('popupContent')) {
       marker.bindPopup(layer.popupContent).openPopup();
+    }
+    if (layer.hasOwnProperty('click')) {
+      marker.on('click', (m) => layer.click(m));
     }
     return marker;
   }
 
   public getPopup(layer) {
-    let popup = this.L.popup(layer.options);
+    const popup = this.L.popup(layer.options);
     if (layer.hasOwnProperty('content')) {
       popup.setContent(layer.content);
     }
