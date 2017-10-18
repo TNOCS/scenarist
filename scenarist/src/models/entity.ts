@@ -20,7 +20,7 @@ export interface IEntityType extends IModel {
    */
   sidc?: string;
   color?: string;
-  propertyIds: string[];
+  propertyIds: Array<string | number>;
 }
 
 export interface IEntity {

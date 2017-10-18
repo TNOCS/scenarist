@@ -11,6 +11,8 @@ import { MdModal } from 'aurelia-materialize-bridge';
 
 @inject(State, EventAggregator)
 export class ScenarioEditor {
+  private static DefaultMarkerOpacity = 0.7;
+
   public isActive = false;
   public scenario: IScenario;
   public entityTypes: IEntityType[];
@@ -20,14 +22,15 @@ export class ScenarioEditor {
   public withLayerControl = false;
   public withZoomControl = false;
   public withScaleControl = true;
+  public showPropertyEditor = false;
   public clickLocation: L.LatLng;
+
   private tracks: ITrackView[];
   private isInitialized = false;
   private map: Map;
   private entityCollection: MdModal;
   private infoBox: MdModal;
   private subscriptions: Subscription[] = [];
-  private static DefaultMarkerOpacity = 0.7;
 
   constructor(private state: State, private ea: EventAggregator) {}
 
@@ -63,6 +66,7 @@ export class ScenarioEditor {
         zoom: this.scenario.zoom
       };
       this.tracks = this.tracksToViewModels();
+      this.showPropertyEditor = this.tracks && this.tracks.length > 0;
       // const overlay: ILayerDefinition[] = [];
       const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
@@ -127,26 +131,22 @@ export class ScenarioEditor {
     this.isInitialized = true;
   }
 
-  private createMarker(track: ITrack) {
+  private createMarker(track: ITrackView) {
     const et = this.entityTypes.filter(e => e.id === track.entityTypeId).shift();
     const iconHeight = 32;
     const iconScale = iconHeight / et.iconSize[1];
     const iconSize = new Point(iconScale * et.iconSize[0] * iconScale, iconHeight);
     const id = track.title || track.id;
-    const f = track.features.shift() || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
+    const f = track.features[0] || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
     const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
     const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }), opacity: ScenarioEditor.DefaultMarkerOpacity }; // http://leafletjs.com/examples/custom-icons/
-    return { type: 'marker', latLng, id, options, click: this.markerClicked(track.id) } as ILayerDefinition;
+    return { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
   }
 
-  private markerClicked(trackId: string | number) {
+  private markerClicked(track: ITrackView) {
     return (me: LeafletMouseEvent) => {
-      this.tracks.some(t => {
-        if (t.id !== trackId) { return false; }
-        t.isSelected = !t.isSelected;
-        (me.target as Marker).setOpacity(t.isSelected ? 1 : ScenarioEditor.DefaultMarkerOpacity);
-        return true;
-      });
+      track.isSelected = !track.isSelected;
+      (me.target as Marker).setOpacity(track.isSelected ? 1 : ScenarioEditor.DefaultMarkerOpacity);
     };
   }
 

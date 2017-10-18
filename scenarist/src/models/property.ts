@@ -7,3 +7,7 @@ export interface IProperty extends IModel {
   unit?: string;
   options?: string[] | number[];
 }
+
+export interface IPropertyView extends IProperty {
+  value: any;
+}

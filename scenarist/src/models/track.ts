@@ -1,3 +1,4 @@
+import { IPropertyView, IProperty } from 'models/property';
 import { FeatureViewModel } from './feature';
 import { IModel } from './model';
 
@@ -9,7 +10,7 @@ import { IModel } from './model';
  * @extends {IModel}
  */
 export interface ITrack extends IModel {
-  entityTypeId: string;
+  entityTypeId: number;
   features: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
 
@@ -24,6 +25,8 @@ export interface ITrackView extends ITrack {
   isVisible: boolean;
   isSelected: boolean;
   hasChanged: boolean;
+  applyChanges(): ITrack;
+  restore(): void;
 }
 
 export class TrackViewModel implements ITrackView {
@@ -34,15 +37,37 @@ export class TrackViewModel implements ITrackView {
   public id: string | number;
   private pTitle: string;
   private pDescription: string;
-  private pEntityTypeId: string;
+  private pEntityTypeId: number;
   private pFeatures: Array<GeoJSON.Feature<GeoJSON.Point>>;
 
   constructor(private track: ITrack) {
     this.id = track.id;
-    this.pTitle = track.title;
-    this.pDescription = track.description;
-    this.pEntityTypeId = track.entityTypeId;
-    this.pFeatures = track.features.map(f => new FeatureViewModel(f, this.featureHasChangedHandler));
+    this.restore();
+  }
+
+  public applyChanges() {
+    this.track.title = this.pTitle;
+    this.track.description = this.pDescription;
+    const fromFeature = this.pFeatures[0];
+    const toFeature = this.track.features[0];
+    if (!fromFeature || !toFeature) { return; }
+    const props: { [key: string]: IPropertyView } = fromFeature.properties;
+    if (!toFeature.properties) { toFeature.properties = {}; }
+    for (const key in props) {
+      if (!props.hasOwnProperty(key)) { continue; }
+      const prop = props[key];
+      toFeature.properties[prop.id] = prop.value;
+    }
+    this.hasChanged = false;
+    return this.track;
+  }
+
+  public restore() {
+    this.pTitle = this.track.title;
+    this.pDescription = this.track.description;
+    this.pEntityTypeId = this.track.entityTypeId;
+    this.pFeatures = this.track.features.map(f => new FeatureViewModel(f, this.featureHasChangedHandler));
+    this.hasChanged = false;
   }
 
   public get title() { return this.pTitle; }

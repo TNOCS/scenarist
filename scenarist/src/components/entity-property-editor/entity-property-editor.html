@@ -1,15 +1,27 @@
 <template>
-    <md-card md-title="Editor">
-        <md-collection>
-          <md-collection-item repeat.for="track of tracks" show.bind="track.isSelected">
-            ${track.title || track.id}
-            <div class="secondary-content">
-              <a href="#!" click.delegate="toggleVisibility(track)">
-                <i show.bind="track.isVisible" class="material-icons">visibility</i>
-                <i show.bind="!track.isVisible" class="material-icons">visibility_off</i>
-              </a>
+  <md-card md-title="Editor">
+    <div class="collapsible-accordion">
+      <ul md-collapsible="accordion: true;">
+        <!-- DO NOT USE if.bind: md-input will not be initialized properly. -->
+        <li repeat.for="track of tracks" show.bind="track.isSelected">
+          <div class="collapsible-header">${track.title || track.id}</div>
+          <div class="collapsible-body">
+            <md-input md-label="Name" md-value.bind="track.title"></md-input>
+            <md-input md-label="Description" md-value.bind="track.description"></md-input>
+            <div if.bind="track.isSelected" repeat.for="prop of createEntityViewModel(track)">
+              <md-input md-label.one-time="prop.title" md-value.bind="prop.value"></md-input>
             </div>
-          </md-collection-item>
-        </md-collection>
-      </md-card>
-    </template>
+            <div slot="action">
+              <a href="!#" click.delegate="save(track)">
+                <i class="material-icons">save</i>
+              </a>
+              <!-- <button md-button md-button="disabled.bind: !track.hasChanged" click.delegate="save(track)">
+                <i class="material-icons">save</i>
+              </button> -->
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </md-card>
+</template>
