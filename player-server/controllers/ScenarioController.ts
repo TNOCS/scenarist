@@ -6,11 +6,16 @@ import {
     IDbConfig
 } from '../config/IDatabaseConfig';
 import {
+    IPlayerConfig
+} from '../config/IPlayerConfig';
+import {
     IScenario
 } from '../models/scenario';
+import * as Utils from '../utils/utils';
 import {
     IScenarioState,
-    PlayState
+    PlayState,
+    SerializeScenarioState
 } from '../models/playstate';
 import * as request from 'request';
 import * as httpcodes from 'http-status-codes';
@@ -22,16 +27,19 @@ const requestOpts: request.CoreOptions = {
 
 export class ScenarioController {
 
+    private TIMESTEP: number = 1000;
+
     private scenarioStates: {
         [id: string]: IScenarioState
     } = {};
 
-    constructor(public options: IDbConfig) {
+    constructor(public dbOptions: IDbConfig, public playerOptions: IPlayerConfig) {
+        this.TIMESTEP = playerOptions.millisPerTimeStep;
         this.initScenarios();
     }
 
     private initScenarios() {
-        let url = this.getUrl(this.options.scenarioRoute);
+        let url = this.getUrl(this.dbOptions.scenarioRoute);
         request.get(url, requestOpts, (err, innerRes, body) => {
             if (err || innerRes.statusCode !== httpcodes.OK) {
                 return;
@@ -57,11 +65,12 @@ export class ScenarioController {
         if (!scenarioArr || !Array.isArray(scenarioArr)) return;
         var result = {};
         scenarioArr.forEach((s) => {
-            result[s.id] = {
+            result[s.id.toString()] = {
+                id: s.id.toString(),
                 title: s.title,
-                currentTime: Date.parse(( < any > s.start).date),
-                startTime: Date.parse(( < any > s.start).date),
-                endTime: Date.parse(( < any > s.end).date),
+                currentTime: Utils.dateTimeToMillis(s.start.date, s.start.time),
+                startTime: Utils.dateTimeToMillis(s.start.date, s.start.time),
+                endTime: Utils.dateTimeToMillis(s.end.date, s.end.time),
                 speed: 1,
                 playState: PlayState.stopped
             }
@@ -79,15 +88,32 @@ export class ScenarioController {
         if (!ok) return;
         let scenarioId = req.params['scenarioId'];
         this.scenarioStates[scenarioId].playState = PlayState.playing;
-        res.send('play');
+        this.step(scenarioId, true);
+        res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
     };
+
+    private step(scenarioId: string, firstCall: boolean = false) {
+        let state = this.scenarioStates[scenarioId];
+        if (!firstCall) {
+            state.currentTime += state.speed * this.TIMESTEP;
+            if (state.currentTime > state.endTime) {
+                state.playState = PlayState.stopped;
+            }
+            console.log(`Scenario ${scenarioId} ${PlayState[state.playState]} at ${new Date(state.currentTime).toString()}`)
+        }
+        this.clearScheduledStep(state);
+        state.stepHandle = setTimeout(() => {
+            this.step(scenarioId);
+        }, this.TIMESTEP);
+    }
 
     public pause(req: Request, res: Response) {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
         let scenarioId = req.params['scenarioId'];
         this.scenarioStates[scenarioId].playState = PlayState.paused;
-        res.send('pause');
+        this.clearScheduledStep(this.scenarioStates[scenarioId]);
+        res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
     };
 
     public stop(req: Request, res: Response) {
@@ -96,14 +122,15 @@ export class ScenarioController {
         let scenarioId = req.params['scenarioId'];
         this.scenarioStates[scenarioId].playState = PlayState.stopped;
         this.scenarioStates[scenarioId].currentTime = this.scenarioStates[scenarioId].startTime;
-        res.send('stop');
+        this.clearScheduledStep(this.scenarioStates[scenarioId]);
+        res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
     };
 
     public reload(req: Request, res: Response) {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
         let scenarioId = req.params['scenarioId'];
-        let url = `${this.getUrl(this.options.scenarioRoute)}/${scenarioId}`;
+        let url = `${this.getUrl(this.dbOptions.scenarioRoute)}/${scenarioId}`;
         request.get(url, requestOpts, (err, innerRes, body) => {
             if (err || innerRes.statusCode !== httpcodes.OK) {
                 res.sendStatus(httpcodes.NOT_FOUND);
@@ -131,7 +158,15 @@ export class ScenarioController {
             return;
         }
         this.scenarioStates[scenarioId].speed = speed;
-        res.send('speed set');
+        res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
+    };
+
+    public state(req: Request, res: Response) {
+        let ok = this.checkRequest(req, res, ['scenarioId']);
+        if (!ok) return;
+
+        let scenarioId = req.params['scenarioId'];
+        res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
     };
 
     /**
@@ -150,7 +185,7 @@ export class ScenarioController {
      * Requests a list of scenarios from a rest-source and returns it to the requestor
      */
     public scenarios(req: Request, res: Response) {
-        let url = this.getUrl(this.options.scenarioRoute);
+        let url = this.getUrl(this.dbOptions.scenarioRoute);
         request.get(url, requestOpts, (err, innerRes, body) => {
             if (err || innerRes.statusCode !== httpcodes.OK) {
                 res.sendStatus(httpcodes.NOT_FOUND);
@@ -189,7 +224,13 @@ export class ScenarioController {
         return true;
     }
 
+    private clearScheduledStep(state: IScenarioState) {
+        if (state && state.stepHandle) {
+            clearTimeout(state.stepHandle);
+        }
+    }
+
     private getUrl(route: string) {
-        return `${this.options.host}${route}`;
+        return `${this.dbOptions.host}${route}`;
     }
 }

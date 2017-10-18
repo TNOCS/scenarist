@@ -1,6 +1,7 @@
 {
     "Player": {
-        "port": 3002
+        "port": 3002,
+        "millisPerTimeStep": 1000
     },
     "Database": {
         "host": "http://localhost:3000",
