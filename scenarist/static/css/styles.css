@@ -21,3 +21,13 @@
     left: 20px;
     top: 70px;
 }
+
+.prop-editor {
+    z-index: 10000;
+    background: transparent;
+    width: 17%;
+    background: transparent;
+    position: absolute;
+    right: 20px;
+    top: 70px;
+}

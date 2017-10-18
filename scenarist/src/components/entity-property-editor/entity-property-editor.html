@@ -1,0 +1,15 @@
+<template>
+    <md-card md-title="Editor">
+        <md-collection>
+          <md-collection-item repeat.for="track of tracks" show.bind="track.isSelected">
+            ${track.title || track.id}
+            <div class="secondary-content">
+              <a href="#!" click.delegate="toggleVisibility(track)">
+                <i show.bind="track.isVisible" class="material-icons">visibility</i>
+                <i show.bind="!track.isVisible" class="material-icons">visibility_off</i>
+              </a>
+            </div>
+          </md-collection-item>
+        </md-collection>
+      </md-card>
+    </template>
