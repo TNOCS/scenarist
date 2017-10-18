@@ -1,4 +1,4 @@
-import { ITrack, ITrackView } from './../../models/track';
+import { ITrack, ITrackView, TrackViewModel } from './../../models/track';
 import { IEntityType } from './../../models/entity';
 import { State } from './../../models/state';
 import { defaultLayers, defaultMapOptions } from './../aurelia-leaflet/aurelia-leaflet-defaults';
@@ -21,21 +21,18 @@ export class ScenarioEditor {
   public withZoomControl = false;
   public withScaleControl = true;
   public clickLocation: L.LatLng;
-  private tracks: ITrack[];
+  private tracks: ITrackView[];
   private isInitialized = false;
   private map: Map;
   private entityCollection: MdModal;
   private infoBox: MdModal;
   private subscriptions: Subscription[] = [];
 
-  constructor(private state: State, private ea: EventAggregator) {
-    this.ea.subscribe('aurelia-leaflet', (ev) => this.mapEvent(ev));
-    // this.ea.subscribe('activeScenarioChanged', scenario => this.activeScenarioChanged(scenario));
-    this.resizeMap();
-  }
+  constructor(private state: State, private ea: EventAggregator) {}
 
   public attached() {
     this.resizeMap();
+    this.subscriptions.push(this.ea.subscribe('aurelia-leaflet', (ev) => this.mapEvent(ev)));
     this.subscriptions.push(this.ea.subscribe('trackVisibilityChanged', (track: ITrackView) => this.trackVisibilityChanged(track)));
     this.subscriptions.push(this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
@@ -64,7 +61,7 @@ export class ScenarioEditor {
         center: this.scenario.center,
         zoom: this.scenario.zoom
       };
-      this.tracks = this.state.tracks.filter(t => scenario.trackIds.includes(t.id as number));
+      this.tracks = this.tracksToViewModels();
       // const overlay: ILayerDefinition[] = [];
       const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
@@ -102,6 +99,7 @@ export class ScenarioEditor {
       } as GeoJSON.Feature<GeoJSON.Point>]
     } as ITrack;
     this.state.save('tracks', track);
+    this.tracks.push(new TrackViewModel(track));
   }
 
   public openEntityCollection() {
@@ -141,8 +139,6 @@ export class ScenarioEditor {
   }
 
   private trackVisibilityChanged(track: ITrackView) {
-    console.log('track changed');
-    console.log(track);
     const base = this.layers.base;
     let overlay: ILayerDefinition[];
     if (track.isVisible) {
@@ -152,5 +148,11 @@ export class ScenarioEditor {
       overlay = this.layers.overlay.filter(l => l.id !== track.id);
     }
     this.layers = { base, overlay };
+  }
+
+  private tracksToViewModels() {
+    return this.state.tracks
+      .filter(t => this.scenario.trackIds.includes(t.id as number))
+      .map(t => new TrackViewModel(t));
   }
 }

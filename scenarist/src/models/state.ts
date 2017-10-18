@@ -8,6 +8,7 @@ import { IEntityType } from './entity';
 import { Endpoint, Rest } from 'aurelia-api';
 import { MdToastService } from 'aurelia-materialize-bridge';
 import { ILayerDefinition } from 'models/layer';
+import { clone } from 'utils/utils';
 
 export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers' | 'tracks';
 
@@ -34,17 +35,17 @@ export class State {
       tracks: []
     };
 
-  public get entityTypes() { return this.store.entityTypes.map(this.clone) as IEntityType[]; }
-  public get properties() { return this.store.properties.map(this.clone) as IProperty[]; }
-  public get scenarios() { return this.store.scenarios.map(this.clone) as IScenario[]; }
-  public get baseLayers() { return this.store.baseLayers.map(this.clone) as ILayerDefinition[]; }
-  public get tracks() { return this.store.tracks.map(this.clone) as ITrack[]; }
+  public get entityTypes() { return this.store.entityTypes.map(clone) as IEntityType[]; }
+  public get properties() { return this.store.properties.map(clone) as IProperty[]; }
+  public get scenarios() { return this.store.scenarios.map(clone) as IScenario[]; }
+  public get baseLayers() { return this.store.baseLayers.map(clone) as ILayerDefinition[]; }
+  public get tracks() { return this.store.tracks.map(clone) as ITrack[]; }
 
   public get activeScenarioId() { return this.store.activeScenarioId; }
   public set activeScenarioId(id: string | number) {
     this.store.activeScenarioId = id;
     if (id) {
-      const s = this.clone(this.store.scenarios.filter(s => s.id === id).shift());
+      const s = clone(this.store.scenarios.filter(s => s.id === id).shift());
       this.ea.publish('activeScenarioChanged', s);
     } else {
       this.ea.publish('activeScenarioChanged', null);
@@ -56,7 +57,7 @@ export class State {
    */
   public get scenario() {
     return this.store.activeScenarioId
-      ? this.clone(this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift())
+      ? clone(this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift())
       : null;
   }
 
@@ -66,11 +67,12 @@ export class State {
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
     this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
+    // TODO Do not load all tracks, only the ones that are associated with the current scenario!
     this.rest.find('tracks').then(t => this.store.tracks = t).then(() => ea.publish('tracksUpdated'));
   }
 
   public getModel(modelType: ModelType) {
-    return (this.store[modelType] as IModel[]).map(this.clone);
+    return (this.store[modelType] as IModel[]).map(clone);
   }
 
   public save(modelType: ModelType, model: IModel) {
@@ -135,6 +137,4 @@ export class State {
   private toastMessage(msg: string, isError = false) {
     this.toast.show(msg, isError ? 2000 : 4000, isError ? 'red' : 'green');
   }
-
-  private clone(model: IModel) { return JSON.parse(JSON.stringify(model)); }
 }
