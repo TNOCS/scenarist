@@ -69,3 +69,8 @@ The first feature is special - it contains a polyline going through all entity p
 - Stores tracks (e.g. /tracks, /tracks/:id)
 - Logs a scenario as NVG (e.g. scenarios/log?timestep=60)
 - [optional] Plays a scenario (publish locations of entities to clients via websockets)
+
+## NEW
+- Enter coordinates by hand
+- Enter coordinates as MGRS (military grid reference system) or lat lng
+- Support KML overlays
