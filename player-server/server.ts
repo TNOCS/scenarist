@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: 31557600000
 }));
 
-var scenarioController = new ScenarioController(dbConfig);
+var scenarioController = new ScenarioController(dbConfig, playerConfig);
 /**
  * Primary app routes.
  */
@@ -61,6 +61,9 @@ app.get('/pause/:scenarioId', (req, res) => {
 });
 app.get('/stop/:scenarioId', (req, res) => {
   scenarioController.stop(req, res)
+});
+app.get('/state/:scenarioId', (req, res) => {
+  scenarioController.state(req, res)
 });
 app.get('/speed/:scenarioId/:speed', (req, res) => {
   scenarioController.speed(req, res)

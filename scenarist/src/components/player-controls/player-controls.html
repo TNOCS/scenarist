@@ -1,14 +1,23 @@
 <template>
-  Player
+  <require from="../../resources/value-converters/date-format"></require>
+
   <div class="row">
     <div class="col s12 m6">
-      <md-card md-title="Scenarios">
+      <md-card md-title="Scenarios" md-action="true">
+        <div slot="action">
+          &nbsp;
+          <div class="secondary-content">
+            <a href="#!" click.delegate="init()">
+              <i class="material-icons">refresh</i>
+            </a>
+          </div>
+        </div>
         <md-collection>
-          <md-collection-item class="accent-text" repeat.for="[id, ps] of playStates">
+          <md-collection-item class="accent-text ${activePlayScenarioId==id ? 'active' : ''}" repeat.for="[id, ps] of playStates">
             ${ ps.title }
             <div class="secondary-content">
-              <a href="#!" click.delegate="selectScenario(id)">
-                <i class="material-icons">input</i>
+              <a href="#!" click.delegate="setActiveScenario(id)">
+                <i class="material-icons black-text">input</i>
               </a>
             </div>
           </md-collection-item>
@@ -28,17 +37,65 @@
   </div>
   <div class="row" show.bind="showPlayerControls">
     <div class="col s12 m6">
-      <md-card md-title="Player controls">
-        <div class="button-row">
-          <button md-button="floating: true;" click.delegate="play()">
-            <i class="material-icons">play_arrow</i>
-          </button>
-          <button md-button="floating: true;" click.delegate="pause()">
-            <i class="material-icons">pause</i>
-          </button>
-          <button md-button="floating: true;" click.delegate="stop()">
-            <i class="material-icons">stop</i>
-          </button>
+      <md-card md-title="Player controls" md-action="true">
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="row">
+              <div class="col s3">
+                Controls
+              </div>
+              <div class="col s3 center">
+                <button md-button="floating: true;" click.delegate="play()">
+                  <i class="material-icons">play_arrow</i>
+                </button>
+              </div>
+              <div class="col s3 center">
+                <button md-button="floating: true;" click.delegate="pause()">
+                  <i class="material-icons">pause</i>
+                </button>
+              </div>
+              <div class="col s3 center">
+                <button md-button="floating: true;" click.delegate="stop()">
+                  <i class="material-icons">stop</i>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s2">
+                Speed
+              </div>
+              <div class="col s4 center">
+                <button md-button="flat: true;" click.delegate="speedMin()">
+                  <i class="material-icons">remove</i>
+                </button>
+              </div>
+              <div class="col s2 center">
+                ${activePlayScenario.speed}
+              </div>
+              <div class="col s4 center">
+                <button md-button="flat: true;" click.delegate="speedPlus()">
+                  <i class="material-icons">add</i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m6">
+            <div class="row">
+              <div class="col s12">
+                Jump to time:
+              </div>
+              <div class="col s12">
+                <md-range md-value.bind="activePlayScenario.currentTime" md-min="${activePlayScenario.startTime}" md-max="${activePlayScenario.endTime}"
+                  md-step="1000" change.delegate="onRangeChange($event)"></md-range>
+              </div>
+              <div class="col s12">
+                ${activePlayScenario.currentTime | dateFormat:'MMM Do, h:mm:ss'}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="action">
+          <md-switch md-label-on="automatic progress " md-label-off="manual progress" md-checked.bind="enablePolling" click.delegate="onPollingChange()"></md-switch>
         </div>
       </md-card>
     </div>

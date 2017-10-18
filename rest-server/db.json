@@ -16,7 +16,7 @@
       "propertyType": "textarea",
       "defaultValue": "",
       "unit": "",
-      "options": []
+      "options": ""
     }
   ],
   "entityTypes": [
@@ -60,7 +60,8 @@
       "endTime": "",
       "trackIds": [
         1,
-        2
+        2,
+        3
       ],
       "layers": {
         "baseIds": "OSM Tiles",
@@ -78,6 +79,18 @@
       "end": {
         "date": "2017-10-12T22:00:00.000Z",
         "time": "10:00"
+      }
+    },
+    {
+      "id": 2,
+      "title": "My Second scenario",
+      "start": {
+        "time": "12:00",
+        "date": "2017-10-18T22:00:00.000Z"
+      },
+      "end": {
+        "time": "14:00",
+        "date": "2017-10-19T22:00:00.000Z"
       }
     }
   ],
@@ -111,6 +124,21 @@
         }
       ],
       "id": 2
+    },
+    {
+      "entityTypeId": "BkvzrCjn-",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.394287109375,
+              51.50115610069437
+            ]
+          }
+        }
+      ],
+      "id": 3
     }
   ],
   "baseLayers": [

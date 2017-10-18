@@ -1,8 +1,8 @@
 import { IModel } from './model';
 
 export interface IScenario extends IModel {
-  start?: { data: Date; time: Date };
-  end?: { data: Date; time: Date };
+  start?: { date: Date; time: Date };
+  end?: { date: Date; time: Date };
   center?: { lat: number; lng: number; };
   zoom?: number;
   trackIds?: number[];
