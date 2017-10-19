@@ -9,14 +9,20 @@ import {
     IPlayerConfig
 } from '../config/IPlayerConfig';
 import {
-    IScenario
+    IScenario,
+    ITrack
 } from '../models/scenario';
+import {
+    IEntityType
+} from '../models/entity';
 import * as Utils from '../utils/utils';
 import {
     IScenarioState,
     PlayState,
     SerializeScenarioState
 } from '../models/playstate';
+import * as _ from 'underscore';
+import * as async from 'async';
 import * as request from 'request';
 import * as httpcodes from 'http-status-codes';
 const testJson = require('./TestJson.json');
@@ -31,6 +37,9 @@ export class ScenarioController {
 
     private scenarioStates: {
         [id: string]: IScenarioState
+    } = {};
+    private entityTypes: {
+        [id: string]: IEntityType
     } = {};
 
     constructor(public dbOptions: IDbConfig, public playerOptions: IPlayerConfig) {
@@ -68,9 +77,9 @@ export class ScenarioController {
             result[s.id.toString()] = {
                 id: s.id.toString(),
                 title: s.title,
-                currentTime: Utils.dateTimeToMillis(s.start.date, s.start.time),
-                startTime: Utils.dateTimeToMillis(s.start.date, s.start.time),
-                endTime: Utils.dateTimeToMillis(s.end.date, s.end.time),
+                currentTime: Utils.dateTimeToMillis(s.start.date.toString(), s.start.time.toString()),
+                startTime: Utils.dateTimeToMillis(s.start.date.toString(), s.start.time.toString()),
+                endTime: Utils.dateTimeToMillis(s.end.date.toString(), s.end.time.toString()),
                 speed: 1,
                 playState: PlayState.stopped
             }
@@ -178,8 +187,14 @@ export class ScenarioController {
             return;
         }
         let scenarioId = req.params['scenarioId'];
-        res.send(testJson);
-    };
+        let ftCollection = this.getCurrentSituation(scenarioId, (result) => {
+            if (!result) {
+                res.sendStatus(httpcodes.INTERNAL_SERVER_ERROR);
+                return;
+            }
+            res.send(result);
+        });
+    }
 
     /**
      * Requests a list of scenarios from a rest-source and returns it to the requestor
@@ -222,6 +237,108 @@ export class ScenarioController {
             return false;
         }
         return true;
+    }
+
+    private getCurrentSituation(scenarioId: string, cb: Function) {
+        let state: IScenarioState = this.scenarioStates[scenarioId];
+        let url = `${this.getUrl(this.dbOptions.scenarioRoute)}/${scenarioId}?_embed=tracks`;
+        request.get(url, requestOpts, (err, innerRes, body) => {
+            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
+                cb();
+                return;
+            }
+            let scenario;
+            if (typeof body == 'string') {
+                try {
+                    scenario = JSON.parse(body);
+                } catch (error) {
+                    console.warn('Error parsing scenario');
+                }
+                if (!scenario) {
+                    cb();
+                    return;
+                }
+                this.calculateCurrentSituation(scenario, cb);
+            }
+        });
+    }
+
+    private calculateCurrentSituation(scenario: IScenario, cb: Function) {
+        if (!scenario.tracks || !Array.isArray(scenario.tracks)) {
+            console.warn('No tracks found in scenario');
+            cb();
+            return;
+        }
+        let fc = Utils.createFeatureCollection();
+        this.getEntityTypes(scenario, (err) => {
+            if (err) {
+                console.warn(`Error getting entityTypes: ${err}`);
+                cb();
+                return;
+            }
+            scenario.tracks.forEach((tr) => {
+                let ft = this.convertTrackToFeature(tr);
+                if (ft) fc.features = fc.features.concat(ft);
+            })
+            cb(fc);
+        });
+    }
+
+    private getEntityTypes(scenario: IScenario, cb: Function) {
+        let entityIds = _.chain(scenario.tracks) //Get all unique entityTypes
+            .pluck('entityTypeId')
+            .uniq()
+            .value();
+        // Request entityTypes
+        async.each(entityIds, (id: string, callback: Function) => {
+            return this.getEntityType(id, callback);
+        }, (err) => {
+            if (err) {
+                cb(err);
+                return;
+            }
+            console.log(`Got ${entityIds.length} entityTypes`);
+            cb();
+        });
+    }
+
+    private getEntityType(id: string, callback: Function) {
+        let url = `${this.getUrl(this.dbOptions.entityRoute)}/${id}`;
+        request.get(url, requestOpts, (err, innerRes, body) => {
+            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
+                callback(err);
+                return;
+            }
+            let entity;
+            if (typeof body == 'string') {
+                try {
+                    entity = JSON.parse(body);
+                } catch (error) {
+                    console.warn('Error parsing entity');
+                }
+                if (!entity) {
+                    callback('Error parsing entity');
+                    return;
+                }
+                this.entityTypes[id] = entity;
+                callback(); //success
+            }
+        });
+    }
+
+    private convertTrackToFeature(track: ITrack) {
+        if (!track.features || !Array.isArray(track.features)) {
+            console.warn('No features found in track');
+            return;
+        }
+        track.features.forEach((f) => {
+            if (!f.properties) f.properties = {};
+            f.properties['sidc'] = `app6a:${this.entityTypes[track.entityTypeId].sidc}`;
+            f.properties['title'] = track.title;
+            f.properties['description'] = track.description;
+            f.id = `t${track.id}e${track.entityTypeId}`;
+        });
+        return track.features;
     }
 
     private clearScheduledStep(state: IScenarioState) {

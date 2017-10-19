@@ -22,7 +22,7 @@ export interface IProperty {
     [key: string]: any;
 }
 
-export const ICON_PROPERTY = 'icon';
+export const ICON_PROPERTY = 'sidc';
 
 /**
  * The JSON-structure that node-soap converts into a valid
@@ -115,7 +115,7 @@ export class GeojsonToNvgConverter {
         res.attributes['x'] = f.geometry.coordinates[0];
         res.attributes['y'] = f.geometry.coordinates[1];
         res.attributes['uri'] = f.id;
-        res.attributes['label'] = f.id;
+        res.attributes['label'] = (f.properties && f.properties.title ? f.properties.title : f.id);
         res.attributes['symbol'] = f.properties[ICON_PROPERTY];
         res['ExtendedData'] = {
             SimpleData: []
