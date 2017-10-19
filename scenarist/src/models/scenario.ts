@@ -1,4 +1,5 @@
-import { IModel } from './model';
+import { ITrack } from './track';
+import { IModel, IdType } from './model';
 
 export interface IScenario extends IModel {
   start?: { date: Date; time: Date };
@@ -6,8 +7,9 @@ export interface IScenario extends IModel {
   center?: { lat: number; lng: number; };
   zoom?: number;
   trackIds?: number[];
+  tracks?: ITrack[];
   layers?: {
-    baseIds?;
-    overlayIds?;
+    baseIds?: Array<IdType>;
+    overlayIds?: Array<IdType>;
   };
 }
