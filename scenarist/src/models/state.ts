@@ -1,5 +1,5 @@
 import { ITrack } from './track';
-import { IModel } from './model';
+import { IModel, IdType } from './model';
 import { IScenario } from './scenario';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { inject } from 'aurelia-framework';
@@ -14,14 +14,15 @@ export type ModelType = 'properties' | 'entityTypes' | 'scenarios' | 'baseLayers
 
 @inject(Endpoint.of('db'), MdToastService, EventAggregator)
 export class State {
+  private pScenario: IScenario;
   private store: {
-    activeScenarioId: string | number;
+    activeScenarioId: IdType;
     entityTypes: IEntityType[];
     properties: IProperty[];
     scenarios: IScenario[];
     baseLayers: ILayerDefinition[];
     /**
-     * Tracks belonging to the active scenario
+     * Tracks that are part of the active scenario.
      *
      * @type {ITrack[]}
      */
@@ -42,11 +43,15 @@ export class State {
   public get tracks() { return this.store.tracks.map(clone) as ITrack[]; }
 
   public get activeScenarioId() { return this.store.activeScenarioId; }
-  public set activeScenarioId(id: string | number) {
+  public set activeScenarioId(id: IdType) {
     this.store.activeScenarioId = id;
     if (id) {
-      const s = clone(this.store.scenarios.filter(s => s.id === id).shift());
-      this.ea.publish('activeScenarioChanged', s);
+      this.rest.findOne('scenarios', id, { '_embed': 'tracks' }).then((s) => {
+        this.pScenario = s;
+        this.store.tracks = s.tracks;
+        delete s.tracks;
+        this.ea.publish('activeScenarioChanged', this.scenario);
+      });
     } else {
       this.ea.publish('activeScenarioChanged', null);
     }
@@ -56,9 +61,7 @@ export class State {
    * Get (a copy of) the active scenario
    */
   public get scenario() {
-    return this.store.activeScenarioId
-      ? clone(this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift())
-      : null;
+    return this.pScenario ? clone(this.pScenario) : null;
   }
 
   constructor(private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {
@@ -68,22 +71,22 @@ export class State {
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
     this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
     // TODO Do not load all tracks, only the ones that are associated with the current scenario!
-    this.rest.find('tracks').then(t => this.store.tracks = t).then(() => ea.publish('tracksUpdated'));
+    // this.rest.find('tracks').then(t => this.store.tracks = t).then(() => ea.publish('tracksUpdated'));
   }
 
   public getModel(modelType: ModelType) {
     return (this.store[modelType] as IModel[]).map(clone);
   }
 
-  public save(modelType: ModelType, model: IModel) {
+  public save(modelType: ModelType, model: IModel, callback?: (model: IModel) => void) {
     if (model.id) {
-      this.update(modelType, model);
+      this.update(modelType, model, callback);
     } else {
-      this.create(modelType, model);
+      this.create(modelType, model, callback);
     }
   }
 
-  public delete(modelType: ModelType, model: IModel) {
+  public delete(modelType: ModelType, model: IModel, callback?: (model: IModel) => void) {
     const selected = this.store[modelType] as IModel[];
     const index = selected.indexOf(selected.filter(m => m.id === model.id)[0]);
     if (index < 0) { return console.warn(`Cannot find ${modelType}! Ignoring.`); }
@@ -94,11 +97,12 @@ export class State {
         model = null;
         this.ea.publish(`${modelType}Updated`, null);
         this.toastMessage('Deleted successfully.');
+        if (callback) { callback(model); }
       })
       .catch(m => this.toastMessage(`Error deleting ${modelType}!\n` + m, true));
   }
 
-  private create(modelType: ModelType, model: IModel) {
+  private create(modelType: ModelType, model: IModel, callback?: (model: IModel) => void) {
     this.rest
       .post(modelType, model)
       .then((created: IModel) => {
@@ -109,11 +113,12 @@ export class State {
           this.toastMessage('Created successfully.');
         }
         this.ea.publish(`${modelType}Updated`, created);
+        if (callback) { callback(created); }
       })
       .catch(m => this.toastMessage(`Error creating ${modelType}!\n` + m, true));
   }
 
-  private update(modelType: ModelType, model: IModel) {
+  private update(modelType: ModelType, model: IModel, callback?: (model: IModel) => void) {
     const selected = this.store[modelType] as IModel[];
     const index = selected.indexOf(selected.filter(m => m.id === model.id)[0]);
     if (index < 0) { return console.warn(`Cannot find ${modelType}! Ignoring.`); }
@@ -123,15 +128,15 @@ export class State {
         this.toastMessage('Updated successfully.');
         (this.store[modelType] as IModel[]).splice(index, 1, model);
         this.ea.publish(`${modelType}Updated`, updated);
+        if (callback) { callback(updated); }
       })
       .catch(m => this.toastMessage(`Error updating ${modelType}!\n` + m, true));
   }
 
   private addTrackToScenario(track: ITrack) {
-    const scenario = this.store.scenarios.filter(s => s.id === this.store.activeScenarioId).shift();
-    if (!scenario) { return; }
-    scenario.trackIds.push(track.id as number);
-    this.save('scenarios', scenario);
+    if (!this.pScenario) { return; }
+    this.pScenario.trackIds.push(track.id as number);
+    this.save('scenarios', this.pScenario);
   }
 
   private toastMessage(msg: string, isError = false) {

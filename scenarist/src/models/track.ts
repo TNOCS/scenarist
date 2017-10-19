@@ -1,6 +1,6 @@
-import { IPropertyView, IProperty } from 'models/property';
+import { IPropertyView } from 'models/property';
 import { FeatureViewModel } from './feature';
-import { IModel } from './model';
+import { IModel, IdType } from './model';
 
 /**
  * Actual track data object interface that will be persisted
@@ -10,6 +10,7 @@ import { IModel } from './model';
  * @extends {IModel}
  */
 export interface ITrack extends IModel {
+  scenarioId: IdType;
   entityTypeId: number;
   features: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
@@ -34,14 +35,12 @@ export class TrackViewModel implements ITrackView {
   public isSelected = false;
   public hasChanged = false;
 
-  public id: string | number;
   private pTitle: string;
   private pDescription: string;
   private pEntityTypeId: number;
   private pFeatures: Array<GeoJSON.Feature<GeoJSON.Point>>;
 
   constructor(private track: ITrack) {
-    this.id = track.id;
     this.restore();
   }
 
@@ -69,6 +68,10 @@ export class TrackViewModel implements ITrackView {
     this.pFeatures = this.track.features.map(f => new FeatureViewModel(f, this.featureHasChangedHandler));
     this.hasChanged = false;
   }
+
+  public get id() { return this.track.id; }
+
+  public get scenarioId() { return this.track.scenarioId; }
 
   public get title() { return this.pTitle; }
   public set title(t) {
