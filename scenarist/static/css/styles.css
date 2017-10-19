@@ -13,7 +13,7 @@
 }
 
 .orbat {
-    z-index: 10000;
+    z-index: 1000;
     background: transparent;
     width: 17%;
     background: transparent;
@@ -24,7 +24,7 @@
 }
 
 .prop-editor {
-    z-index: 10000;
+    z-index: 1000;
     background: transparent;
     width: 17%;
     background: transparent;
