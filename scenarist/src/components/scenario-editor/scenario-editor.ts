@@ -41,9 +41,9 @@ export class ScenarioEditor {
     this.subscriptions.push(this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
     }));
-    this.subscriptions.push(this.ea.subscribe(`scenariosUpdated`, (s: IScenario) => {
-      if (s) { this.activeScenarioChanged(s); }
-    }));
+    // this.subscriptions.push(this.ea.subscribe(`scenariosUpdated`, (s: IScenario) => {
+    //   if (s) { this.activeScenarioChanged(s); }
+    // }));
   }
 
   public detached() {
@@ -96,6 +96,7 @@ export class ScenarioEditor {
   public createEntity(entityType: IEntityType) {
     console.log(`Create new entity ${entityType.title}`);
     const track = {
+      scenarioId: this.scenario.id,
       entityTypeId: entityType.id, features: [{
         geometry: {
           type: 'Point',
@@ -103,8 +104,12 @@ export class ScenarioEditor {
         }
       } as GeoJSON.Feature<GeoJSON.Point>]
     } as ITrack;
-    this.state.save('tracks', track);
-    this.tracks.push(new TrackViewModel(track));
+    this.state.save('tracks', track, (t: ITrack) => {
+      this.tracks.push(new TrackViewModel(t));
+      const base = this.layers.base;
+      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
+      this.layers = { base, overlay };
+    });
   }
 
   public openEntityCollection() {
@@ -137,7 +142,7 @@ export class ScenarioEditor {
     const iconScale = iconHeight / et.iconSize[1];
     const iconSize = new Point(iconScale * et.iconSize[0] * iconScale, iconHeight);
     const id = track.title || track.id;
-    const f = track.features[0] || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
+    const f = track.features[0]; // || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
     const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
     const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }), opacity: ScenarioEditor.DefaultMarkerOpacity }; // http://leafletjs.com/examples/custom-icons/
     return { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
@@ -163,8 +168,6 @@ export class ScenarioEditor {
   }
 
   private tracksToViewModels() {
-    return this.state.tracks
-      .filter(t => this.scenario.trackIds.includes(t.id as number))
-      .map(t => new TrackViewModel(t));
+    return this.state.tracks.map(t => new TrackViewModel(t));
   }
 }

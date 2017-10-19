@@ -50,7 +50,12 @@ export class ScenarioMetadataEditor {
   }
 
   public addScenario() {
-    this.activeScenario = {} as IScenario;
+    this.activeScenario = {
+      layers: { baseIds: [this.state.baseLayers[0].id], overlayIds: [] },
+      center: { lat: 52.147186, lng: 5.349135 },
+      zoom: 15,
+      trackIds: []
+    } as IScenario;
     this.showScenarioSelector = true;
     this.state.save(this.modelType, this.activeScenario);
   }
