@@ -5,7 +5,7 @@
             "id": "{bbwerdsfger-000}",
             "properties": {
                 "Name": "Piet",
-                "icon": "app6a:SHGAUCATW-MO---"
+                "sidc": "app6a:SHGAUCATW-MO---"
             },
             "geometry": {
                 "type": "Point",
@@ -20,7 +20,7 @@
             "id": "{werdsfger-000}",
             "properties": {
                 "Name": "Pietsland",
-                "icon": "app6a:SHF-GS------GM-"
+                "sidc": "app6a:SHF-GS------GM-"
             },
             "geometry": {
                 "type": "Polygon",
@@ -55,7 +55,7 @@
             "id": "{mnwedhfgger-000}",
             "properties": {
                 "Name": "Pietslijn",
-                "icon": "app6a:GFC-BOAWS-----X"
+                "sidc": "app6a:GFC-BOAWS-----X"
             },
             "geometry": {
                 "type": "LineString",

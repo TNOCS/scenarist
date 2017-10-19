@@ -5,7 +5,7 @@
             "id": "{bbwerdsfger-000}",
             "properties": {
                 "Name": "Piet",
-                "icon": "app6a:SHGAUCATW-MO---",
+                "sidc": "app6a:SHGAUCATW-MO---",
                 "Nationality": "Germany"
             },
             "geometry": {
@@ -20,7 +20,7 @@
             "id": "{myftqwer-001}",
             "properties": {
                 "Name": "Kees",
-                "icon": "app6a:SFGPUCDMM--DBE-"
+                "sidc": "app6a:SFGPUCDMM--DBE-"
             },
             "geometry": {
                 "type": "Point",
@@ -35,7 +35,7 @@
             "id": "{werdsfger-000}",
             "properties": {
                 "Name": "Pietsland",
-                "icon": "app6a:SHF-GS------GM-"
+                "sidc": "app6a:SHF-GS------GM-"
             },
             "geometry": {
                 "type": "Polygon",
@@ -70,7 +70,7 @@
             "id": "{mnwedhfgger-000}",
             "properties": {
                 "Name": "Pietslijn",
-                "icon": "app6a:GFC-BOAWS---GMX"
+                "sidc": "app6a:GFC-BOAWS---GMX"
             },
             "geometry": {
                 "type": "LineString",
