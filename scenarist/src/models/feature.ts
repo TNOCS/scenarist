@@ -1,10 +1,10 @@
 import { clone } from 'utils/utils';
-import { PropertyType } from 'models/property';
+import { IPropertyView } from 'models/property';
 
-export class FeatureViewModel implements GeoJSON.Feature<GeoJSON.Point> {
+export class FeatureViewModel {
   public type: 'Feature';
   private pGeometry: GeoJSON.Point;
-  private pProperties: PropertyType;
+  private pProperties: { [key: string]: IPropertyView };
 
   constructor(private feature: GeoJSON.Feature<GeoJSON.Point>, private hasChangedHandler: (f: GeoJSON.Feature<GeoJSON.Point>) => void) {
     this.pGeometry = clone(feature.geometry);

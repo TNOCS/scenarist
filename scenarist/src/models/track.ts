@@ -1,6 +1,7 @@
 import { IPropertyView } from 'models/property';
 import { FeatureViewModel } from './feature';
 import { IModel, IdType } from './model';
+import { clone } from 'utils/utils';
 
 /**
  * Actual track data object interface that will be persisted
@@ -23,11 +24,14 @@ export interface ITrack extends IModel {
  * @extends {ITrack}
  */
 export interface ITrackView extends ITrack {
+  activeTimeIndex: string;
+  activeFeature: FeatureViewModel;
   isVisible: boolean;
   isSelected: boolean;
   hasChanged: boolean;
   applyChanges(): ITrack;
   restore(): void;
+  addFeature(): void;
 }
 
 export class TrackViewModel implements ITrackView {
@@ -38,7 +42,8 @@ export class TrackViewModel implements ITrackView {
   private pTitle: string;
   private pDescription: string;
   private pEntityTypeId: number;
-  private pFeatures: Array<GeoJSON.Feature<GeoJSON.Point>>;
+  private pFeatures: FeatureViewModel[];
+  private pActiveTimeIndex = '0';
 
   constructor(private track: ITrack) {
     this.restore();
@@ -47,15 +52,16 @@ export class TrackViewModel implements ITrackView {
   public applyChanges() {
     this.track.title = this.pTitle;
     this.track.description = this.pDescription;
-    const fromFeature = this.pFeatures[0];
-    const toFeature = this.track.features[0];
-    if (!fromFeature || !toFeature) { return; }
-    const props: { [key: string]: IPropertyView } = fromFeature.properties;
-    if (!toFeature.properties) { toFeature.properties = {}; }
-    for (const key in props) {
-      if (!props.hasOwnProperty(key)) { continue; }
-      const prop = props[key];
-      toFeature.properties[prop.id] = prop.value;
+    for (let i = 0; i < this.pFeatures.length; i++) {
+      const fromFeature = this.pFeatures[i];
+      const toFeature = this.track.features[i];
+      toFeature.geometry.coordinates = fromFeature.geometry.coordinates;
+      const fromProperties = fromFeature.properties;
+      if (!toFeature.properties) { toFeature.properties = {}; }
+      for (const key in fromProperties) {
+        if (!fromProperties.hasOwnProperty(key)) { continue; }
+        toFeature.properties[key] = fromProperties[key];
+      }
     }
     this.hasChanged = false;
     return this.track;
@@ -72,6 +78,17 @@ export class TrackViewModel implements ITrackView {
   public get id() { return this.track.id; }
 
   public get scenarioId() { return this.track.scenarioId; }
+
+  /**
+   * Active time index extracts the key frame.
+   * It is a string, so I can bind it in the select options.
+   *
+   * @memberof TrackViewModel
+   */
+  public get activeTimeIndex() { return this.pActiveTimeIndex; }
+  public set activeTimeIndex(i) { this.pActiveTimeIndex = `${i}`; }
+
+  public get activeFeature() { return this.pFeatures[this.pActiveTimeIndex]; }
 
   public get title() { return this.pTitle; }
   public set title(t) {
@@ -99,6 +116,13 @@ export class TrackViewModel implements ITrackView {
     if (this.pFeatures === f) { return; }
     this.pFeatures = f;
     this.hasChanged = true;
+  }
+
+  public addFeature() {
+    const newFeature = clone(this.track.features[this.track.features.length - 1]);
+    this.track.features.push(newFeature);
+    this.features.push(new FeatureViewModel(newFeature, this.featureHasChangedHandler));
+    this.activeTimeIndex = `${this.features.length - 1}`;
   }
 
   private featureHasChangedHandler(feature: FeatureViewModel) {

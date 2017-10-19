@@ -1,3 +1,4 @@
+import { IProperty } from 'models/property';
 import { ITrack } from './track';
 import { IModel, IdType } from './model';
 import { IScenario } from './scenario';
@@ -36,6 +37,13 @@ export class State {
       tracks: []
     };
 
+  private defaultProperties: IProperty[] = [{
+    id: 'time',
+    title: 'Time',
+    description: 'Keyframe time',
+    propertyType: 'time',
+    isPermanent: true
+  }];
   public get entityTypes() { return this.store.entityTypes.map(clone) as IEntityType[]; }
   public get properties() { return this.store.properties.map(clone) as IProperty[]; }
   public get scenarios() { return this.store.scenarios.map(clone) as IScenario[]; }
@@ -65,7 +73,7 @@ export class State {
   }
 
   constructor(private rest: Rest, private toast: MdToastService, private ea: EventAggregator) {
-    this.rest.find('properties').then(p => this.store.properties = p).then(() => ea.publish('propertiesUpdated'));
+    this.rest.find('properties').then(p => this.store.properties = [...this.defaultProperties, ...p]).then(() => ea.publish('propertiesUpdated'));
     this.rest.find('entityTypes').then(et => this.store.entityTypes = et).then(() => ea.publish('entityTypesUpdated'));
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));

@@ -1,4 +1,5 @@
-import { IModel } from './model';
+import { IProperty } from 'models/property';
+import { IModel, IdType } from './model';
 import { PointExpression } from 'leaflet';
 
 export interface IEntityType extends IModel {
@@ -20,14 +21,14 @@ export interface IEntityType extends IModel {
    */
   sidc?: string;
   color?: string;
-  propertyIds: Array<string | number>;
+  propertyIds: Array<IdType>;
 }
 
 export interface IEntity {
-  id: string | number;
+  id: IdType;
   entityId: string;
   title: string;
   callSign?: string;
   description?: string;
-  properties?: { [propertyId: string]: string | number };
+  properties?: IProperty;
 }

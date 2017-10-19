@@ -31,6 +31,7 @@
               <option value="textarea">textarea</option>
               <option value="number">number</option>
               <option value="option">option</option>
+              <option value="time">time</option>
             </select>
             <md-input md-label="Default value" md-value.bind="activeProperty.defaultValue"></md-input>
             <md-input md-label="Unit" md-value.bind="activeProperty.unit"></md-input>
@@ -39,10 +40,10 @@
           </div>
         </md-card>
         <div class="button-row right">
-          <button md-button class="modal-trigger" href="#deletePropModal">
+          <button md-button="disabled.bind: activeProperty.isPermanent" class="modal-trigger" href="#deletePropModal">
             <i class="material-icons">delete</i>
           </button>
-          <button md-button click.delegate="saveProperty()">
+          <button md-button="disabled.bind: activeProperty.isPermanent" click.delegate="saveProperty()">
             <i class="material-icons">save</i>
           </button>
         </div>

@@ -4,24 +4,33 @@
       <ul md-collapsible="accordion: true;">
         <!-- DO NOT USE if.bind: md-input will not be initialized properly. -->
         <li repeat.for="track of tracks" show.bind="track.isSelected">
-          <div class="collapsible-header">${track.title || track.id}</div>
+        <div class="collapsible-header">${track.title || track.id}</div>
           <div class="collapsible-body">
+            <select md-select="label: select key frame" value.two-way="track.activeTimeIndex" change.delegate="timeIndexChanged(track)">
+              <option value="" disabled selected>select key frame</option>
+              <option repeat.for="feature of track.features" value.bind="$index">${ $index }</option>
+            </select>
             <md-input md-label="Name" md-value.bind="track.title"></md-input>
             <md-input md-label="Description" md-value.bind="track.description"></md-input>
-            <div if.bind="track.isSelected" repeat.for="prop of createEntityViewModel(track)">
-              <md-input md-label.one-time="prop.title" md-value.bind="prop.value"></md-input>
+            <div if.bind="track.isSelected" repeat.for="prop of createEntityViewModel(track.activeTimeIndex, track)">
+              <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType"
+                md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>
             </div>
             <div slot="action">
-              <a href="!#" click.delegate="save(track)">
+              <a href="!#" click.delegate="add(track)" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new key frame">
+                <i class="material-icons">playlist_add</i>
+              </a>
+              <a href="!#" click.delegate="delete(track)" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete entity or key frame">
+                <i class="material-icons">delete_forever</i>
+              </a>
+              <a href="!#" click.delegate="save(track)" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save properties">
                 <i class="material-icons">save</i>
               </a>
-              <!-- <button md-button md-button="disabled.bind: !track.hasChanged" click.delegate="save(track)">
-                <i class="material-icons">save</i>
-              </button> -->
             </div>
           </div>
         </li>
       </ul>
     </div>
   </md-card>
+
 </template>

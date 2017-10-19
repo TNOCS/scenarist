@@ -20,28 +20,43 @@ export class EntityPropertyEditorCustomElement {
     this.scenario = this.state.scenario;
     this.entityTypes = this.state.entityTypes;
     this.properties = this.state.properties;
+    ($('.tooltipped') as any).tooltip({delay: 50});
   }
 
-  public createEntityViewModel(track: ITrackView) {
+  public createEntityViewModel(featureIndex: string, track: ITrackView) {
     const et = this.entityTypes.filter(e => e.id === track.entityTypeId).shift();
     if (!et) { return; }
-    const f = track.features[0];
+    const f = track.features[+featureIndex];
+    if (!f) { return; }
+    if (!f.properties) { f.properties = {}; }
     const props = this.properties
       .filter(p => et.propertyIds.includes(p.id))
       .map(p => {
         const pv = clone(p) as IPropertyView;
-        pv.value = f && f.properties && f.properties.hasOwnProperty(p.id)
+        pv.value = f.properties.hasOwnProperty(p.id) && f.properties[p.id]
           ? f.properties[p.id]
           : p.defaultValue;
+        f.properties[p.id] = pv.value;
         return pv;
       });
-    f.properties = props;
     return props;
   }
 
   public save(track: ITrackView) {
     const t = track.applyChanges();
     if (t) { this.state.save('tracks', t); }
+  }
+
+  public add(track: ITrackView) {
+    track.addFeature();
+  }
+
+  public timeIndexChanged(track: ITrackView) {
+    this.ea.publish('timeIndexChanged', track);
+  }
+
+  public delete(track: ITrackView) {
+    this.ea.publish('deleteTrack', track);
   }
 
   public restore(track: ITrackView) {
