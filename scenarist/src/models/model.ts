@@ -1,5 +1,7 @@
+export type IdType = string | number;
+
 export interface IModel {
-  id: string | number;
+  id: IdType;
   title?: string;
   description?: string;
 }

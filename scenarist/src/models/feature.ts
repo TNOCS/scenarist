@@ -1,6 +1,5 @@
 import { clone } from 'utils/utils';
-
-export type PropertyType = {[key: string]: string | number | string[] | number[]};
+import { PropertyType } from 'models/property';
 
 export class FeatureViewModel implements GeoJSON.Feature<GeoJSON.Point> {
   public type: 'Feature';
