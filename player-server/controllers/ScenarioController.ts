@@ -81,6 +81,7 @@ export class ScenarioController {
         if (!scenarioArr || !Array.isArray(scenarioArr)) return;
         var result = {};
         scenarioArr.forEach((s) => {
+            if (!s.start || !s.start.date || !s.start.time || !s.end || !s.end.date || !s.end.time) return;
             result[s.id.toString()] = {
                 id: s.id.toString(),
                 title: s.title,
@@ -245,6 +246,7 @@ export class ScenarioController {
         // Check if scenarioId exists
         let scenarioId = req.params['scenarioId'];
         if (!this.scenarioStates.hasOwnProperty(scenarioId)) {
+            this.initScenarios(); //Check if the scenario was just added
             res.sendStatus(httpcodes.NOT_ACCEPTABLE);
             return false;
         }
