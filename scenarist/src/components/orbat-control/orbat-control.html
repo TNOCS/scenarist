@@ -8,6 +8,10 @@
             <i show.bind="track.isVisible" class="material-icons">visibility</i>
             <i show.bind="!track.isVisible" class="material-icons">visibility_off</i>
           </a>
+          <a href="#!" click.delegate="toggleSelection(track)">
+            <i show.bind="track.isSelected" class="material-icons">check_box</i>
+            <i show.bind="!track.isSelected" class="material-icons">check_box_outline_blank</i>
+          </a>
         </div>
       </md-collection-item>
     </md-collection>
