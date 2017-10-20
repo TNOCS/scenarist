@@ -1,4 +1,3 @@
-import { IProperty } from 'models/property';
 import { ITrack } from './track';
 import { IModel, IdType } from './model';
 import { IScenario } from './scenario';
