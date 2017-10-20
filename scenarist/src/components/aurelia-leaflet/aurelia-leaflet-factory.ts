@@ -3,7 +3,13 @@ import { AureliaLeafletException } from './aurelia-leaflet-exceptions';
 
 export default class LayerFactory {
 
-  constructor(private L) {}
+  constructor(private L) {
+    L.Marker.extend({
+      options: {
+        id: ''
+      }
+    });
+  }
 
   public getLayer(layer) {
     if (!layer.hasOwnProperty('type')) {
@@ -90,6 +96,9 @@ export default class LayerFactory {
     }
     if (layer.hasOwnProperty('click')) {
       marker.on('click', (m) => layer.click(m));
+    }
+    if (layer.hasOwnProperty('id')) {
+      marker.options.id = layer.id;
     }
     return marker;
   }
