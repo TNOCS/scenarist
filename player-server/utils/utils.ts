@@ -24,3 +24,14 @@ export function createPointFeature(lon: number, lat: number, properties?: any) {
     }
     return gjson;
 }
+
+export function compareTimeFeatures(a: GeoJSON.Feature<any>, b: GeoJSON.Feature<any>) {
+    return timeStringToMinutes(a.properties.time) - timeStringToMinutes(b.properties.time);
+}
+
+export function timeStringToMinutes(t: string) {
+    let hourMinute = t.match(/(\d+)(:)(\d+)/);
+    if (!hourMinute || hourMinute.length < 4) return 0;
+    let minutes = (+hourMinute[1] + (60 * +hourMinute[3]));
+    return minutes;
+}

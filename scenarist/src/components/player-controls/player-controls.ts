@@ -66,7 +66,7 @@ export class PlayerControlsCustomElement {
   }
 
   public speed(speed: number) {
-    let urlPath = `speed/${this.activePlayScenarioId}`;
+    let urlPath = `speed/${this.activePlayScenarioId}/${speed}`;
     this.rest.find(urlPath).then(ps => {
       this.playStates.set(ps.id.toString(), ps);
       this.setActiveScenario(ps.id);

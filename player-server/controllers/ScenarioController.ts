@@ -24,8 +24,7 @@ import {
     PlayState,
     SerializeScenarioState
 } from '../models/playstate';
-import * as _ from 'underscore';
-import * as async from 'async';
+import {InterpolationController} from './InterpolationController';
 import * as request from 'request';
 import * as httpcodes from 'http-status-codes';
 const testJson = require('./TestJson.json');
@@ -38,6 +37,7 @@ export class ScenarioController {
 
     private TIMESTEP: number = 1000;
 
+    private interpolationCtrl: InterpolationController;
     private scenarioStates: {
         [id: string]: IScenarioState
     } = {};
@@ -50,6 +50,7 @@ export class ScenarioController {
 
     constructor(public dbOptions: IDbConfig, public playerOptions: IPlayerConfig) {
         this.TIMESTEP = playerOptions.millisPerTimeStep;
+        this.interpolationCtrl = new InterpolationController(dbOptions, playerOptions);
         this.initScenarios();
     }
 
@@ -105,6 +106,7 @@ export class ScenarioController {
         this.scenarioStates[scenarioId].playState = PlayState.playing;
         this.step(scenarioId, true);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
+        this.printStatus(this.scenarioStates[scenarioId]);
     };
 
     private step(scenarioId: string, firstCall: boolean = false) {
@@ -114,7 +116,7 @@ export class ScenarioController {
             if (state.currentTime > state.endTime) {
                 state.playState = PlayState.stopped;
             }
-            console.log(`Scenario ${scenarioId} ${PlayState[state.playState]} at ${new Date(state.currentTime).toString()}`)
+            // console.log(`Scenario ${scenarioId} ${PlayState[state.playState]} at ${new Date(state.currentTime).toString()}`)
         }
         this.clearScheduledStep(state);
         state.stepHandle = setTimeout(() => {
@@ -129,6 +131,7 @@ export class ScenarioController {
         this.scenarioStates[scenarioId].playState = PlayState.paused;
         this.clearScheduledStep(this.scenarioStates[scenarioId]);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
+        this.printStatus(this.scenarioStates[scenarioId]);
     };
 
     public stop(req: Request, res: Response) {
@@ -139,6 +142,7 @@ export class ScenarioController {
         this.scenarioStates[scenarioId].currentTime = this.scenarioStates[scenarioId].startTime;
         this.clearScheduledStep(this.scenarioStates[scenarioId]);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
+        this.printStatus(this.scenarioStates[scenarioId]);
     };
 
     public reload(req: Request, res: Response) {
@@ -168,12 +172,13 @@ export class ScenarioController {
 
         let scenarioId = req.params['scenarioId'];
         let speed = +req.params['speed'];
-        if (speed <= 0 || speed > 1000) {
+        if (speed <= 0 || speed > 4096) {
             res.sendStatus(httpcodes.NOT_ACCEPTABLE);
             return;
         }
         this.scenarioStates[scenarioId].speed = speed;
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
+        this.printStatus(this.scenarioStates[scenarioId]);
     };
 
     public state(req: Request, res: Response) {
@@ -193,7 +198,8 @@ export class ScenarioController {
             return;
         }
         let scenarioId = req.params['scenarioId'];
-        let ftCollection = this.getCurrentSituation(scenarioId, (result) => {
+        let state = this.scenarioStates[scenarioId];
+        let ftCollection = this.interpolationCtrl.getCurrentSituation(state, (result) => {
             if (!result) {
                 res.sendStatus(httpcodes.INTERNAL_SERVER_ERROR);
                 return;
@@ -245,154 +251,14 @@ export class ScenarioController {
         return true;
     }
 
-    private getCurrentSituation(scenarioId: string, cb: Function) {
-        let state: IScenarioState = this.scenarioStates[scenarioId];
-        let url = `${this.getUrl(this.dbOptions.scenarioRoute)}/${scenarioId}?_embed=tracks`;
-        request.get(url, requestOpts, (err, innerRes, body) => {
-            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
-                return cb();
-            }
-            let scenario;
-            if (typeof body == 'string') {
-                try {
-                    scenario = JSON.parse(body);
-                } catch (error) {
-                    console.warn('Error parsing scenario');
-                }
-                if (!scenario) {
-                    return cb();
-                }
-                this.calculateCurrentSituation(scenario, cb);
-            }
-        });
-    }
-
-    private calculateCurrentSituation(scenario: IScenario, cb: Function) {
-        if (!scenario.tracks || !Array.isArray(scenario.tracks)) {
-            console.warn('No tracks found in scenario');
-            return cb();
-        }
-        let fc = Utils.createFeatureCollection();
-        this.getEntityTypes(scenario, (err) => {
-            if (err) {
-                console.warn(`Error getting entityTypes: ${err}`);
-                return cb();
-            }
-            scenario.tracks.forEach((tr) => {
-                let ft = this.convertTrackToFeature(tr);
-                if (ft) fc.features = fc.features.concat(ft);
-            })
-            cb(fc);
-        });
-    }
-
-    private getEntityTypes(scenario: IScenario, cb: Function) {
-        // Extract all unique entityTypes
-        let entityIds = _.chain(scenario.tracks)
-            .pluck('entityTypeId')
-            .uniq()
-            .value();
-        // Request entityTypes from db
-        async.each(entityIds, (id: string, callback: Function) => {
-            return this.getEntityType(id, callback);
-        }, (err) => {
-            if (err) {
-                return cb(err);
-            }
-            console.log(`Got ${entityIds.length} entityTypes`);
-            cb();
-        });
-    }
-
-    private getEntityType(id: string, callback: Function) {
-        let url = `${this.getUrl(this.dbOptions.entityRoute)}/${id}`;
-        request.get(url, requestOpts, (err, innerRes, body) => {
-            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
-                return callback(err);
-            }
-            let entity;
-            if (typeof body == 'string') {
-                try {
-                    entity = JSON.parse(body);
-                } catch (error) {
-                    console.warn('Error parsing entity');
-                }
-                if (!entity) {
-                    return callback('Error parsing entity');
-                }
-                this.entityTypes[id] = entity;
-                if (entity.hasOwnProperty('propertyIds')) {
-                    this.getPropertyTypes(entity.propertyIds, (err) => {
-                        callback(err);
-                    });
-                } else {
-                    callback(); //success
-                }
-            }
-        });
-    }
-
-    private getPropertyTypes(propertyIds: string[], cb: Function) {
-        if (!propertyIds || !Array.isArray(propertyIds)) return cb();
-        // Request propertyTypes from db
-        async.each(propertyIds, (id: string, callback: Function) => {
-            return this.getPropertyType(id, callback);
-        }, (err) => {
-            if (err) {
-                return cb(err);
-            }
-            console.log(`Got ${propertyIds.length} propertyTypes`);
-            cb();
-        });
-    }
-
-    private getPropertyType(id: string, callback: Function) {
-        let url = `${this.getUrl(this.dbOptions.propertyRoute)}/${id}`;
-        request.get(url, requestOpts, (err, innerRes, body) => {
-            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
-                return callback(err);
-            }
-            let property;
-            if (typeof body == 'string') {
-                try {
-                    property = JSON.parse(body);
-                } catch (error) {
-                    console.warn('Error parsing property');
-                }
-                if (!property) {
-                    return callback('Error parsing property');
-                }
-                this.propertyTypes[id] = property;
-                callback(); //success
-            }
-        });
-    }
-
-    private convertTrackToFeature(track: ITrack) {
-        if (!track.features || !Array.isArray(track.features)) {
-            console.warn('No features found in track');
-            return;
-        }
-        track.features.forEach((f) => {
-            if (!f.properties) f.properties = {};
-            Object.keys(f.properties).forEach((key) => {
-                if (this.propertyTypes.hasOwnProperty(key)) {
-                    f.properties[this.propertyTypes[key].title] = f.properties[key];
-                    delete f.properties[key];
-                }
-            });
-            f.properties['sidc'] = `app6a:${this.entityTypes[track.entityTypeId].sidc}`;
-            f.properties['title'] = track.title;
-            f.properties['description'] = track.description;
-            f.id = `t${track.id}e${track.entityTypeId}`;
-        });
-        return track.features;
-    }
-
     private clearScheduledStep(state: IScenarioState) {
         if (state && state.stepHandle) {
             clearTimeout(state.stepHandle);
         }
+    }
+
+    private printStatus(state: IScenarioState) {
+        console.log(`Scenario ${state.id} ${PlayState[state.playState]} at ${new Date(state.currentTime).toString()}(speed: ${state.speed}x)`);
     }
 
     private getUrl(route: string) {
