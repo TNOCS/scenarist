@@ -1,3 +1,4 @@
+import { ITrackView } from 'models/track';
 import { IPropertyView } from 'models/property';
 import { FeatureViewModel } from './feature';
 import { IModel, IdType } from './model';
@@ -119,10 +120,10 @@ export class TrackViewModel implements ITrackView {
   }
 
   public addFeature() {
-    const newFeature = clone(this.track.features[this.track.features.length - 1]);
-    this.track.features.push(newFeature);
+    const newFeature = clone({ geometry: this.activeFeature.geometry, properties: this.activeFeature.properties });
+    this.track.features.splice(+this.activeTimeIndex, 0, newFeature);
     this.features.push(new FeatureViewModel(newFeature, this.featureHasChangedHandler));
-    this.activeTimeIndex = `${this.features.length - 1}`;
+    this.activeTimeIndex = `${+this.activeTimeIndex + 1}`;
   }
 
   private featureHasChangedHandler(feature: FeatureViewModel) {

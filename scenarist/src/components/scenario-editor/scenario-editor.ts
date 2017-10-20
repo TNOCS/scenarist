@@ -11,7 +11,6 @@ import { MdModal } from 'aurelia-materialize-bridge';
 
 @inject(State, EventAggregator)
 export class ScenarioEditor {
-  private static DefaultMarkerOpacity = 0.7;
   private static DefaultIconHeight = 48;
 
   public isActive = false;
@@ -164,8 +163,10 @@ export class ScenarioEditor {
     const id = track.id || this.tracks.length;
     const f = track.features[track.activeTimeIndex]; // || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
     const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
-    const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }), opacity: ScenarioEditor.DefaultMarkerOpacity }; // http://leafletjs.com/examples/custom-icons/
+    // const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize, className: (track.isSelected ? 'marker-selected' : '') }) }; // http://leafletjs.com/examples/custom-icons/
+    const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
     const marker = { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
+    if (track.isSelected) { setTimeout(() => this.trackSelectionChanged(track)); }
     return marker;
   }
 
@@ -207,14 +208,11 @@ export class ScenarioEditor {
   }
 
   private trackSelectionChanged(track: ITrackView) {
-    // const marker = this.layers.overlay.filter(m => m.options && (m.options as any).id === track.id)
-    // const marker = this.layers.overlay.filter(o => o.id === track.id).shift() as any;
     this.map.eachLayer((l: Marker) => {
       if (l.hasOwnProperty('options') && l.options.hasOwnProperty('id') && (l.options as any).id === track.id) {
         this.setMarkerSelectionMode(l, track);
       }
     });
-    // this.toggleMarkerSelection(marker, track);
   }
 
   private trackVisibilityChanged(track: ITrackView) {
