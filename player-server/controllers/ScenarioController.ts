@@ -15,6 +15,9 @@ import {
 import {
     IEntityType
 } from '../models/entity';
+import {
+    IProperty
+} from '../models/property';
 import * as Utils from '../utils/utils';
 import {
     IScenarioState,
@@ -40,6 +43,9 @@ export class ScenarioController {
     } = {};
     private entityTypes: {
         [id: string]: IEntityType
+    } = {};
+    private propertyTypes: {
+        [id: string]: IProperty;
     } = {};
 
     constructor(public dbOptions: IDbConfig, public playerOptions: IPlayerConfig) {
@@ -244,8 +250,7 @@ export class ScenarioController {
         let url = `${this.getUrl(this.dbOptions.scenarioRoute)}/${scenarioId}?_embed=tracks`;
         request.get(url, requestOpts, (err, innerRes, body) => {
             if (err || innerRes.statusCode !== httpcodes.OK || !body) {
-                cb();
-                return;
+                return cb();
             }
             let scenario;
             if (typeof body == 'string') {
@@ -255,8 +260,7 @@ export class ScenarioController {
                     console.warn('Error parsing scenario');
                 }
                 if (!scenario) {
-                    cb();
-                    return;
+                    return cb();
                 }
                 this.calculateCurrentSituation(scenario, cb);
             }
@@ -266,15 +270,13 @@ export class ScenarioController {
     private calculateCurrentSituation(scenario: IScenario, cb: Function) {
         if (!scenario.tracks || !Array.isArray(scenario.tracks)) {
             console.warn('No tracks found in scenario');
-            cb();
-            return;
+            return cb();
         }
         let fc = Utils.createFeatureCollection();
         this.getEntityTypes(scenario, (err) => {
             if (err) {
                 console.warn(`Error getting entityTypes: ${err}`);
-                cb();
-                return;
+                return cb();
             }
             scenario.tracks.forEach((tr) => {
                 let ft = this.convertTrackToFeature(tr);
@@ -285,17 +287,17 @@ export class ScenarioController {
     }
 
     private getEntityTypes(scenario: IScenario, cb: Function) {
-        let entityIds = _.chain(scenario.tracks) //Get all unique entityTypes
+        // Extract all unique entityTypes
+        let entityIds = _.chain(scenario.tracks)
             .pluck('entityTypeId')
             .uniq()
             .value();
-        // Request entityTypes
+        // Request entityTypes from db
         async.each(entityIds, (id: string, callback: Function) => {
             return this.getEntityType(id, callback);
         }, (err) => {
             if (err) {
-                cb(err);
-                return;
+                return cb(err);
             }
             console.log(`Got ${entityIds.length} entityTypes`);
             cb();
@@ -306,8 +308,7 @@ export class ScenarioController {
         let url = `${this.getUrl(this.dbOptions.entityRoute)}/${id}`;
         request.get(url, requestOpts, (err, innerRes, body) => {
             if (err || innerRes.statusCode !== httpcodes.OK || !body) {
-                callback(err);
-                return;
+                return callback(err);
             }
             let entity;
             if (typeof body == 'string') {
@@ -317,10 +318,51 @@ export class ScenarioController {
                     console.warn('Error parsing entity');
                 }
                 if (!entity) {
-                    callback('Error parsing entity');
-                    return;
+                    return callback('Error parsing entity');
                 }
                 this.entityTypes[id] = entity;
+                if (entity.hasOwnProperty('propertyIds')) {
+                    this.getPropertyTypes(entity.propertyIds, (err) => {
+                        callback(err);
+                    });
+                } else {
+                    callback(); //success
+                }
+            }
+        });
+    }
+
+    private getPropertyTypes(propertyIds: string[], cb: Function) {
+        if (!propertyIds || !Array.isArray(propertyIds)) return cb();
+        // Request propertyTypes from db
+        async.each(propertyIds, (id: string, callback: Function) => {
+            return this.getPropertyType(id, callback);
+        }, (err) => {
+            if (err) {
+                return cb(err);
+            }
+            console.log(`Got ${propertyIds.length} propertyTypes`);
+            cb();
+        });
+    }
+
+    private getPropertyType(id: string, callback: Function) {
+        let url = `${this.getUrl(this.dbOptions.propertyRoute)}/${id}`;
+        request.get(url, requestOpts, (err, innerRes, body) => {
+            if (err || innerRes.statusCode !== httpcodes.OK || !body) {
+                return callback(err);
+            }
+            let property;
+            if (typeof body == 'string') {
+                try {
+                    property = JSON.parse(body);
+                } catch (error) {
+                    console.warn('Error parsing property');
+                }
+                if (!property) {
+                    return callback('Error parsing property');
+                }
+                this.propertyTypes[id] = property;
                 callback(); //success
             }
         });
@@ -333,6 +375,12 @@ export class ScenarioController {
         }
         track.features.forEach((f) => {
             if (!f.properties) f.properties = {};
+            Object.keys(f.properties).forEach((key) => {
+                if (this.propertyTypes.hasOwnProperty(key)) {
+                    f.properties[this.propertyTypes[key].title] = f.properties[key];
+                    delete f.properties[key];
+                }
+            });
             f.properties['sidc'] = `app6a:${this.entityTypes[track.entityTypeId].sidc}`;
             f.properties['title'] = track.title;
             f.properties['description'] = track.description;
