@@ -6,6 +6,7 @@
     "Database": {
         "host": "http://localhost:3000",
         "scenarioRoute": "/scenarios",
-        "entityRoute": "/entityTypes"
+        "entityRoute": "/entityTypes",
+        "propertyRoute": "/properties"
     }
 }
