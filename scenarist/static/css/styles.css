@@ -14,24 +14,21 @@
 
 .orbat {
     z-index: 1000;
-    background: transparent;
-    width: 17%;
-    background: transparent;
     position: absolute;
     left: 20px;
     top: 70px;
-    width: 300px;
+    width: 250px;
+    max-height: 80vh;
 }
 
 .prop-editor {
+    background: white;
     z-index: 1000;
-    background: transparent;
-    width: 17%;
-    background: transparent;
     position: absolute;
     right: 20px;
     top: 70px;
     width: 300px;
+    max-height: 80vh;
 }
 
 .marker-selected {
