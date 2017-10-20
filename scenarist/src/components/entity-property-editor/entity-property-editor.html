@@ -13,7 +13,7 @@
             <md-input md-label="Name" md-value.bind="track.title"></md-input>
             <md-input md-label="Description" md-value.bind="track.description"></md-input>
             <div if.bind="track.isSelected" repeat.for="prop of createEntityViewModel(track.activeTimeIndex, track)">
-              <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType"
+              <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType" md-step="1"
                 md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>
             </div>
             <div slot="action">

@@ -41,14 +41,12 @@ export class ScenarioEditor {
     this.resizeMap();
     this.subscriptions.push(this.ea.subscribe('aurelia-leaflet', (ev) => this.mapEvent(ev)));
     this.subscriptions.push(this.ea.subscribe('trackVisibilityChanged', (track: ITrackView) => this.trackVisibilityChanged(track)));
+    this.subscriptions.push(this.ea.subscribe('trackSelectionChanged', (track: ITrackView) => this.trackSelectionChanged(track)));
     this.subscriptions.push(this.ea.subscribe('timeIndexChanged', (track: ITrackView) => this.timeIndexChanged(track)));
     this.subscriptions.push(this.ea.subscribe('deleteTrack', (track: ITrackView) => this.deleteTrack(track)));
     this.subscriptions.push(this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
     }));
-    // this.subscriptions.push(this.ea.subscribe(`scenariosUpdated`, (s: IScenario) => {
-    //   if (s) { this.activeScenarioChanged(s); }
-    // }));
   }
 
   public detached() {
@@ -89,7 +87,7 @@ export class ScenarioEditor {
         this.openInfoBox();
         break;
       default:
-        console.log(ev);
+        console.warn(ev);
         break;
     }
   }
@@ -99,7 +97,7 @@ export class ScenarioEditor {
   }
 
   public createEntity(entityType: IEntityType) {
-    console.log(`Create new entity ${entityType.title}`);
+    console.warn(`Create new entity ${entityType.title}`);
     const track = {
       scenarioId: this.scenario.id,
       entityTypeId: entityType.id, features: [{
@@ -112,7 +110,7 @@ export class ScenarioEditor {
     this.state.save('tracks', track, (t: ITrack) => {
       this.tracks.push(new TrackViewModel(t));
       const base = this.layers.base;
-      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
+      const overlay: ILayerDefinition[] = this.tracks.map(t2 => this.createMarker(t2));
       this.layers = { base, overlay };
     });
   }
@@ -126,7 +124,7 @@ export class ScenarioEditor {
   }
 
   public deleteEntity() {
-    console.log('Delete entity called');
+    console.warn('Delete entity called');
     const index = this.tracks.indexOf(this.deletingTrack);
     const id = this.deletingTrack.id;
     this.state.delete('tracks', this.deletingTrack, () => {
@@ -138,7 +136,7 @@ export class ScenarioEditor {
   }
 
   public deleteKeyframe() {
-    console.log('Delete keyframe called');
+    console.warn('Delete keyframe called');
     delete this.deletingTrack.features[this.deletingTrack.activeTimeIndex];
     this.state.save('tracks', this.deletingTrack);
   }
@@ -167,26 +165,32 @@ export class ScenarioEditor {
     const f = track.features[track.activeTimeIndex]; // || this.state.tracks.filter(t => t.id === track.id).shift().features.shift();
     const latLng = { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
     const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }), opacity: ScenarioEditor.DefaultMarkerOpacity }; // http://leafletjs.com/examples/custom-icons/
-    return { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
+    const marker = { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
+    return marker;
   }
 
   private markerClicked(track: ITrackView) {
     return (me: LeafletMouseEvent) => {
       me.originalEvent.preventDefault();
       const marker = (me.target as Marker);
-      if (!track.isSelected) {
-        track.isSelected = true;
-        marker.dragging.enable();
-        marker.on('move', this.markerMoved(track));
-        marker.on('moveend', this.markerMoveEnd(track));
-      } else {
-        track.isSelected = false;
-        marker.dragging.disable();
-        marker.off('move');
-        marker.off('moveend');
-      }
-      marker.setOpacity(track.isSelected ? 1 : ScenarioEditor.DefaultMarkerOpacity);
+      track.isSelected = !track.isSelected;
+      this.setMarkerSelectionMode(marker, track);
     };
+  }
+
+  private setMarkerSelectionMode(marker: Marker, track: ITrackView) {
+    if (track.isSelected) {
+      marker.dragging.enable();
+      marker.on('move', this.markerMoved(track));
+      marker.on('moveend', this.markerMoveEnd(track));
+      // see https://stackoverflow.com/a/40888862/319711
+      (marker as any)._icon.classList.add('marker-selected');
+    } else {
+      marker.dragging.disable();
+      marker.off('move');
+      marker.off('moveend');
+      (marker as any)._icon.classList.remove('marker-selected');
+    }
   }
 
   private markerMoved(track: ITrackView) {
@@ -200,6 +204,17 @@ export class ScenarioEditor {
     return (me: LeafletMouseEvent) => {
       track.applyChanges();
     };
+  }
+
+  private trackSelectionChanged(track: ITrackView) {
+    // const marker = this.layers.overlay.filter(m => m.options && (m.options as any).id === track.id)
+    // const marker = this.layers.overlay.filter(o => o.id === track.id).shift() as any;
+    this.map.eachLayer((l: Marker) => {
+      if (l.hasOwnProperty('options') && l.options.hasOwnProperty('id') && (l.options as any).id === track.id) {
+        this.setMarkerSelectionMode(l, track);
+      }
+    });
+    // this.toggleMarkerSelection(marker, track);
   }
 
   private trackVisibilityChanged(track: ITrackView) {

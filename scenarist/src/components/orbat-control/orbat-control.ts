@@ -19,4 +19,9 @@ export class OrbatControlCustomElement {
     track.isVisible = !track.isVisible;
     this.ea.publish('trackVisibilityChanged', track);
   }
+
+  public toggleSelection(track: ITrackView) {
+    track.isSelected = !track.isSelected;
+    this.ea.publish('trackSelectionChanged', track);
+  }
 }

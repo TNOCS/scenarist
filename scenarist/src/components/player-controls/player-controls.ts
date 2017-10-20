@@ -1,23 +1,9 @@
-import {
-  EventAggregator
-} from 'aurelia-event-aggregator';
-import {
-  IScenario
-} from './../../models/scenario';
-import {
-  State,
-  ModelType
-} from './../../models/state';
-import {
-  IScenarioState
-} from './../../models/playstate';
-import {
-  Endpoint,
-  Rest
-} from 'aurelia-api';
-import {
-  inject
-} from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import { IScenario } from './../../models/scenario';
+import { State, ModelType } from './../../models/state';
+import { IScenarioState } from './../../models/playstate';
+import { Endpoint, Rest } from 'aurelia-api';
+import { inject } from 'aurelia-framework';
 
 @inject(Endpoint.of('player'), State, EventAggregator)
 export class PlayerControlsCustomElement {
