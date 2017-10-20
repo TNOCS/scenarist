@@ -5,11 +5,11 @@
     <div class="col s12 m6">
       <md-card md-title="Scenarios">
         <md-collection>
-          <md-collection-item class="accent-text" repeat.for="scenario of scenarios">
+          <md-collection-item class="accent-text ${activeScenario.id === scenario.id ? 'active' : ''}" repeat.for="scenario of scenarios">
             ${ scenario.title }
             <div class="secondary-content">
               <a href="#!" click.delegate="selectScenario(scenario)">
-                <i class="material-icons">mode_edit</i>
+                <i class="material-icons black-text">input</i>
               </a>
             </div>
           </md-collection-item>

@@ -13,7 +13,7 @@
           </div>
         </div>
         <md-collection>
-          <md-collection-item class="accent-text ${activePlayScenarioId==id ? 'active' : ''}" repeat.for="[id, ps] of playStates">
+          <md-collection-item class="accent-text ${activePlayScenarioId === id ? 'active' : ''}" repeat.for="[id, ps] of playStates">
             ${ ps.title }
             <div class="secondary-content">
               <a href="#!" click.delegate="setActiveScenario(id)">
@@ -24,19 +24,16 @@
         </md-collection>
       </md-card>
     </div>
-  </div>
 
-  <div class="row" show.bind="!showPlayerControls">
-    <div class="col s12 m6">
+    <!-- <div class="row" show.bind="!showPlayerControls"> -->
+    <div class="col s12 m6" show.bind="!showPlayerControls">
       <md-card md-title="No scenario selected">
         <div>
           Select the scenario you want to play in the 'Scenarios' tab.
         </div>
       </md-card>
     </div>
-  </div>
-  <div class="row" show.bind="showPlayerControls">
-    <div class="col s12 m6">
+    <div class="col s12 m6" show.bind="showPlayerControls">
       <md-card md-title="Player controls" md-action="true">
         <div class="row">
           <div class="col s12 m6">
@@ -99,5 +96,7 @@
         </div>
       </md-card>
     </div>
+
   </div>
+
 </template>
