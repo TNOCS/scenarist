@@ -4,10 +4,12 @@
       <div>
         <md-input md-label="Name" md-value.bind="track.title"></md-input>
         <md-input md-label="Description" md-value.bind="track.description"></md-input>
-        <select md-select="label: select key frame" value.two-way="track.activeTimeIndex" change.delegate="timeIndexChanged(track)">
-          <option value="" disabled selected>select key frame</option>
-          <option repeat.for="feature of track.features" value.bind="$index">${ $index }</option>
-        </select>
+        <div if.bind="track">
+          <select md-select="label: key frame" value.two-way="activeFeature" change.delegate="timeIndexChanged(track)">
+            <option value="" disabled selected>select key frame</option>
+            <option repeat.for="feature of track.features" model.bind="feature">${ $index }</option>
+          </select>
+        </div>
         <div repeat.for="prop of createEntityViewModel(track.activeTimeIndex, track)">
           <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType" md-step="1" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>
         </div>
