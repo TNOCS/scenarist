@@ -35,7 +35,7 @@ export class PlayerControlsCustomElement {
         this.playStates.set(key.toString(), ps[key]);
       });
     });
-    this.playStateNames = PlayState;
+    this.playStateNames = PlayState as any; // EV UGLY FIX to stop typescript from complaining. Needs improvement
   }
 
   public play(time: number = null) {

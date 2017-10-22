@@ -10,5 +10,5 @@ export interface IScenarioState {
     endTime: number;
     currentTime: number;
     speed;
-    playState: PlayState
+    playState: PlayState;
 }
