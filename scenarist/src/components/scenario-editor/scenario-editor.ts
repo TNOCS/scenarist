@@ -4,14 +4,14 @@ import { State } from './../../models/state';
 import { defaultLayers, defaultMapOptions } from './../aurelia-leaflet/aurelia-leaflet-defaults';
 import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { inject } from 'aurelia-dependency-injection';
+import { autoinject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
 import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, LatLng, LeafletEvent } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
 import * as request from 'request';
 import * as jquery from 'jquery';
 
-@inject(State, EventAggregator)
+@autoinject
 export class ScenarioEditor {
   private static DefaultIconHeight = 48;
 
