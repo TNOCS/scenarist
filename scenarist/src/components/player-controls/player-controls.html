@@ -90,6 +90,13 @@
               </div>
             </div>
           </div>
+          <div class="col s12 m6">
+            <div class="row">
+              <div class="col s12">
+                ${activePlayScenario.title} ${playStateNames[activePlayScenario.playState]} on layer '${activePlayScenario.simTitle}'
+              </div>
+            </div>
+          </div>
         </div>
         <div slot="action">
           <md-switch md-label-on="automatic progress " md-label-off="manual progress" md-checked.bind="enablePolling" click.delegate="onPollingChange()"></md-switch>

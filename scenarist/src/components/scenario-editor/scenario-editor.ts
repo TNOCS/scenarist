@@ -8,6 +8,8 @@ import { inject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
 import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, LatLng, LeafletEvent } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
+import * as request from 'request';
+import * as jquery from 'jquery';
 
 @inject(State, EventAggregator)
 export class ScenarioEditor {
@@ -70,10 +72,42 @@ export class ScenarioEditor {
       this.tracks = this.tracksToViewModels();
       this.showPropertyEditor = this.tracks && this.tracks.length > 0;
       // const overlay: ILayerDefinition[] = [];
-      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t));
+      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t)).concat(this.state.overLayers.filter(l => scenario.layers.overlayIds.indexOf(l.id) >= 0));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
       this.layers = { base, overlay };
+      this.loadGeojsonDataAsync();
     }
+  }
+
+  private loadGeojsonDataAsync() {
+    this.layers.overlay.forEach((l) => {
+      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type') || l.type !== 'geoJSON') return;
+      l.data = <GeoJSON.FeatureCollection<any>>{type: 'FeatureCollection', features: []};
+      l.options = {
+        onEachFeature: (feature, layer) => {
+            layer.bindPopup(JSON.stringify(feature.properties));
+        }
+      };
+      // request.get(l.url, {
+      //   timeout: 5000
+      // }, (err, innerRes, body) => {
+      //   if (err) return;
+      //   l.data = body;
+      // });
+      jquery.getJSON(l.url)
+      .done((data) => {
+        l.data = data;
+        l.options = {
+          onEachFeature: (feature, layer) => {
+              layer.bindPopup('properties');
+          }
+        }
+        this.ea.publish('LayersChanged', this.layers);
+      })
+      .catch((err) => {
+        //throw error
+      });
+    });
   }
 
   public mapEvent(ev: { type: string, [key: string]: any }) {

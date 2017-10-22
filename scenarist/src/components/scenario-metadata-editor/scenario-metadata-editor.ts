@@ -8,6 +8,7 @@ import { ILayerDefinition } from 'models/layer';
 export class ScenarioMetadataEditor {
   public scenarios: IScenario[];
   public baseLayers: ILayerDefinition[];
+  public overLayers: ILayerDefinition[];
   public activeScenario: IScenario;
   public showScenarioSelector = false;
   private modelType: ModelType = 'scenarios';
@@ -23,6 +24,9 @@ export class ScenarioMetadataEditor {
     this.subscriptions.push(this.ea.subscribe(`baseLayersUpdated`, (scenario: IScenario) => {
       this.baseLayers = this.state.baseLayers;
     }));
+    this.subscriptions.push(this.ea.subscribe(`overLayersUpdated`, (scenario: IScenario) => {
+      this.overLayers = this.state.overLayers;
+    }));
   }
 
   public detached() {
@@ -34,6 +38,7 @@ export class ScenarioMetadataEditor {
     this.activeScenario = this.state.scenario;
     if (this.activeScenario) { this.showScenarioSelector = true; }
     this.baseLayers = this.state.baseLayers;
+    this.overLayers = this.state.overLayers;
   }
 
   public selectScenario(selected: IScenario) {
@@ -52,8 +57,8 @@ export class ScenarioMetadataEditor {
   public addScenario() {
     this.activeScenario = {
       layers: { baseIds: [this.state.baseLayers[0].id], overlayIds: [] },
-      center: { lat: 52.147186, lng: 5.349135 },
-      zoom: 15,
+      center: { lat: 32.147186, lng: -82.349135 },
+      zoom: 12,
       trackIds: []
     } as IScenario;
     this.showScenarioSelector = true;

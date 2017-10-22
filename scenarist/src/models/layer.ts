@@ -7,6 +7,8 @@ export interface ILayerDefinition extends IModel {
   url?: string;
   options?: {
     attribution?: string;
+    pointToLayer?: any;
+    onEachFeature?: any;
   };
   [key: string]: any | any[];
 }

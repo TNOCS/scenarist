@@ -21,6 +21,7 @@ export class State {
     properties: IProperty[];
     scenarios: IScenario[];
     baseLayers: ILayerDefinition[];
+    overLayers: ILayerDefinition[];
     /**
      * Tracks that are part of the active scenario.
      *
@@ -33,6 +34,7 @@ export class State {
       properties: [],
       scenarios: [],
       baseLayers: [],
+      overLayers: [],
       tracks: []
     };
 
@@ -47,6 +49,7 @@ export class State {
   public get properties() { return this.store.properties.map(clone) as IProperty[]; }
   public get scenarios() { return this.store.scenarios.map(clone) as IScenario[]; }
   public get baseLayers() { return this.store.baseLayers.map(clone) as ILayerDefinition[]; }
+  public get overLayers() { return this.store.overLayers.map(clone) as ILayerDefinition[]; }
   public get tracks() { return this.store.tracks.map(clone) as ITrack[]; }
 
   public get activeScenarioId() { return this.store.activeScenarioId; }
@@ -77,6 +80,7 @@ export class State {
     // this.rest.find('entities').then(e => this.entities = e).then(() => ea.publish('entitiesUpdated'));
     this.rest.find('scenarios').then(s => this.store.scenarios = s).then(() => ea.publish('scenariosUpdated'));
     this.rest.find('baseLayers').then(l => this.store.baseLayers = l).then(() => ea.publish('baseLayersUpdated'));
+    this.rest.find('overLayers').then(l => this.store.overLayers = l).then(() => ea.publish('overLayersUpdated'));
     // TODO Do not load all tracks, only the ones that are associated with the current scenario!
     // this.rest.find('tracks').then(t => this.store.tracks = t).then(() => ea.publish('tracksUpdated'));
   }

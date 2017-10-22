@@ -24,8 +24,11 @@ import {
     PlayState,
     SerializeScenarioState
 } from '../models/playstate';
-import {InterpolationController} from './InterpolationController';
+import {
+    InterpolationController
+} from './InterpolationController';
 import * as request from 'request';
+import * as _ from 'underscore';
 import * as httpcodes from 'http-status-codes';
 const testJson = require('./TestJson.json');
 
@@ -47,6 +50,9 @@ export class ScenarioController {
     private propertyTypes: {
         [id: string]: IProperty;
     } = {};
+    private nvgToScenarioIdDict: {
+        [nvgId: string]: string;
+    } = {};
 
     constructor(public dbOptions: IDbConfig, public playerOptions: IPlayerConfig) {
         this.TIMESTEP = playerOptions.millisPerTimeStep;
@@ -62,6 +68,11 @@ export class ScenarioController {
             }
             let parsedScenarios = this.parseScenarios(body);
             this.scenarioStates = this.getScenarioStates(parsedScenarios);
+            _.each(this.scenarioStates, (s) => {
+                if (!this.nvgToScenarioIdDict.hasOwnProperty(s.simTitle)) {
+                    this.nvgToScenarioIdDict[s.simTitle] = s.id.toString();
+                }
+            });
         });
     }
 
@@ -85,6 +96,7 @@ export class ScenarioController {
             result[s.id.toString()] = {
                 id: s.id.toString(),
                 title: s.title,
+                simTitle: s.simTitle || s.title,
                 currentTime: Utils.dateTimeToMillis(s.start.date.toString(), s.start.time.toString()),
                 startTime: Utils.dateTimeToMillis(s.start.date.toString(), s.start.time.toString()),
                 endTime: Utils.dateTimeToMillis(s.end.date.toString(), s.end.time.toString()),
@@ -104,7 +116,19 @@ export class ScenarioController {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
         let scenarioId = req.params['scenarioId'];
-        this.scenarioStates[scenarioId].playState = PlayState.playing;
+        let state = this.scenarioStates[scenarioId];
+        if (this.nvgToScenarioIdDict.hasOwnProperty(state.simTitle)) {
+            //Stop previous
+            let prevStateId = this.nvgToScenarioIdDict[state.simTitle];
+            if (prevStateId !== state.id) {
+                this.scenarioStates[prevStateId].playState = PlayState.stopped;
+                this.clearScheduledStep(this.scenarioStates[prevStateId]);
+                this.printStatus(this.scenarioStates[prevStateId]);
+            }
+            //Play current
+            this.nvgToScenarioIdDict[state.simTitle] = state.id;
+        }
+        state.playState = PlayState.playing;
         this.step(scenarioId, true);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
         this.printStatus(this.scenarioStates[scenarioId]);
@@ -129,6 +153,18 @@ export class ScenarioController {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
         let scenarioId = req.params['scenarioId'];
+        let state = this.scenarioStates[scenarioId];
+        if (this.nvgToScenarioIdDict.hasOwnProperty(state.simTitle)) {
+            //Stop previous
+            let prevStateId = this.nvgToScenarioIdDict[state.simTitle];
+            if (prevStateId !== state.id) {
+                this.scenarioStates[scenarioId].playState = PlayState.stopped;
+                this.clearScheduledStep(this.scenarioStates[scenarioId]);
+                this.printStatus(this.scenarioStates[scenarioId]);
+            }
+            //Play current
+            this.nvgToScenarioIdDict[state.simTitle] = state.id;
+        }
         this.scenarioStates[scenarioId].playState = PlayState.paused;
         this.clearScheduledStep(this.scenarioStates[scenarioId]);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
@@ -208,6 +244,29 @@ export class ScenarioController {
             res.send(result);
         });
     }
+    /**
+     * Returns the current situation as a featurecollection for the provided scenarioId
+     */
+    public currentPlaying(req: Request, res: Response) {
+        if (!req.params || !req.params.hasOwnProperty('scenarioId')) {
+            res.sendStatus(httpcodes.BAD_REQUEST);
+            return;
+        }
+        let nvgId = req.params['scenarioId'];
+        let scenarioId = this.nvgToScenarioIdDict[nvgId];
+        if (!scenarioId || !this.scenarioStates[scenarioId]) {
+            res.sendStatus(httpcodes.BAD_REQUEST);
+            return;
+        }
+        let state = this.scenarioStates[scenarioId];
+        let ftCollection = this.interpolationCtrl.getCurrentSituation(state, (result) => {
+            if (!result) {
+                res.sendStatus(httpcodes.INTERNAL_SERVER_ERROR);
+                return;
+            }
+            res.send(result);
+        });
+    }
 
     /**
      * Requests a list of scenarios from a rest-source and returns it to the requestor
@@ -227,6 +286,14 @@ export class ScenarioController {
                 res.sendStatus(httpcodes.INTERNAL_SERVER_ERROR);
             }
         });
+    };
+
+    public playableScenarios(req: Request, res: Response) {
+        if (this.nvgToScenarioIdDict) {
+            res.send(this.nvgToScenarioIdDict);
+        } else {
+            res.sendStatus(httpcodes.NOT_FOUND);
+        }
     };
 
     private checkRequest(req: Request, res: Response, required: string[]) {
@@ -260,7 +327,7 @@ export class ScenarioController {
     }
 
     private printStatus(state: IScenarioState) {
-        console.log(`Scenario ${state.id} ${PlayState[state.playState]} at ${new Date(state.currentTime).toString()}(speed: ${state.speed}x)`);
+        console.log(`Scenario ${state.id} ${PlayState[state.playState]} at layer ${state.simTitle} ${new Date(state.currentTime).toString()}(speed: ${state.speed}x)`);
     }
 
     private getUrl(route: string) {

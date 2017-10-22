@@ -69,5 +69,16 @@
             }
         }
     ],
+    "overLayers": [{
+        "id": "Air Support",
+        "title": "Air Support",
+        "description": "",
+        "type": "geoJSON",
+        "url": "http://localhost:3003/layers/Fra_Airspace_Line.geojson",
+        "options": {
+            "attribution": ""
+        }
+    }
+],
     "tracks": []
 }

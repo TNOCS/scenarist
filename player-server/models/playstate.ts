@@ -7,6 +7,7 @@ export enum PlayState {
 export interface IScenarioState {
     id: string;
     title: string;
+    simTitle: string;
     startTime: number;
     endTime: number;
     currentTime: number;
@@ -19,6 +20,7 @@ export function SerializeScenarioState(s: IScenarioState) {
     return {
         id: s.id.toString(),
         title: s.title,
+        simTitle: s.simTitle,
         startTime: s.startTime,
         endTime: s.endTime,
         currentTime: s.currentTime,

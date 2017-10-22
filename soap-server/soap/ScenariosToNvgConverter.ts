@@ -45,15 +45,14 @@ export class ScenariosToNvgConverter {
 
     constructor() {}
 
-    convert(scenarios: IScenarioStateData): any {
+    convert(scenarios: {[nvgId: string]: string}): any {
         if (!scenarios) scenarios = {};
         var result = JSON.parse(JSON.stringify(nvgStructure));
         var nvgScenarios = [];
         Object.keys(scenarios).forEach((scenKey: string) => {
-            let scen: IScenarioState = scenarios[scenKey];
             let scenObj: IScenarioNvgStructure = {
                 attributes: {
-                    name: scen.title,
+                    name: scenKey.toString(),
                     id: scenKey.toString()
                 }
             }

@@ -71,11 +71,15 @@ app.get('/speed/:scenarioId/:speed', (req, res) => {
 app.get('/reload/:scenarioId', (req, res) => {
   scenarioController.reload(req, res)
 });
-app.get('/scenarios', (req, res) => {
+app.get('/allscenarios', (req, res) => {
   scenarioController.scenarios(req, res);
 });
+app.get('/scenarios', (req, res) => {
+  scenarioController.playableScenarios(req, res);
+});
 app.get('/current/:scenarioId', (req, res) => {
-  scenarioController.current(req, res);
+  // scenarioController.current(req, res);
+  scenarioController.currentPlaying(req, res);
 });
 
 /**

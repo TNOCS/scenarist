@@ -8,6 +8,7 @@ export interface ITrack extends IModel {
 }
 
 export interface IScenario extends IModel {
+  simTitle?: string;
   start?: { date: Date; time: Date };
   end?: { date: Date; time: Date };
   center?: { lat: number; lng: number; };

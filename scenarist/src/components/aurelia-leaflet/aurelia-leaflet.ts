@@ -52,6 +52,10 @@ export class AureliaLeafletCustomElement {
       this.eventsBoundReject = reject;
     });
 
+    this.eventAggregator.subscribe('LayersChanged', (data: any) => {
+        this.layersChanged(data, null);
+    });
+
     this.mapOptions = defaultMapOptions;
     this.layers = defaultLayers;
   }

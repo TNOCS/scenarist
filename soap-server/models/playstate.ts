@@ -6,6 +6,7 @@ export enum PlayState {
 
 export interface IScenarioState {
     title: string;
+    simTitle: string;
     startTime: number;
     endTime: number;
     currentTime: number;

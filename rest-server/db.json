@@ -32,16 +32,32 @@
       "title": "Tank",
       "description": "My very own tank",
       "app6a": "",
-      "imgDataUrl": "data:image/png;base64,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",
+      "imgDataUrl": "data:image/png;base64,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",
       "faction": "",
       "color": "red",
       "propertyIds": [
-        "Sym_LNS6Z"
+        "time",
+        "1"
       ],
-      "sidc": "SHAPM-----EN---",
+      "sidc": "SHAPM----------",
       "iconSize": {
         "x": 118,
-        "y": 178
+        "y": 138
+      }
+    },
+    {
+      "id": "rJ75A4U6W",
+      "title": "Plane",
+      "propertyIds": [
+        "1",
+        "2",
+        "time"
+      ],
+      "imgDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHYAAAClCAYAAACJDQmQAAAM5klEQVR4Xu2dbYhdxRnH/1sjWVnE1aKm0OqGSokEcUWQgB+y21qLYMmqSdkqiatU7IdSV1C7tKCbQout/RBLP0QsdTVolybaDQ1o1TbrByEUpBHxhVJJfAFjRF0RaYLaLf/rPbfnnnteZubM6znzgCzEuTNznt955sz8zzNzhhCtkR4YauRVxYuCLbBTAC4GMAFgvOv3wwCWAfDvfkMs2tZuz42mwY4BeKgLtIwdAd8E4KgmwG1rd8BtJsEyWgh1VBDWShfukmD5omJtazfXD6bAcsg9qAjoku7wrPJzDvP/VPkhgBDbLbxUE2AZoXQuh0MV43BMJzOCZaxt7Zb6xgTYXQBukyGSU/Z+ALOSdbStXetgGWlnSELJFmcdZ0rW0bZ2rYLl8HtEEkhR8fUSs+S2tVvpYt1DMWekf65sVazANQBEZ8hta7fSg7rBzgO4p7JVsQI7AbA+EWtbu5U+0Q22bZHj6nqtg23bs87V9VoHywZ1zE4/klCskotsW7tWZ8VsrG3rSVfXax0sFSC+sTm/crzIL/Bi96WBivLUpnatg2WDbdNsXV1vIVzds+J0Q5wxLkioUHyuzkisXYsuqm3t5vrBJFg2yFkj4W6uGJafA0AgssNvUbVta3fAD6bBJg0SGoerogwKUYVJ9rHdtnZ7/rEFVhZILF/TAxFsTQf6+vMI1lcyNfsVwdZ0oK8/j2B9JVOzXxFsTQf6+vMI1lcyNfvVJrDDXV+dqOmzIH7eFrB8MXGgS+RqjQqXt5DbAPYrAP4OYEOXwmsAvgngHW+paOhY08F+A8DfAHw146u3AXwLwL80+NDLKpoMlrsJngHw5QLPvw/g2zW2hHgJNOlUU8FeCeAJACMV3v8EwLUAnvaakkLnmgj2+wAey/pi28aNWF1dxb5XXslz0/UA/qjgP29/0jSwPwLwW6B/Q/ctl16KB67mZBi49cABPPjCC1kgqwB+DOB33pKS7FiTwN4L4CfZ6985OYm7N/e/59+5vIz5Ze61HrBfAZiT9KGXxZsAdg2A3wO4Me3hoaGhTpQyWvOMUcvo5fCcsYcB/ADAZ14SE+xU6GBP6+ZIcbLUs7Vr1uCx667DtRdeWOqGJ159Fdc//jhOfjbAkJMpZl/8R9CP3hULGSzVpL8CuCzt1dPXrsWTN9yAy887T8jZz7/5Jq569FF8fPJktvw/AHwnVJUqVLBZNakD5ZyRETy7YwcuOvdcIahJoZfefRdXPPIIjn/C1U+fBatShQiW0iCHyq+lEYyNjuLgzAz4V8WOrqxgcmEB/JuxtwBwqCfkYCw0sBx2Ofz20WOEMlIZsXWMEcvIZQRnjLQ5LHN4DsJCAsuoYZoqJ0w9m1y/Hvunp8Fnqw7js3bL4iIOHhnYmM+JFCdUQahUoYCdBrAHAJc2PeOsd3HrVpx6yik6mPbq+PTzzzG9bx84a84Yp8/bASxqbdBAZSGALVWTuF41YVzfhqxSmfGKHk+zb78GcEe2ujw1SU+Tg7WUqFS/AXAXgAGFw1RfZOr1FSyHXA69HIJ7VqUmyVy4TNkSlYpDModm71QqH8HWUpNkgMmUDU2l8g2sFjVJBphM2ZBUKp/AUnDgUiLJTer4XFVNkgEmU7ZCpeKSjIKGc/MFLGEy4YxSYc/qqkmmvFuiUjFBjolyzlUqH8AaVZNMwfVdpXIN1oqaZAquzyqVS7B8Mc4X5FbUJFNwK1QqvrDni3vr5gosU1iYytJnSW6SKTXJlHdLVCo2yVQbptxYNdtg2R6TzSgT9plNNcmUh0tUKibJMVnOmkplE6xXapIpuL6oVLbA8kUpE7iVcpNMQTBVb4VKxQT1gVQN3X2xAZZbLLjVglsueiabm6T7wk3XV6JS8UMY3FrCLSbGzDRYqkkUHi5IX4FvapIp75aoVP/uChnGVCqTYINSk0zBdaVSmQJ7eXejsZHcJFMQTNVboVJx78nzuts2AZYd3QegLwlJd26SbkeYrq9EpWJC89bUjnstXdENlmrSHwB8Kd07U7lJWjxgsZISleq/AG7WqVLpBPtTAL/I+ilUNckU7wqV6mcAfqmjbR1gG60m6XByXh2mVaq6YE/tpmJy0d0zV7lJpiCYqrdEpaKYw3yvT1XbrgOWatJfAEymGxfd6aba4ab9rkSl4mdav6uqUqmCDUpNWjlxAi8eO4bzR0eV9/aYvKFMqFQqYHksOyXCINSkw8eOdTZbES7toakpzIwnn4k3iUuu7gqVihKk1GfOZcFeBOBZ5pilu+1rbhL7SKjLR//vk9HhYRyZnQX/+mYlKtVxAFcAeEm0zzJgqSY9CeD0dOW6drqJdlimHKP0zHsH3ud7G7W8thKV6mMAV4mqVKJgg1STGKmM2KzdMzGB+Ql+d8JP06FSiYC9BcDuENWkUMHydqtQqX4I4MGy27IK7N0A+B3XPgtFTQoZLB1eoVLxO70/L4JbBJb//gAARmufhZSbFDrYxPElKhWj9ta8XKo8sI1Rk4rAbh4bw/IMv7YWjsmqVFmwnPHub4qa1CSwvAUrVKotADhz7lgaLNemXKNyrdqzkHOTdh06hNufemogLEOM2OQiSlQqrnG51uWatw8s83C+nvbC2SMjeHr7doyvWxfOmJXqKc9L5PMpayGD5bVQTbtyzx68N3gu1euJIpiO2L5k5gvOOgvP7NjhpbYqepc1FSyvnyoVjy56/YMPsu7oMC0Ee/zOO8GIDdmaDJZcGLHn3HefHNjV+fmQmXb63nSwncgc5FQesRFsGPd1BJviFPrkKX3LRbAR7BceiENxHIq99UCcPHWDNE0oRqy392tfx+IzNuUOpvIwPaYJ1kqw1ywuYum1/COXPpyb8zLvSfZmax3Ym5aWsHD4cKGfqH/zqHkfk9pk4LYKbBXUxHFNgNsasKJQmwK3FWBloTYBbuPBqkINHW6jwdaFmsDlRIoTqpASCxoLVhfUUOE2Diy3b3Cdmt6XI7NMKCsbUuQ2CiyhcusGc39MWShwGwPWBtSQhuVGgLUJNRS4wYN1ATUEuEGDdQnVd7jBgvUBqs9wgwTrE1Rf4QYH1keoPsINCqwOqDz6h6fD5O3duW3Tps4Wif0FL+FF1sa+rHODAasDKsHxjInkKKAsqOQMCu7GY8LbR92jgkSApsv4ADcIsHWhMkoXpqYwMcajqNCRG6sOF2Hkziwt4bnUkUGygF2eHeU92LpQkyhNp7qIgE0g1o1eV3C9Bsshk4I+o0fWzhge7kTp1Ia+j1gKR2y6vbrR6wKut2CzR+LJgN2yYUMHalFCmkzEptutE7224XoJVhVqWZSmAamCZR3sG5+9PFxT1mzC9Q6sKtSqKNUFNqmnaJtIFWxbcL0CqwJVNEp1g60TvTbgegNWBapMlJoAWyd6TcP1AqwsVEYphYbZTZuqRr7c/1/nGVvUoMqz1yRc52BloXLXOWe83EClaibAqkavKbhOwcpArRulJofi7A3GG4cz5zcE198m4DoDKwNVR5TaBMu2qJhx5nz/oUNCA4tuuE7AikLVGaW2wSbtyUSvTrjWwYpCvXjdOixNT9d6lhaFislnbF6bMtHLV4oEXNesghWFavoId9tgZaNXB1xrYLnZmCeOJp9DybsjGaWc8ZreI+MKbPLs5cSq6mV+XbhWwBIq99KUmekoTbfNkeOS3fycQb/Z7AOPSiDgspf5deAaB1sF1VaUZiHmXDhsghWNXlW4xsHyrny44MwH245Mw/UBbNKfsujlymBlbk56LmUcbF7EZlNVpHut4Qc+gS2LXurhXB3ImnGwzD5Yv2tXr195qSqyndZR3jewRdGrurY1DpYdHt+9uzMbTieU6YBTp448sKpOrNOPvN+mU3F4oJiKLm4FLJcXXML4dHZSHlgeR5BkMuqGpVIfn715OVsidVkBK9IR22VCAFvHJxFsynu+RWwEq+CBGLFA3+dZmnCsLe+DCDaCVRgP3P8kPmPjM/YLD8Sh2H00ivSglRFb9GJCVXAXcbTtMq0DW/W2iYIAFSifxBSVm6JVYJlYNpvzedGs4+JB1Cq3kqPfyB6aGTrcVkSsLNTk3gsZbuPBqkINHW6jwdaFGjLcxoLVBTVUuI0EyyMFmOpaZkzPSe+tYVJd1S511TQVF/PFRoIt223OfUDcgskX6sma9sbx8U52BzMX+Nui5LuQvi/bGrCEx/202WR05hhn/41pPIx6/pfO+41gXYw9qTaTiGXqJmFSKlTJGyJgpqewPg7bEaxjsBxiCYVAdUmDBMzo5jAegjVyKA7B8ab7GMGa9rCj+iNYR4433WwEa9rDjuqPYB053nSzEaxpDzuqP4J15HjTzUawpj3sqH4RsPPs27aNGzsr8z9t27bsqK+xWQkPfG/v3g6vvS+/nPDqcBySqCMWDcgDEWxAsGS6GsHKeCugsv8DIKLFD+mFnigAAAAASUVORK5CYII=",
+      "sidc": "SHA-MF-----D---",
+      "iconSize": {
+        "x": 118,
+        "y": 165
       }
     }
   ],
@@ -59,45 +75,101 @@
   ],
   "scenarios": [
     {
-      "id": 1,
-      "title": "My first scenario",
-      "description": "",
-      "startTime": "",
-      "endTime": "",
+      "layers": {
+        "baseIds": "OSM Tiles",
+        "overlayIds": "S1z7cQKpb"
+      },
+      "center": {
+        "lat": "52.147186",
+        "lng": "5.349135"
+      },
+      "zoom": 15,
       "trackIds": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6,
+        7
       ],
+      "id": 1,
+      "title": "First scenario",
+      "description": "A scenario",
+      "start": {
+        "time": "00:00",
+        "date": "2017-10-14T22:00:00.000Z"
+      },
+      "end": {
+        "time": "23:00",
+        "date": "2017-10-14T22:00:00.000Z"
+      }
+    },
+    {
+      "layers": {
+        "baseIds": [
+          "OSM Tiles"
+        ],
+        "overlayIds": []
+      },
+      "center": {
+        "lat": "52.147186",
+        "lng": "5.349135"
+      },
+      "zoom": 15,
+      "trackIds": [
+        8
+      ],
+      "id": 2,
+      "title": "Right scenario",
+      "description": "",
+      "start": {
+        "time": "11:11",
+        "date": "2017-10-17T22:00:00.000Z"
+      },
+      "end": {
+        "time": "15:15",
+        "date": "2017-10-18T22:00:00.000Z"
+      },
+      "nvgTitle": "Scenario 2",
+      "simTitle": "FullAttack"
+    },
+    {
+      "layers": {
+        "baseIds": "rJ17-NCnW",
+        "overlayIds": "S1z7cQKpb"
+      },
+      "center": {
+        "lat": "32.0",
+        "lng": "-82"
+      },
+      "zoom": "12",
+      "trackIds": [
+        9
+      ],
+      "id": 3,
+      "title": "Left scenario",
+      "nvgTitle": "Scenario 2",
+      "start": {
+        "time": "00:00",
+        "date": "2017-09-30T22:00:00.000Z"
+      },
+      "end": {
+        "date": "2017-10-02T22:00:00.000Z",
+        "time": "02:00"
+      },
+      "simTitle": "FullAttack"
+    },
+    {
       "layers": {
         "baseIds": "OSM Tiles",
         "overlayIds": []
       },
       "center": {
-        "lat": "51.5",
-        "lng": "5.4"
+        "lat": "30.0",
+        "lng": "-81.0"
       },
-      "zoom": "15",
-      "start": {
-        "date": "2017-10-12T22:00:00.000Z",
-        "time": "08:00"
-      },
-      "end": {
-        "date": "2017-10-12T22:00:00.000Z",
-        "time": "10:00"
-      }
-    },
-    {
-      "id": 2,
-      "title": "My Second scenario",
-      "start": {
-        "time": "12:00",
-        "date": "2017-10-18T22:00:00.000Z"
-      },
-      "end": {
-        "time": "14:00",
-        "date": "2017-10-19T22:00:00.000Z"
-      }
+      "zoom": "11",
+      "trackIds": [],
+      "id": 4,
+      "title": "Test"
     }
   ],
   "tracks": [
@@ -156,6 +228,326 @@
         }
       ],
       "id": 3
+    },
+    {
+      "track": {
+        "scenarioId": 1,
+        "entityTypeId": "rJ75A4U6W",
+        "features": [
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344033241271973,
+                52.151186435042476
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "5"
+            }
+          },
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344033241271973,
+                52.151186435042476
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "5"
+            }
+          },
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344033241271973,
+                52.151186435042476
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "5"
+            }
+          }
+        ],
+        "id": 4,
+        "title": "Airplane",
+        "description": "Landed"
+      },
+      "isVisible": true,
+      "isSelected": true,
+      "hasChanged": false,
+      "pActiveTimeIndex": "2",
+      "pTitle": "Airplane",
+      "pDescription": "Landed",
+      "pEntityTypeId": "rJ75A4U6W",
+      "pFeatures": [
+        {
+          "feature": {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344033241271973,
+                52.151186435042476
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "5"
+            }
+          },
+          "pGeometry": {
+            "type": "Point",
+            "coordinates": [
+              5.344033241271973,
+              52.151186435042476
+            ]
+          },
+          "pProperties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5"
+          }
+        },
+        {
+          "feature": {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344033241271973,
+                52.151186435042476
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "5"
+            }
+          },
+          "pGeometry": {
+            "type": "Point",
+            "coordinates": [
+              5.344033241271973,
+              52.151186435042476
+            ]
+          },
+          "pProperties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5"
+          }
+        },
+        null
+      ],
+      "id": 4
+    },
+    {
+      "scenarioId": 1,
+      "entityTypeId": "rJ75A4U6W",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.332489013671876,
+              52.14918515826768
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "4"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.332489013671876,
+              52.14918515826768
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "4"
+          }
+        }
+      ],
+      "id": 5,
+      "title": "Airplane 2b"
+    },
+    {
+      "scenarioId": 1,
+      "entityTypeId": "BkvzrCjn-",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.119285583496095,
+              52.088997969314285
+            ]
+          },
+          "properties": {
+            "Sym_LNS6Z": "5"
+          }
+        }
+      ],
+      "id": 6,
+      "title": "Tank 1"
+    },
+    {
+      "scenarioId": 1,
+      "entityTypeId": "BkvzrCjn-",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.197906494140626,
+              52.204010788868615
+            ]
+          }
+        }
+      ],
+      "id": 7
+    },
+    {
+      "scenarioId": 2,
+      "entityTypeId": "rJ75A4U6W",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.345749855041505,
+              52.14784237030387
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:00"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              4.990539550781251,
+              52.25975249383111
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:05"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              4.899902343750001,
+              52.02038830745109
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:45"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.440979003906251,
+              51.883272964437474
+            ]
+          },
+          "properties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:22"
+          }
+        }
+      ],
+      "id": 8,
+      "title": "Plane1"
+    },
+    {
+      "scenarioId": 3,
+      "entityTypeId": "BkvzrCjn-",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              4.757080078125001,
+              52.5897007687178
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "00:00"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              3.9770507812500004,
+              51.59754765771458
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "01:00"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              7.058715820312501,
+              53.1368853338
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "02:00"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              7.058715820312501,
+              53.1368853338
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "02:20"
+          }
+        }
+      ],
+      "id": 9,
+      "title": "Tank 1"
     }
   ],
   "baseLayers": [
@@ -183,11 +575,35 @@
       "type": "tile",
       "title": "MBtiles",
       "description": "Local tile service",
-      "url": "http://localhost:3000/",
+      "url": "http://localhost:8888/savannah3/{z}/{x}/{y}.png",
       "options": {
         "attribution": "&copy; <a href='http://www.tno.nl'>TNO</a>"
       },
       "id": "rJ17-NCnW"
+    }
+  ],
+  "overLayers": [
+    {
+      "id": "Air Support",
+      "title": "Air Support Line",
+      "description": "",
+      "type": "geoJSON",
+      "url": "http://localhost:3003/layers/fra_airspace_line.geojson",
+      "options": {
+        "attribution": ""
+      }
+    },
+    {
+      "id": "SyZb00O6-",
+      "title": "Air Support Points",
+      "type": "geoJSON",
+      "url": "http://localhost:3003/layers/fra_airspace_point.geojson"
+    },
+    {
+      "id": "S1z7cQKpb",
+      "title": "Test",
+      "type": "geoJSON",
+      "url": "http://localhost:3003/layers/test_point.geojson"
     }
   ]
 }

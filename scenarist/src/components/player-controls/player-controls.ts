@@ -1,7 +1,7 @@
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { IScenario } from './../../models/scenario';
 import { State, ModelType } from './../../models/state';
-import { IScenarioState } from './../../models/playstate';
+import { IScenarioState, PlayState } from './../../models/playstate';
 import { Endpoint, Rest } from 'aurelia-api';
 import { inject } from 'aurelia-framework';
 
@@ -13,7 +13,8 @@ export class PlayerControlsCustomElement {
   private showPlayerControls: boolean = false;
   private playStates: Map < string, IScenarioState > = new Map();
   private modelType: ModelType = 'scenarios';
-  private enablePolling: boolean = false;
+  private playStateNames: {[key: string]: string};
+  private enablePolling: boolean = true;
 
   constructor(private rest: Rest, private state: State, private ea: EventAggregator) {}
 
@@ -24,15 +25,17 @@ export class PlayerControlsCustomElement {
       //update
     });
     this.init();
+    this.poll();
   }
 
   public init() {
-    let urlPath = `scenarios`;
+    let urlPath = `allscenarios`;
     this.rest.find(urlPath).then((ps) => {
       Object.keys(ps).forEach((key) => {
         this.playStates.set(key.toString(), ps[key]);
       });
     });
+    this.playStateNames = PlayState;
   }
 
   public play(time: number = null) {
