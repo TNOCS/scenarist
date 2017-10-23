@@ -9,8 +9,8 @@ export interface IScenario extends IModel {
    * @memberof IScenario
    */
   simTitle?: string;
-  start?: { date: Date; time: Date };
-  end?: { date: Date; time: Date };
+  start?: { date: Date | string; time: Date | string };
+  end?: { date: Date | string; time: Date | string };
   center?: { lat: number; lng: number; };
   zoom?: number;
   trackIds?: number[];
