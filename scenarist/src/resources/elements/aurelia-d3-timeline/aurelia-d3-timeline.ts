@@ -111,6 +111,27 @@ export class AureliaD3TimelineCustomElement {
       .attr('transform', `translate(0, ${height})`)
       .call(this.xAxis);
 
+    const drag = d3.drag()
+      // .on('dragstart', null)
+      .on('drag', (d) => {
+        const dx = currentEvent.dx; // this will give the delta x moved by drag
+        const x1New = +curTimeline.attr('x1') + dx;
+        const x2New = +curTimeline.attr('x2') + dx;
+        curTimeline
+          .attr('x1', x1New)
+          .attr('x2', x2New);
+      });
+    // .on('dragend', null);
+
+    const curTimeline = this.tl
+      .append('line')
+      .attr('class', 'active-time')
+      .attr('x1', Math.round(width / 2))
+      .attr('y1', timelinePos - 30)
+      .attr('x2', Math.round(width / 2))
+      .attr('y2', timelinePos + 10)
+      .call(drag);
+
     this.isInitialized = true;
   }
 
@@ -171,11 +192,11 @@ export class AureliaD3TimelineCustomElement {
 
     const { margin, width, height, timelinePos } = this.initialize();
 
-    const resetted = () => {
-      this.svg.transition()
-        .duration(750)
-        .call(zoom.transform, d3.zoomIdentity);
-    };
+    // const resetted = () => {
+    //   this.svg.transition()
+    //     .duration(750)
+    //     .call(zoom.transform, d3.zoomIdentity);
+    // };
 
     // d3.select(this.el).select('svg').remove();
     // const svg = d3
@@ -243,27 +264,6 @@ export class AureliaD3TimelineCustomElement {
           .duration(500)
           .style('opacity', 0);
       });
-
-    const drag = d3.drag()
-      // .on('dragstart', null)
-      .on('drag', (d) => {
-        const dx = currentEvent.dx; // this will give the delta x moved by drag
-        const x1New = +curTimeline.attr('x1') + dx;
-        const x2New = +curTimeline.attr('x2') + dx;
-        curTimeline
-          .attr('x1', x1New)
-          .attr('x2', x2New);
-      });
-    // .on('dragend', null);
-
-    const curTimeline = this.tl
-      .append('line')
-      .attr('class', 'active-time')
-      .attr('x1', Math.round(width / 2))
-      .attr('y1', timelinePos - 30)
-      .attr('x2', Math.round(width / 2))
-      .attr('y2', timelinePos + 10)
-      .call(drag);
 
     // this.xAxis = d3.axisBottom(this.x)
     //   .ticks(width / 100)
