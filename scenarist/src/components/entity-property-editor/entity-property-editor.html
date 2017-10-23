@@ -10,10 +10,14 @@
         </select>
         <div repeat.for="prop of createEntityViewModel(track.activeTimeIndex, track)">
           <div if.bind="prop.propertyType == 'date'" ref="dpWrapper">
-            <input md-datepicker="container.bind: dpWrapper; value.two-way: track.features[track.activeTimeIndex].properties[prop.id];" type="date" placeholder="${prop.title}" />
+            <input md-datepicker="container.bind: dpWrapper; value.two-way: activeDate;" type="date" placeholder="${prop.title}"></input>
           </div>
-          <div if.bind="prop.propertyType != 'date'">
-            <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType" md-step="1" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>
+          <div if.bind="prop.propertyType == 'time'">
+            <md-input md-label.one-time="prop.title" md-type="time" md-step="1" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"
+            change.delegate="keyframesUpdated(track)"></md-input>
+          </div>
+          <div if.bind="prop.propertyType != 'date' && prop.propertyType != 'time'">
+            <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>
           </div>
         </div>
         <div class="button-row">

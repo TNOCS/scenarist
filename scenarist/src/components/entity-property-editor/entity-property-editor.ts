@@ -1,3 +1,4 @@
+import { computedFrom } from 'aurelia-binding';
 import { IEntityType } from 'models/entity';
 import { IScenario } from 'models/scenario';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
@@ -64,6 +65,21 @@ export class EntityPropertyEditorCustomElement {
       : this.scenario.start.date;
     track.addFeature(startDate, time);
     this.activeFeature = this.track.features[this.track.activeTimeIndex];
+    this.keyframesUpdated(track);
+  }
+
+  public get activeDate() {
+    if (!this.activeFeature) { return null; }
+    const date = this.activeFeature.properties.date;
+    return typeof date === 'string' ? new Date(Date.parse(date)) : date as Date;
+  }
+  public set activeDate(date: Date) {
+    this.activeFeature.properties.date = date;
+    this.keyframesUpdated(this.track);
+  }
+
+  public keyframesUpdated(track: ITrackView) {
+    this.ea.publish('keyframesUpdated', track);
   }
 
   public timeIndexChanged(track: ITrackView) {
