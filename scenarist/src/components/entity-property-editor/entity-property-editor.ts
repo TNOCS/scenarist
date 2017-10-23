@@ -59,7 +59,10 @@ export class EntityPropertyEditorCustomElement {
   }
 
   public add(track: ITrackView, time?: Date) {
-    track.addFeature(this.scenario.start.date, time);
+    const startDate = typeof this.scenario.start.date === 'string'
+      ? new Date(Date.parse(this.scenario.start.date))
+      : this.scenario.start.date;
+    track.addFeature(startDate, time);
     this.activeFeature = this.track.features[this.track.activeTimeIndex];
   }
 
