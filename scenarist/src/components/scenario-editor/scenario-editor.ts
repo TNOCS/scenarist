@@ -55,6 +55,7 @@ export class ScenarioEditor {
     this.subscriptions.push(this.ea.subscribe('trackSelectionChanged', (track: ITrackView) => this.trackSelectionChanged(track)));
     this.subscriptions.push(this.ea.subscribe('timeIndexChanged', (track: ITrackView) => this.timeIndexChanged(track)));
     this.subscriptions.push(this.ea.subscribe('deleteTrack', (track: ITrackView) => this.deleteTrack(track)));
+    this.subscriptions.push(this.ea.subscribe('keyframesUpdated', (track: ITrackView) => this.updateKeyframes(track)));
     this.subscriptions.push(this.ea.subscribe(`entityTypesUpdated`, (et: IEntityType) => {
       this.entityTypes = this.state.entityTypes;
     }));
@@ -276,21 +277,36 @@ export class ScenarioEditor {
   }
 
   private trackSelectionChanged(track: ITrackView) {
-    if (track.isSelected) {
-      this.keyframes.push({
-        id: track.id,
-        label: track.title,
-        times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
-      });
-    } else {
-      this.keyframes = this.keyframes.filter(k => k.id !== track.id);
-    }
-    this.keyframes = clone(this.keyframes);
+    this.updateKeyframes(track);
     this.map.eachLayer((l: Marker) => {
       if (l.hasOwnProperty('options') && l.options.hasOwnProperty('id') && (l.options as any).id === track.id) {
         this.setMarkerSelectionMode(l, track);
       }
     });
+  }
+
+  private updateKeyframes(track?: ITrackView) {
+    if (track) {
+      if (track.isSelected) {
+        this.keyframes = this.keyframes.filter(k => k.id !== track.id);
+        this.keyframes.push({
+          id: track.id,
+          label: track.title,
+          times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
+        });
+      } else {
+        this.keyframes = this.keyframes.filter(k => k.id !== track.id);
+      }
+      this.keyframes = clone(this.keyframes);
+    } else {
+      this.keyframes = this.tracks
+        .filter(t => t.isSelected)
+        .map(t => ({
+          id: t.id,
+          label: t.title,
+          times: t.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
+        }));
+    }
   }
 
   private converToTime(time: string) {
@@ -326,6 +342,10 @@ export class ScenarioEditor {
   }
 
   private deleteTrack(track: ITrackView) {
+    if (track.isSelected) {
+      track.isSelected = false;
+      this.updateKeyframes(track);
+    }
     this.deletingTrack = track;
     this.deleteTrackOrKeyframe.open();
   }
