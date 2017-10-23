@@ -39,6 +39,12 @@ export class State {
     };
 
   private defaultProperties: IProperty[] = [{
+    id: 'date',
+    title: 'Event date',
+    description: 'Keyframe date',
+    propertyType: 'date',
+    isPermanent: true
+  }, {
     id: 'time',
     title: 'Time',
     description: 'Keyframe time',

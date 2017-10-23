@@ -58,8 +58,8 @@ export class EntityPropertyEditorCustomElement {
     if (t) { this.state.save('tracks', t); }
   }
 
-  public add(track: ITrackView) {
-    track.addFeature();
+  public add(track: ITrackView, time?: Date) {
+    track.addFeature(this.scenario.start.date, time);
     this.activeFeature = this.track.features[this.track.activeTimeIndex];
   }
 

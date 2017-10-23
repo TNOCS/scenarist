@@ -2,7 +2,7 @@ import { IModel } from './model';
 
 export type PropertyType = {[key: string]: string | number | string[] | number[]};
 
-export type InputType = 'number' | 'text' | 'textarea' | 'option' | 'time';
+export type InputType = 'number' | 'text' | 'textarea' | 'option' | 'time' | 'date';
 
 export interface IProperty extends IModel {
   propertyType: InputType;
