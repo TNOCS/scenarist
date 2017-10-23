@@ -179,7 +179,7 @@ export class ScenarioEditor {
   }
 
   private resizeMap() {
-    const mapMargin = 65 + 120; // nav-bar height + timeline height
+    const mapMargin = 65 + 80; // nav-bar height + timeline height
     const map = $('#map');
     const w = $(window);
     // https://gis.stackexchange.com/questions/62491/sizing-leaflet-map-inside-bootstrap
