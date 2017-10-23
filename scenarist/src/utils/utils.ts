@@ -22,6 +22,10 @@ export const pad = (n: number, width = 2, z = '0') => {
   return str.length >= width ? str : new Array(width - str.length + 1).join(z) + n;
 };
 
+export const parseTimeToMsec = (s: string) => s.length === 5
+  ? (+s.substr(0, 2) * 60 + +s.substr(3, 2)) * 60000
+  : (+s.substr(0, 2) * 3600 + +s.substr(3, 2) * 60 + +s.substr(6, 2)) * 1000;
+
 /**
  * Parse date strings back to dates in the JSON parser.
  * Use: JSON.parse(json, dateParser);
