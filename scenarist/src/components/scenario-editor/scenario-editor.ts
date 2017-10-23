@@ -306,7 +306,7 @@ export class ScenarioEditor {
         this.keyframes.push({
           id: track.id,
           label: track.title,
-          times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date || this.startTime) : this.startTime.valueOf() }))
+          times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date) : this.startTime.valueOf() }))
         });
       } else {
         this.keyframes = this.keyframes.filter(k => k.id !== track.id);
@@ -318,12 +318,12 @@ export class ScenarioEditor {
         .map(t => ({
           id: t.id,
           label: t.title,
-          times: t.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date || this.startTime) : this.startTime.valueOf() }))
+          times: t.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date) : this.startTime.valueOf() }))
         }));
     }
   }
 
-  private converToTime(time: string, startTime: string | Date) {
+  private converToTime(time: string, startTime: string | Date = this.startTime) {
     const t = typeof startTime === 'string' ? new Date(Date.parse(startTime)) : startTime;
     return new Date(t.getFullYear(), t.getMonth(), t.getDate(), +time.substr(0, 2), +time.substr(3, 2), +time.substr(6, 2)).valueOf();
   }
