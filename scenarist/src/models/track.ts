@@ -1,3 +1,4 @@
+import { pad } from './../utils/utils';
 import { ITrackView } from 'models/track';
 import { IPropertyView } from 'models/property';
 import { FeatureViewModel } from './feature';
@@ -32,7 +33,14 @@ export interface ITrackView extends ITrack {
   hasChanged: boolean;
   applyChanges(): ITrack;
   restore(): void;
-  addFeature(): void;
+  /**
+   * Add a new feature (keyframe)
+   *
+   * @param {Date} startDate : Start date of the scenario
+   * @param {Date} [time] : Time of the new feature
+   * @memberof ITrackView
+   */
+  addFeature(startDate: Date, time?: Date): void;
 }
 
 export class TrackViewModel implements ITrackView {
@@ -119,11 +127,40 @@ export class TrackViewModel implements ITrackView {
     this.hasChanged = true;
   }
 
-  public addFeature() {
-    const newFeature = clone({ geometry: this.activeFeature.geometry, properties: this.activeFeature.properties });
-    this.track.features.splice(+this.activeTimeIndex, 0, newFeature);
-    this.features.push(new FeatureViewModel(newFeature, this.featureHasChangedHandler));
-    this.activeTimeIndex = `${+this.activeTimeIndex + 1}`;
+  public addFeature(startDate: Date, time?: Date) {
+    const index = time
+      ? this.findLastKeyframe(startDate, time)
+      : +this.activeTimeIndex;
+    const newFeature = clone({ geometry: this.track.features[index].geometry, properties: this.track.features[index].properties || {} });
+    if (!newFeature.properties.date) { newFeature.properties.date = startDate; }
+    if (time) {
+      newFeature.properties.date = new Date(new Date(time.valueOf()).setHours(0, 0, 0, 0));
+      newFeature.properties.time = `${pad(time.getHours())}:${pad(time.getMinutes())}:${pad(time.getSeconds())}`;
+    } else if (!newFeature.properties.time) {
+      newFeature.properties.date = new Date(new Date(startDate.valueOf()).setHours(0, 0, 0, 0));
+      newFeature.properties.time = '00:00';
+    }
+    this.track.features.splice(index, 0, newFeature);
+    const fvm = new FeatureViewModel(newFeature, this.featureHasChangedHandler);
+    this.features.splice(index, 0, fvm);
+    this.activeTimeIndex = `${index + 1}`;
+    return fvm;
+  }
+
+  /**
+   * Find the last keyframe index before the requested time
+   * @param time
+   */
+  private findLastKeyframe(startDate: Date, time: Date) {
+    const parseTimeToMsec = (s: string, date: Date) => date.valueOf() + (s.length === 5
+      ? (+s.substr(0, 2) * 60 + +s.substr(3, 2)) * 60000
+      : (+s.substr(0, 2) * 3600 + +s.substr(3, 2) * 60 + +s.substr(6, 2)) * 1000);
+    const t = time.valueOf();
+    return this.track.features
+      .reduce((p, c, i) => {
+        const dt = t - parseTimeToMsec(c.properties.date || startDate, c.properties.time);
+        return dt < 0 || p.dt < dt ? p : { dt, i };
+      }, { dt: Number.MAX_VALUE, i: 0 }).i;
   }
 
   private featureHasChangedHandler(feature: FeatureViewModel) {
