@@ -3,6 +3,7 @@ import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { State, ModelType } from './../../models/state';
 import { inject } from 'aurelia-framework';
 import { ILayerDefinition } from 'models/layer';
+import { computedFrom } from 'aurelia-binding';
 
 @inject(State, EventAggregator)
 export class ScenarioMetadataEditor {
@@ -51,6 +52,32 @@ export class ScenarioMetadataEditor {
       this.activeScenario = null;
       this.state.activeScenarioId = null;
       this.showScenarioSelector = false;
+    }
+  }
+
+  @computedFrom('activeScenario')
+  public get startDate() {
+    if (!this.activeScenario || !this.activeScenario.start) { return null; }
+    return typeof(this.activeScenario.start.date === 'string')
+      ? new Date(Date.parse(this.activeScenario.start.date as string))
+      : this.activeScenario.start.date;
+    }
+  public set startDate(t: string | Date) {
+    if (this.activeScenario && this.activeScenario.start) {
+      this.activeScenario.start.date = t;
+    }
+  }
+
+  @computedFrom('activeScenario')
+  public get endDate() {
+    if (!this.activeScenario || !this.activeScenario.end) { return null; }
+    return typeof(this.activeScenario.end.date === 'string')
+      ? new Date(Date.parse(this.activeScenario.end.date as string))
+      : this.activeScenario.end.date;
+    }
+  public set endDate(t: string | Date) {
+    if (this.activeScenario && this.activeScenario.end) {
+      this.activeScenario.end.date = t;
     }
   }
 

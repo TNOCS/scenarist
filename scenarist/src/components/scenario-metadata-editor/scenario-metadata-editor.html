@@ -33,16 +33,16 @@
               <ul md-collapsible md-collapsible.ref="collapsible">
                 <li>
                   <div class="collapsible-header">
-                    <i class="material-icons">timelapse</i>Time settings</div>
+                    <i class="material-icons">timelapse</i>Time settings *</div>
                   <div class="collapsible-body">
-                    <md-input md-label="Start time" md-type="time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
+                    <md-input md-label="Start time *" md-type="time" md-value.bind="activeScenario.start.time" md-placeholder="08:00"></md-input>
                     <div ref="dpWrapper">
-                      <input md-datepicker="container.bind: dpWrapper; value.two-way: activeScenario.start.date;" type="date" placeholder="pick a start date"
+                      <input md-datepicker="container.bind: dpWrapper; value.two-way: startDate;" type="date" placeholder="pick a start date *"
                       />
                     </div>
-                    <md-input md-label="End time" md-type="time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
+                    <md-input md-label="End time *" md-type="time" md-value.bind="activeScenario.end.time" md-placeholder="19:00"></md-input>
                     <div ref="dpWrapper2">
-                      <input md-datepicker="container.bind: dpWrapper2; value.two-way: activeScenario.end.date;" type="date" placeholder="pick an end date"
+                      <input md-datepicker="container.bind: dpWrapper2; value.two-way: endDate;" type="date" placeholder="pick an end date *"
                       />
                     </div>
                   </div>
