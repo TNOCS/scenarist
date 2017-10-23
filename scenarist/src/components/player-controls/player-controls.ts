@@ -35,7 +35,7 @@ export class PlayerControlsCustomElement {
         this.playStates.set(key.toString(), ps[key]);
       });
     });
-    this.playStateNames = <any>PlayState; FIX to stop typescript from complaining. Needs improvement
+    this.playStateNames = <any>PlayState; //TODO: FIX to stop typescript from complaining. Needs improvement
   }
 
   public play(time: number = null) {
