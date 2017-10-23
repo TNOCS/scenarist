@@ -1,3 +1,5 @@
+import { computedFrom } from 'aurelia-binding';
+import { parseTimeToMsec } from './../../utils/utils';
 import { ITrack, ITrackView, TrackViewModel } from './../../models/track';
 import { IEntityType } from './../../models/entity';
 import { State } from './../../models/state';
@@ -123,6 +125,30 @@ export class ScenarioEditor {
       const overlay: ILayerDefinition[] = this.tracks.map(t2 => this.createMarker(t2));
       this.layers = { base, overlay };
     });
+  }
+
+  @computedFrom('scenario')
+  public get startTime() {
+    if (!this.scenario || !this.scenario.start) { return null; }
+    const date = (typeof this.scenario.start.date === 'string')
+      ? new Date(Date.parse(this.scenario.start.date))
+      : this.scenario.start.date;
+    const time = (typeof this.scenario.start.time === 'string')
+      ? parseTimeToMsec(this.scenario.start.time)
+      : 0;
+    return new Date(date.valueOf() + time);
+  }
+
+  @computedFrom('scenario')
+  public get endTime() {
+    if (!this.scenario || !this.scenario.end) { return null; }
+    const date = (typeof this.scenario.end.date === 'string')
+      ? new Date(Date.parse(this.scenario.end.date))
+      : this.scenario.end.date;
+    const time = (typeof this.scenario.end.time === 'string')
+      ? parseTimeToMsec(this.scenario.end.time)
+      : 0;
+    return new Date(date.valueOf() + time);
   }
 
   public openEntityCollection() {

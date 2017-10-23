@@ -11,7 +11,7 @@
       with-layer-control.bind="withLayerControl" with-scale-control.bind="withScaleControl" with-zoom-control.bind="withZoomControl"></leaflet>
     <entity-property-editor show.bind="showPropertyEditor" class="prop-editor" tracks.one-way="tracks"></entity-property-editor>
     <div style="z-index: 1000; background: white; height: 120px; width: 100%; position: absolute; bottom: 0; left: 0; right: 0">
-      <aurelia-d3-timeline keyframes.bind="keyframes" width="900" height="100"></aurelia-d3-timeline>
+      <aurelia-d3-timeline start-time.bind="startTime" end-time.bind="endTime" keyframes.bind="keyframes" width="900" height="100"></aurelia-d3-timeline>
     </div>
   </div>
 
