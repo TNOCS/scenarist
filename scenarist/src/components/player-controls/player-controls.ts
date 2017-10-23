@@ -35,7 +35,7 @@ export class PlayerControlsCustomElement {
         this.playStates.set(key.toString(), ps[key]);
       });
     });
-    this.playStateNames = PlayState;
+    this.playStateNames = <any>PlayState;
   }
 
   public play(time: number = null) {
@@ -77,6 +77,7 @@ export class PlayerControlsCustomElement {
   }
 
   public getState() {
+    if (this.activePlayScenarioId == null) return;
     let urlPath = `state/${this.activePlayScenarioId}`;
     this.rest.find(urlPath).then(ps => {
       this.playStates.set(ps.id.toString(), ps);
@@ -103,8 +104,8 @@ export class PlayerControlsCustomElement {
   }
 
   private speedMin() {
-    if (!this.activePlayScenario || this.activePlayScenario.speed < 2) {
-      this.speed(1);
+    if (!this.activePlayScenario || this.activePlayScenario.speed < 1) {
+      this.speed(0.5);
       return;
     }
     this.activePlayScenario.speed /= 2;

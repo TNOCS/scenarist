@@ -115,6 +115,7 @@ export class ScenarioController {
     public play(req: Request, res: Response) {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
+        let time = (req.query && req.query.hasOwnProperty('time')) ? req.query.time : null;
         let scenarioId = req.params['scenarioId'];
         let state = this.scenarioStates[scenarioId];
         if (this.nvgToScenarioIdDict.hasOwnProperty(state.simTitle)) {
@@ -127,6 +128,9 @@ export class ScenarioController {
             }
             //Play current
             this.nvgToScenarioIdDict[state.simTitle] = state.id;
+        }
+        if (time !== null) {
+            state.currentTime = +time;
         }
         state.playState = PlayState.playing;
         this.step(scenarioId, true);
@@ -152,6 +156,7 @@ export class ScenarioController {
     public pause(req: Request, res: Response) {
         let ok = this.checkRequest(req, res, ['scenarioId']);
         if (!ok) return;
+        let time = (req.query && req.query.hasOwnProperty('time')) ? req.query.time : null;
         let scenarioId = req.params['scenarioId'];
         let state = this.scenarioStates[scenarioId];
         if (this.nvgToScenarioIdDict.hasOwnProperty(state.simTitle)) {
@@ -165,7 +170,10 @@ export class ScenarioController {
             //Play current
             this.nvgToScenarioIdDict[state.simTitle] = state.id;
         }
-        this.scenarioStates[scenarioId].playState = PlayState.paused;
+        if (time !== null) {
+            state.currentTime = +time;
+        }
+        state.playState = PlayState.paused;
         this.clearScheduledStep(this.scenarioStates[scenarioId]);
         res.send(SerializeScenarioState(this.scenarioStates[scenarioId]));
         this.printStatus(this.scenarioStates[scenarioId]);
