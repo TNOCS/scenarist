@@ -28,6 +28,7 @@ export class AureliaD3TimelineCustomElement {
   // }
 
   public attached() {
+    this.drawBase();
     this.draw();
   }
 
@@ -35,8 +36,13 @@ export class AureliaD3TimelineCustomElement {
     this.draw();
   }
 
+  private drawBase() {
+
+  }
+
   private draw() {
-    if (!this.keyframes || this.keyframes.length === 0) { return; }
+    if (!this.startTime || !this.endTime) { return; }
+    // if (!this.keyframes || this.keyframes.length === 0) { return; }
     const data = this.keyframes;
     const convert = (d: {
       label: string;
@@ -53,7 +59,7 @@ export class AureliaD3TimelineCustomElement {
       }
       return p;
     }, {});
-    const grouped: { [key: number]: { labels: string[] } } = data.reduce((p, c) => {
+    const grouped: { [key: number]: { labels: string[] } } = !data ? null : data.reduce((p, c) => {
       const conv = convert(c);
       for (const key in conv) {
         if (!conv.hasOwnProperty(key)) { continue; }
@@ -81,13 +87,13 @@ export class AureliaD3TimelineCustomElement {
       : data.reduce((p, c) => {
         const t = earliest(c.times);
         return p < t ? p : t;
-      }, earliest(data[0].times));
+      }, earliest(data[0].times)).valueOf();
     const endTime = this.endTime
       ? Date.parse(this.endTime)
       : data.reduce((p, c) => {
         const t = latest(c.times);
         return p < t ? p : t;
-      }, latest(data[0].times));
+      }, latest(data[0].times)).valueOf();
 
     const resetted = () => {
       svg.transition()
@@ -107,8 +113,9 @@ export class AureliaD3TimelineCustomElement {
       .attr('width', +this.width)
       .attr('height', +this.height);
 
+    const extraRange = Math.round((endTime - startTime) / 40);
     const x = d3.scaleTime()
-      .domain([startTime, endTime])
+      .domain([startTime - extraRange, endTime + extraRange])
       .range([0, width]);
 
     svg.append('clipPath')
