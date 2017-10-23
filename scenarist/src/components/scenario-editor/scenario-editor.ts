@@ -6,10 +6,11 @@ import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
-import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, LatLng, LeafletEvent } from 'leaflet';
+import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
-import * as request from 'request';
 import * as jquery from 'jquery';
+import { IdType } from 'models/model';
+import { clone } from 'utils/utils';
 
 @autoinject
 export class ScenarioEditor {
@@ -26,6 +27,13 @@ export class ScenarioEditor {
   public withScaleControl = true;
   public showPropertyEditor = false;
   public clickLocation: L.LatLng;
+  public keyframes: {
+    id: IdType,
+    label: string;
+    times: {
+      start: number;
+    }[];
+  }[] = [];
 
   private tracks: ITrackView[];
   private isInitialized = false;
@@ -77,37 +85,6 @@ export class ScenarioEditor {
       this.layers = { base, overlay };
       this.loadGeojsonDataAsync();
     }
-  }
-
-  private loadGeojsonDataAsync() {
-    this.layers.overlay.forEach((l) => {
-      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type') || l.type !== 'geoJSON') return;
-      l.data = <GeoJSON.FeatureCollection<any>>{type: 'FeatureCollection', features: []};
-      l.options = {
-        onEachFeature: (feature, layer) => {
-            layer.bindPopup(JSON.stringify(feature.properties));
-        }
-      };
-      // request.get(l.url, {
-      //   timeout: 5000
-      // }, (err, innerRes, body) => {
-      //   if (err) return;
-      //   l.data = body;
-      // });
-      jquery.getJSON(l.url)
-      .done((data) => {
-        l.data = data;
-        l.options = {
-          onEachFeature: (feature, layer) => {
-              layer.bindPopup('properties');
-          }
-        }
-        this.ea.publish('LayersChanged', this.layers);
-      })
-      .catch((err) => {
-        //throw error
-      });
-    });
   }
 
   public mapEvent(ev: { type: string, [key: string]: any }) {
@@ -175,7 +152,7 @@ export class ScenarioEditor {
   }
 
   private resizeMap() {
-    const mapMargin = 65;
+    const mapMargin = 65 + 120; // nav-bar height + timeline height
     const map = $('#map');
     const w = $(window);
     // https://gis.stackexchange.com/questions/62491/sizing-leaflet-map-inside-bootstrap
@@ -188,6 +165,37 @@ export class ScenarioEditor {
     }
     resize();
     this.isInitialized = true;
+  }
+
+  private loadGeojsonDataAsync() {
+    this.layers.overlay.forEach((l) => {
+      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type') || l.type !== 'geoJSON') { return; }
+      l.data = <GeoJSON.FeatureCollection<any>>{ type: 'FeatureCollection', features: [] };
+      l.options = {
+        onEachFeature: (feature, layer) => {
+          layer.bindPopup(JSON.stringify(feature.properties));
+        }
+      };
+      // request.get(l.url, {
+      //   timeout: 5000
+      // }, (err, innerRes, body) => {
+      //   if (err) return;
+      //   l.data = body;
+      // });
+      jquery.getJSON(l.url)
+        .done((data) => {
+          l.data = data;
+          l.options = {
+            onEachFeature: (feature, layer) => {
+              layer.bindPopup('properties');
+            }
+          }
+          this.ea.publish('LayersChanged', this.layers);
+        })
+        .catch((err) => {
+          //throw error
+        });
+    });
   }
 
   private createMarker(track: ITrackView) {
@@ -242,11 +250,26 @@ export class ScenarioEditor {
   }
 
   private trackSelectionChanged(track: ITrackView) {
+    if (track.isSelected) {
+      this.keyframes.push({
+        id: track.id,
+        label: track.title,
+        times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
+      });
+    } else {
+      this.keyframes = this.keyframes.filter(k => k.id !== track.id);
+    }
+    this.keyframes = clone(this.keyframes);
     this.map.eachLayer((l: Marker) => {
       if (l.hasOwnProperty('options') && l.options.hasOwnProperty('id') && (l.options as any).id === track.id) {
         this.setMarkerSelectionMode(l, track);
       }
     });
+  }
+
+  private converToTime(time: string) {
+    const t = new Date(Date.parse(this.scenario.start.date as any));
+    return new Date(t.getFullYear(), t.getMonth(), t.getDate(), +time.substr(0, 2), +time.substr(3, 2), +time.substr(6, 2)).valueOf();
   }
 
   private trackVisibilityChanged(track: ITrackView) {

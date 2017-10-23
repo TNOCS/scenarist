@@ -12,6 +12,7 @@ export class EntityPropertyEditorCustomElement {
   @bindable public tracks: ITrackView[];
   public selectedTracks: ITrackView[] = [];
   public track: ITrackView;
+  public activeFeature: any;
   public activePage = 1;
   public scenario: IScenario;
   private entityTypes: IEntityType[];
@@ -59,9 +60,11 @@ export class EntityPropertyEditorCustomElement {
 
   public add(track: ITrackView) {
     track.addFeature();
+    this.activeFeature = this.track.features[this.track.activeTimeIndex];
   }
 
   public timeIndexChanged(track: ITrackView) {
+    track.activeTimeIndex = '' + track.features.indexOf(this.activeFeature);
     this.ea.publish('timeIndexChanged', track);
   }
 
@@ -76,8 +79,10 @@ export class EntityPropertyEditorCustomElement {
   public onPageChanged(e: { detail: number }) {
     if (this.selectedTracks.length === 0) {
       this.track = null;
+      this.activeFeature = null;
     } else {
       this.track = this.selectedTracks[Math.min(this.selectedTracks.length, e.detail) - 1];
+      this.activeFeature = this.track.features[this.track.activeTimeIndex];
     }
   }
 
@@ -92,6 +97,7 @@ export class EntityPropertyEditorCustomElement {
     }
     setTimeout(() => {
       this.track = this.selectedTracks.length === 0 ? null : this.selectedTracks[this.activePage - 1];
+      this.activeFeature = this.track ? this.track.features[this.track.activeTimeIndex] : null;
     });
   }
 }
