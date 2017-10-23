@@ -37,6 +37,7 @@ export class ScenarioEditor {
     }[];
   }[] = [];
 
+  private curTime: Date;
   private tracks: ITrackView[];
   private isInitialized = false;
   private map: Map;
@@ -126,6 +127,12 @@ export class ScenarioEditor {
       const overlay: ILayerDefinition[] = this.tracks.map(t2 => this.createMarker(t2));
       this.layers = { base, overlay };
     });
+  }
+
+  public get currentTime() { return this.curTime; }
+  public set currentTime(t: Date) {
+    this.curTime = t;
+    this.updateEntityPositions(t);
   }
 
   @computedFrom('scenario')
@@ -285,6 +292,13 @@ export class ScenarioEditor {
     });
   }
 
+  private updateEntityPositions(t: Date) {
+    const getFeatureTime = () => {};
+
+    console.warn('Updating entity positions');
+    this.tracks.forEach(t => t);
+  }
+
   private updateKeyframes(track?: ITrackView) {
     if (track) {
       if (track.isSelected) {
@@ -292,7 +306,7 @@ export class ScenarioEditor {
         this.keyframes.push({
           id: track.id,
           label: track.title,
-          times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
+          times: track.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date || this.startTime) : this.startTime.valueOf() }))
         });
       } else {
         this.keyframes = this.keyframes.filter(k => k.id !== track.id);
@@ -304,13 +318,13 @@ export class ScenarioEditor {
         .map(t => ({
           id: t.id,
           label: t.title,
-          times: t.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time) : new Date().valueOf() }))
+          times: t.features.map(f => ({ start: f.properties.time ? this.converToTime(f.properties.time, f.properties.date || this.startTime) : this.startTime.valueOf() }))
         }));
     }
   }
 
-  private converToTime(time: string) {
-    const t = new Date(Date.parse(this.scenario.start.date as any));
+  private converToTime(time: string, startTime: string | Date) {
+    const t = typeof startTime === 'string' ? new Date(Date.parse(startTime)) : startTime;
     return new Date(t.getFullYear(), t.getMonth(), t.getDate(), +time.substr(0, 2), +time.substr(3, 2), +time.substr(6, 2)).valueOf();
   }
 
