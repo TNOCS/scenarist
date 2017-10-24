@@ -292,12 +292,23 @@ export class ScenarioEditor {
     });
   }
 
-  private updateEntityPositions(t: Date) {
-    const getFeatureTime = () => {};
-
+  private updateEntityPositions(time: Date) {
     console.warn('Updating entity positions');
-    this.tracks.forEach(t => t);
-  }
+    const base = this.layers.base;
+    let overlay = this.layers.overlay;
+    const newOverlay: ILayerDefinition[] = [];
+    this.tracks.filter(t => t.isVisible).forEach(t => {
+      t.activeTimeIndex = t.findLastKeyframe(this.startTime, time);
+      // Remove the marker
+      overlay = overlay.filter(l => l.id !== t.id);
+      newOverlay.push(this.createMarker(t));
+    });
+    this.layers = { base, overlay };
+    setTimeout(() => {
+      // Add the marker on the next tick
+      this.layers = { base, overlay: newOverlay };
+    });
+}
 
   private updateKeyframes(track?: ITrackView) {
     if (track) {
