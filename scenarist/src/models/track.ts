@@ -3,7 +3,7 @@ import { ITrackView } from 'models/track';
 import { IPropertyView } from 'models/property';
 import { FeatureViewModel } from './feature';
 import { IModel, IdType } from './model';
-import { clone } from 'utils/utils';
+import { clone, parseTime } from 'utils/utils';
 
 /**
  * Actual track data object interface that will be persisted
@@ -33,6 +33,11 @@ export interface ITrackView extends ITrack {
   hasChanged: boolean;
   applyChanges(): ITrack;
   restore(): void;
+  /**
+   * Find the last keyframe index before the requested time
+   * @param time
+   */
+  findLastKeyframe(startDate: Date, time: Date);
   /**
    * Add a new feature (keyframe)
    *
@@ -151,14 +156,11 @@ export class TrackViewModel implements ITrackView {
    * Find the last keyframe index before the requested time
    * @param time
    */
-  private findLastKeyframe(startDate: Date, time: Date) {
-    const parseTimeToMsec = (s: string, date: Date) => date.valueOf() + (s.length === 5
-      ? (+s.substr(0, 2) * 60 + +s.substr(3, 2)) * 60000
-      : (+s.substr(0, 2) * 3600 + +s.substr(3, 2) * 60 + +s.substr(6, 2)) * 1000);
+  public findLastKeyframe(startDate: Date, time: Date) {
     const t = time.valueOf();
     return this.track.features
       .reduce((p, c, i) => {
-        const dt = t - parseTimeToMsec(c.properties.date || startDate, c.properties.time);
+        const dt = t - parseTime(c.properties, startDate);
         return dt < 0 || p.dt < dt ? p : { dt, i };
       }, { dt: Number.MAX_VALUE, i: 0 }).i;
   }
