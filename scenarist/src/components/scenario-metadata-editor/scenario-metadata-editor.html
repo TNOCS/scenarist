@@ -90,9 +90,9 @@
                     <i class="material-icons">place</i>Overlay details</div>
                   <div class="collapsible-body">
                     <div class="row">
-                      <select class="col s8" md-select="" value.two-way="activeScenario.layers.overlayIds">
+                      <select class="col s8" multiple md-select="label: Select overlays; enable-option-observer: true;" value.two-way="activeScenario.layers.overlayIds">
                         <option value="" disabled selected>Select overlay layers</option>
-                        <option value="${layer.id}" repeat.for="layer of overLayers">${layer.title}</option>
+                        <option model.bind="layer.id" repeat.for="layer of overLayers">${layer.title}</option>
                       </select>
                       <div class="col s1" style="margin-top: 10px;">
                         <a route-href="route: layers; params.bind: {layertype: 'overLayers' }">
