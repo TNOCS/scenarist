@@ -6,6 +6,7 @@ import LayerFactory from './aurelia-leaflet-factory';
 import * as Leaflet from 'leaflet';
 import { Map } from 'leaflet';
 import { ILayerDefinition } from 'models/layer';
+import './plugins/leaflet-mouse-coordinates/leaflet-mouse-coordinates';
 
 @customElement('leaflet')
 @useView('./aurelia-leaflet.html')
@@ -180,6 +181,7 @@ export class AureliaLeafletCustomElement {
           this.map.removeControl(this.scaleControl);
         }
         this.scaleControl = this.L.control.scale(newValue).addTo(this.map);
+        this.L.control.mouseCoordinate({ gps: false, utmref: true }).addTo(this.map);
       });
     }
   }
