@@ -58,3 +58,4 @@ typings/
 .env
 
 scenarist/dist/
+rest-server/public/layers/aso

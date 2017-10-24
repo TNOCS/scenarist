@@ -49,9 +49,9 @@
       "id": "rJ75A4U6W",
       "title": "Plane",
       "propertyIds": [
-        "1",
-        "2",
-        "time"
+        "date",
+        "time",
+        "Sym_LNS6Z"
       ],
       "imgDataUrl": "data:image/png;base64,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",
       "sidc": "SHA-MF-----D---",
@@ -77,7 +77,10 @@
     {
       "layers": {
         "baseIds": "OSM Tiles",
-        "overlayIds": "S1z7cQKpb"
+        "overlayIds": [
+          "S1z7cQKpb",
+          "r1aY9u36-"
+        ]
       },
       "center": {
         "lat": "52.147186",
@@ -88,7 +91,8 @@
         4,
         5,
         6,
-        7
+        7,
+        10
       ],
       "id": 1,
       "title": "First scenario",
@@ -104,10 +108,10 @@
     },
     {
       "layers": {
-        "baseIds": [
-          "OSM Tiles"
-        ],
-        "overlayIds": []
+        "baseIds": "OSM Tiles",
+        "overlayIds": [
+          "r1aY9u36-"
+        ]
       },
       "center": {
         "lat": "52.147186",
@@ -134,7 +138,9 @@
     {
       "layers": {
         "baseIds": "rJ17-NCnW",
-        "overlayIds": "S1z7cQKpb"
+        "overlayIds": [
+          "S1z7cQKpb"
+        ]
       },
       "center": {
         "lat": "32.0",
@@ -350,40 +356,174 @@
       "id": 4
     },
     {
-      "scenarioId": 1,
-      "entityTypeId": "rJ75A4U6W",
-      "features": [
+      "track": {
+        "scenarioId": 1,
+        "entityTypeId": "rJ75A4U6W",
+        "features": [
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.332489013671876,
+                52.14918515826768
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:03"
+            }
+          },
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.332489013671876,
+                52.14918515826768
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:03"
+            }
+          },
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344762802124024,
+                52.146472982541084
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:05"
+            }
+          },
+          {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.330171585083009,
+                52.14107402435123
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:10"
+            }
+          }
+        ],
+        "id": 5,
+        "title": "Airplane 2b"
+      },
+      "isVisible": true,
+      "isSelected": true,
+      "hasChanged": false,
+      "pActiveTimeIndex": "3",
+      "pTitle": "Airplane 2b",
+      "pEntityTypeId": "rJ75A4U6W",
+      "pFeatures": [
         {
-          "geometry": {
+          "feature": {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.332489013671876,
+                52.14918515826768
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:03"
+            }
+          },
+          "pGeometry": {
             "type": "Point",
             "coordinates": [
               5.332489013671876,
               52.14918515826768
             ]
           },
-          "properties": {
+          "pProperties": {
             "1": "",
             "2": "",
-            "Sym_LNS6Z": "4"
+            "Sym_LNS6Z": "4",
+            "time": "00:03"
           }
         },
         {
-          "geometry": {
+          "feature": {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.344762802124024,
+                52.146472982541084
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:05"
+            }
+          },
+          "pGeometry": {
             "type": "Point",
             "coordinates": [
-              5.332489013671876,
-              52.14918515826768
+              5.344762802124024,
+              52.146472982541084
             ]
           },
-          "properties": {
+          "pProperties": {
             "1": "",
             "2": "",
-            "Sym_LNS6Z": "4"
+            "Sym_LNS6Z": "4",
+            "time": "00:05"
           }
-        }
+        },
+        {
+          "feature": {
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                5.330171585083009,
+                52.14107402435123
+              ]
+            },
+            "properties": {
+              "1": "",
+              "2": "",
+              "Sym_LNS6Z": "4",
+              "time": "00:10"
+            }
+          },
+          "pGeometry": {
+            "type": "Point",
+            "coordinates": [
+              5.330171585083009,
+              52.14107402435123
+            ]
+          },
+          "pProperties": {
+            "1": "",
+            "2": "",
+            "Sym_LNS6Z": "4",
+            "time": "00:10"
+          }
+        },
+        null
       ],
-      "id": 5,
-      "title": "Airplane 2b"
+      "id": 5
     },
     {
       "scenarioId": 1,
@@ -393,12 +533,42 @@
           "geometry": {
             "type": "Point",
             "coordinates": [
-              5.119285583496095,
-              52.088997969314285
+              5.350341796875001,
+              52.060090245055825
             ]
           },
           "properties": {
-            "Sym_LNS6Z": "5"
+            "1": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:10"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.205459594726563,
+              52.10060051472338
+            ]
+          },
+          "properties": {
+            "1": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:10"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.123748779296876,
+              52.05502387600311
+            ]
+          },
+          "properties": {
+            "1": "",
+            "Sym_LNS6Z": "5",
+            "time": "00:15"
           }
         }
       ],
@@ -416,10 +586,42 @@
               5.197906494140626,
               52.204010788868615
             ]
+          },
+          "properties": {
+            "1": "",
+            "time": "00:01"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.066070556640626,
+              52.05840151921515
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "00:05",
+            "date": "2017-10-14T22:00:00.000Z"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.200653076171876,
+              52.0984915123924
+            ]
+          },
+          "properties": {
+            "1": "",
+            "time": "00:11"
           }
         }
       ],
-      "id": 7
+      "id": 7,
+      "title": "Tank 2"
     },
     {
       "scenarioId": 2,
@@ -548,6 +750,70 @@
       ],
       "id": 9,
       "title": "Tank 1"
+    },
+    {
+      "scenarioId": 1,
+      "entityTypeId": "rJ75A4U6W",
+      "features": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.344033241271973,
+              52.14699967512599
+            ]
+          },
+          "properties": {
+            "time": "00:08",
+            "Sym_LNS6Z": "13",
+            "date": "2017-10-14T22:00:00.000Z"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.348796844482423,
+              52.14570926722722
+            ]
+          },
+          "properties": {
+            "time": "00:25",
+            "Sym_LNS6Z": "13",
+            "date": "2017-10-14T22:00:00.000Z"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.353431701660156,
+              52.14676266423374
+            ]
+          },
+          "properties": {
+            "time": "00:42",
+            "Sym_LNS6Z": "13",
+            "date": "2017-10-14T22:00:00.000Z"
+          }
+        },
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              5.356178283691407,
+              52.14239090377522
+            ]
+          },
+          "properties": {
+            "time": "00:50",
+            "Sym_LNS6Z": "13",
+            "date": "2017-10-14T22:00:00.000Z"
+          }
+        }
+      ],
+      "id": 10,
+      "title": "Eriks Plane"
     }
   ],
   "baseLayers": [
@@ -588,7 +854,7 @@
       "title": "Air Support Line",
       "description": "",
       "type": "geoJSON",
-      "url": "http://localhost:3003/layers/fra_airspace_line.geojson",
+      "url": "http://localhost:3000/layers/fra_airspace_line.geojson",
       "options": {
         "attribution": ""
       }
@@ -597,13 +863,19 @@
       "id": "SyZb00O6-",
       "title": "Air Support Points",
       "type": "geoJSON",
-      "url": "http://localhost:3003/layers/fra_airspace_point.geojson"
+      "url": "http://localhost:3000/layers/fra_airspace_point.geojson"
     },
     {
       "id": "S1z7cQKpb",
       "title": "Test",
       "type": "geoJSON",
-      "url": "http://localhost:3003/layers/test_point.geojson"
+      "url": "http://localhost:3000/layers/test_point.geojson"
+    },
+    {
+      "id": "r1aY9u36-",
+      "title": "Air support overlay",
+      "type": "KML",
+      "url": "http://localhost:3000/layers/aso/doc.kml"
     }
   ]
 }
