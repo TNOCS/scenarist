@@ -8,12 +8,10 @@ import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-dependency-injection';
 import { IScenario } from './../../models/scenario';
-import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent } from 'leaflet';
+import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, Layer, LatLngBounds } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
-import * as jquery from 'jquery';
 import { IdType } from 'models/model';
 import { clone } from 'utils/utils';
-import * as omnivore from 'leaflet-omnivore';
 
 @autoinject
 export class ScenarioEditor {
@@ -85,14 +83,11 @@ export class ScenarioEditor {
       };
       this.tracks = this.tracksToViewModels();
       this.showPropertyEditor = this.tracks && this.tracks.length > 0;
-      // const overlay: ILayerDefinition[] = [];
       const overlay: ILayerDefinition[] = this.tracks
         .map(t => this.createMarker(t))
         .concat(this.state.overLayers.filter(l => scenario.layers.overlayIds.indexOf(l.id) >= 0));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
       this.layers = { base, overlay };
-      this.loadOverlays();
-      // this.loadGeojsonDataAsync();
     }
   }
 
@@ -101,6 +96,8 @@ export class ScenarioEditor {
       case 'load':
         this.map = ev.map as Map;
         if (this.scenario) { this.activeScenarioChanged(this.scenario); }
+        break;
+      case 'layersLoaded':
         break;
       case 'click':
         this.clickLocation = ev.latlng;
@@ -205,54 +202,6 @@ export class ScenarioEditor {
     }
     resize();
     this.isInitialized = true;
-  }
-
-  private loadOverlays() {
-    if (!this.isActive || !this.layers.overlay) { return; }
-    this.layers.overlay.forEach(l => {
-      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type')) { return; }
-      switch (l.type) {
-        default: return;
-        case 'geoJSON':
-          omnivore.geojson(l.url).addTo(this.map);
-          break;
-        case 'KML':
-          omnivore.kml(l.url).addTo(this.map);
-          break;
-      }
-    });
-    this.map.fitWorld();
-  }
-
-  private loadGeojsonDataAsync() {
-    this.layers.overlay.forEach((l) => {
-      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type') || l.type !== 'geoJSON') { return; }
-      l.data = <GeoJSON.FeatureCollection<any>>{ type: 'FeatureCollection', features: [] };
-      l.options = {
-        onEachFeature: (feature, layer) => {
-          layer.bindPopup(JSON.stringify(feature.properties));
-        }
-      };
-      // request.get(l.url, {
-      //   timeout: 5000
-      // }, (err, innerRes, body) => {
-      //   if (err) return;
-      //   l.data = body;
-      // });
-      jquery.getJSON(l.url)
-        .done((data) => {
-          l.data = data;
-          l.options = {
-            onEachFeature: (feature, layer) => {
-              layer.bindPopup('properties');
-            }
-          }
-          this.ea.publish('LayersChanged', this.layers);
-        })
-        .catch((err) => {
-          //throw error
-        });
-    });
   }
 
   private createMarker(track: ITrackView) {
