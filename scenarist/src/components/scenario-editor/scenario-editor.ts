@@ -13,6 +13,7 @@ import { MdModal } from 'aurelia-materialize-bridge';
 import * as jquery from 'jquery';
 import { IdType } from 'models/model';
 import { clone } from 'utils/utils';
+import * as omnivore from 'leaflet-omnivore';
 
 @autoinject
 export class ScenarioEditor {
@@ -75,6 +76,7 @@ export class ScenarioEditor {
   public activeScenarioChanged(scenario: IScenario) {
     if (!this.entityTypes) { return; }
     this.scenario = scenario;
+    if (!this.map) { return; }
     this.isActive = this.scenario ? true : false;
     if (this.isActive) {
       this.mapOptions = {
@@ -84,10 +86,13 @@ export class ScenarioEditor {
       this.tracks = this.tracksToViewModels();
       this.showPropertyEditor = this.tracks && this.tracks.length > 0;
       // const overlay: ILayerDefinition[] = [];
-      const overlay: ILayerDefinition[] = this.tracks.map(t => this.createMarker(t)).concat(this.state.overLayers.filter(l => scenario.layers.overlayIds.indexOf(l.id) >= 0));
+      const overlay: ILayerDefinition[] = this.tracks
+        .map(t => this.createMarker(t))
+        .concat(this.state.overLayers.filter(l => scenario.layers.overlayIds.indexOf(l.id) >= 0));
       const base = this.state.baseLayers.filter(l => scenario.layers.baseIds.indexOf(l.id) >= 0);
       this.layers = { base, overlay };
-      this.loadGeojsonDataAsync();
+      this.loadOverlays();
+      // this.loadGeojsonDataAsync();
     }
   }
 
@@ -95,6 +100,7 @@ export class ScenarioEditor {
     switch (ev.type) {
       case 'load':
         this.map = ev.map as Map;
+        if (this.scenario) { this.activeScenarioChanged(this.scenario); }
         break;
       case 'click':
         this.clickLocation = ev.latlng;
@@ -201,6 +207,23 @@ export class ScenarioEditor {
     this.isInitialized = true;
   }
 
+  private loadOverlays() {
+    if (!this.isActive || !this.layers.overlay) { return; }
+    this.layers.overlay.forEach(l => {
+      if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type')) { return; }
+      switch (l.type) {
+        default: return;
+        case 'geoJSON':
+          omnivore.geojson(l.url).addTo(this.map);
+          break;
+        case 'KML':
+          omnivore.kml(l.url).addTo(this.map);
+          break;
+      }
+    });
+    this.map.fitWorld();
+  }
+
   private loadGeojsonDataAsync() {
     this.layers.overlay.forEach((l) => {
       if (!l.hasOwnProperty('url') || !l.hasOwnProperty('type') || l.type !== 'geoJSON') { return; }
@@ -293,6 +316,7 @@ export class ScenarioEditor {
   }
 
   private updateEntityPositions(time: Date) {
+    if (!this.isActive) { return; }
     console.warn('Updating entity positions');
     const base = this.layers.base;
     let overlay = this.layers.overlay;
