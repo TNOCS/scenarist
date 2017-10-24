@@ -68,7 +68,8 @@ export default class LayerFactory {
         instance = this.getGeoJson(layer);
         break;
       default:
-        throw new AureliaLeafletException(`Layer type ${layer.type} not implemented`);
+        // throw new AureliaLeafletException(`Layer type ${layer.type} not implemented`);
+        return;
     }
 
     if (typeof layer.initCallback === 'function') {

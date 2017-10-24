@@ -62,7 +62,7 @@ export class State {
   public set activeScenarioId(id: IdType) {
     this.store.activeScenarioId = id;
     if (id) {
-      this.rest.findOne('scenarios', id, { '_embed': 'tracks' }).then((s) => {
+      this.rest.findOne('scenarios', id, { '_embed': 'tracks' }).then((s: IScenario) => {
         this.pScenario = s;
         this.store.tracks = s.tracks;
         delete s.tracks;

@@ -216,6 +216,7 @@ export class AureliaLeafletCustomElement {
         this.attachedLayers.base[layerId] = layersToAttach.base[layerId].addTo(this.map);
       }
       for (const layerId of Object.keys(layersToAttach.overlay)) {
+        if (!layersToAttach.overlay[layerId]) { continue; }
         this.attachedLayers.overlay[layerId] = layersToAttach.overlay[layerId].addTo(this.map);
       }
     });
