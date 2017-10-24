@@ -1,5 +1,5 @@
 import { AureliaLeafletException } from './aurelia-leaflet-exceptions';
-// import * as Leaflet from 'leaflet';
+import * as omnivore from 'leaflet-omnivore';
 
 export default class LayerFactory {
 
@@ -11,7 +11,7 @@ export default class LayerFactory {
     });
   }
 
-  public getLayer(layer) {
+  public getLayer(layer, map?) {
     if (!layer.hasOwnProperty('type')) {
       layer.type = 'tile';
     }
@@ -65,18 +65,33 @@ export default class LayerFactory {
         instance = this.getFeatureGroup(layer);
         break;
       case 'geoJSON':
-        instance = this.getGeoJson(layer);
+        instance = this.getGeoJson(layer, map);
+        break;
+      case 'TopoJSON':
+        omnivore.topojson(layer.url).addTo(map);
+        break;
+      case 'KML':
+        omnivore.kml(layer.url).addTo(map);
+        break;
+      case 'WKT':
+        omnivore.wkt(layer.url).addTo(map);
+        break;
+      case 'GPX':
+        omnivore.gpx(layer.url).addTo(map);
+        break;
+      case 'CSV':
+        omnivore.csv(layer.url).addTo(map);
         break;
       default:
         // throw new AureliaLeafletException(`Layer type ${layer.type} not implemented`);
         return;
     }
 
-    if (typeof layer.initCallback === 'function') {
+    if (instance && typeof layer.initCallback === 'function') {
       layer.initCallback(instance);
     }
 
-    if (layer.hasOwnProperty('events')) {
+    if (instance && layer.hasOwnProperty('events')) {
       for (let e of layer.events) {
         if (typeof instance.on === 'function') {
           instance.on(e.name, e.callback);
@@ -224,9 +239,11 @@ export default class LayerFactory {
     return this.L.featureGroup(layers);
   }
 
-  public getGeoJson(layer) {
+  public getGeoJson(layer, map?) {
     if (!layer.hasOwnProperty('data')) {
-      throw new AureliaLeafletException('No data property given for layer.type "geoJSON"');
+      omnivore.geojson(layer.url).addTo(map);
+      return null;
+      // throw new AureliaLeafletException('No data property given for layer.type "geoJSON"');
     }
     return this.L.geoJson(layer.data, layer.options);
   }

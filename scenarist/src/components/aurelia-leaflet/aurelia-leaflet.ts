@@ -62,7 +62,7 @@ export class AureliaLeafletCustomElement {
 
     // FIX issue with default markers not being rendered
     // https://github.com/PaulLeCam/react-leaflet/issues/255#issuecomment-261904061
-    // this.L.Icon.Default.imagePath = '.';
+    // this.L.Icon.Default.imagePath = '.'; DID NOT WORK
     delete this.L.Icon.Default.prototype._getIconUrl;
 
     this.L.Icon.Default.mergeOptions({
@@ -221,7 +221,7 @@ export class AureliaLeafletCustomElement {
       for (let layer of this.layers.overlay) {
         const id = this.getLayerId(layer);
         if (this.attachedLayers.overlay.hasOwnProperty(id)) { continue; }
-        layersToAttach.overlay[this.getLayerId(layer)] = this.layerFactory.getLayer(layer);
+        layersToAttach.overlay[this.getLayerId(layer)] = this.layerFactory.getLayer(layer, this.map);
       }
     }
     this.mapInit.then(() => {
@@ -232,6 +232,7 @@ export class AureliaLeafletCustomElement {
         if (!layersToAttach.overlay[layerId]) { continue; }
         this.attachedLayers.overlay[layerId] = layersToAttach.overlay[layerId].addTo(this.map);
       }
+      this.eventAggregator.publish('aurelia-leaflet', { type: 'layersLoaded' });
     });
   }
 
