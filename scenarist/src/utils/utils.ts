@@ -26,10 +26,10 @@ export const parseTimeToMsec = (s: string) => s.length === 5
   ? (+s.substr(0, 2) * 60 + +s.substr(3, 2)) * 60000
   : (+s.substr(0, 2) * 3600 + +s.substr(3, 2) * 60 + +s.substr(6, 2)) * 1000;
 
-export const parseTime = (props: { [key: string]: string | Date }, startDate: string | Date) => {
+export const parseTime = (props: { [key: string]: string | Date } = {}, startDate: string | Date) => {
   const date = props.date || startDate;
   const start = typeof date === 'string' ? Date.parse(date) : date.valueOf();
-  const t = props.time;
+  const t = props.time || '00:00';
   const offset = typeof t === 'string' ? (t.length === 5
     ? (+t.substr(0, 2) * 60 + +t.substr(3, 2)) * 60000
     : (+t.substr(0, 2) * 3600 + +t.substr(3, 2) * 60 + +t.substr(6, 2)) * 1000) : t.valueOf();

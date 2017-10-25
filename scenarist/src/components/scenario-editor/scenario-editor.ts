@@ -224,6 +224,7 @@ export class ScenarioEditor {
       const marker = (me.target as Marker);
       track.isSelected = !track.isSelected;
       this.setMarkerSelectionMode(marker, track);
+      this.ea.publish('trackSelectionChanged', track);
     };
   }
 
@@ -255,8 +256,9 @@ export class ScenarioEditor {
     };
   }
 
-  private trackSelectionChanged(track: ITrackView) {
+  private trackSelectionChanged(track: ITrackView, setMarkerSelectionMode = true) {
     this.updateKeyframes(track);
+    if (!setMarkerSelectionMode) { return; }
     this.map.eachLayer((l: Marker) => {
       if (l.hasOwnProperty('options') && l.options.hasOwnProperty('id') && (l.options as any).id === track.id) {
         this.setMarkerSelectionMode(l, track);
