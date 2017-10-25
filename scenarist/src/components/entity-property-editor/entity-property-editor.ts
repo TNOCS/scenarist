@@ -7,13 +7,13 @@ import { autoinject, bindable } from 'aurelia-framework';
 import { ITrackView } from 'models/track';
 import { IProperty, IPropertyView } from 'models/property';
 import { clone } from 'utils/utils';
+import { FeatureViewModel } from 'models/feature';
 
 @autoinject
 export class EntityPropertyEditorCustomElement {
   @bindable public tracks: ITrackView[];
   public selectedTracks: ITrackView[] = [];
   public track: ITrackView;
-  public activeFeature: any;
   public activePage = 1;
   public scenario: IScenario;
   private entityTypes: IEntityType[];
@@ -21,6 +21,13 @@ export class EntityPropertyEditorCustomElement {
   private subscriptions: Subscription[] = [];
 
   constructor(private state: State, private ea: EventAggregator) { }
+
+  public get activeFeature(): FeatureViewModel {
+    return this.track ? this.track.activeFeature : null;
+  }
+  public set activeFeature(v: FeatureViewModel) {
+    this.track.activeTimeIndex = '' + this.track.features.indexOf(v);
+  }
 
   public attached() {
     this.subscriptions.push(this.ea.subscribe('trackSelectionChanged', (track: ITrackView) => this.trackSelectionChanged(track)));
@@ -70,11 +77,11 @@ export class EntityPropertyEditorCustomElement {
 
   public get activeDate() {
     if (!this.activeFeature) { return null; }
-    const date = this.activeFeature.properties.date;
+    const date = this.activeFeature.properties.date.value;
     return typeof date === 'string' ? new Date(Date.parse(date)) : date as Date;
   }
   public set activeDate(date: Date) {
-    this.activeFeature.properties.date = date;
+    this.activeFeature.properties.date.value = date.toISOString();
     this.keyframesUpdated(this.track);
   }
 

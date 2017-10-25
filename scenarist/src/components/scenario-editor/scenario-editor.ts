@@ -1,14 +1,15 @@
+import { IMarker } from 'models/marker';
 import { computedFrom } from 'aurelia-binding';
-import { parseTimeToMsec } from './../../utils/utils';
-import { ITrack, ITrackView, TrackViewModel } from './../../models/track';
-import { IEntityType } from './../../models/entity';
-import { State } from './../../models/state';
+import { parseTimeToMsec } from 'utils/utils';
+import { ITrack, ITrackView, TrackViewModel } from 'models/track';
+import { IEntityType } from 'models/entity';
+import { State } from 'models/state';
 import { defaultLayers, defaultMapOptions } from './../aurelia-leaflet/aurelia-leaflet-defaults';
 import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-dependency-injection';
-import { IScenario } from './../../models/scenario';
-import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, Layer, LatLngBounds } from 'leaflet';
+import { IScenario } from 'models/scenario';
+import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, Layer, LatLngBounds, LatLng } from 'leaflet';
 import { MdModal } from 'aurelia-materialize-bridge';
 import { IdType } from 'models/model';
 import { clone } from 'utils/utils';
@@ -270,19 +271,14 @@ export class ScenarioEditor {
 
   private updateEntityPositions(time: Date) {
     if (!this.isActive) { return; }
-    const base = this.layers.base;
-    let overlay = this.layers.overlay;
-    const newOverlay: ILayerDefinition[] = [];
     this.tracks.filter(t => t.isVisible).forEach(t => {
       t.activeTimeIndex = t.findLastKeyframe(this.startTime, time);
-      // Remove the marker
-      overlay = overlay.filter(l => l.id !== t.id);
-      newOverlay.push(this.createMarker(t));
-    });
-    this.layers = { base, overlay };
-    setTimeout(() => {
-      // Add the marker on the next tick
-      this.layers = { base, overlay: newOverlay };
+      this.map.eachLayer((l: any) => {
+        if (!l.options || l.options.id !== t.id) { return; }
+        const marker = l as IMarker;
+        const coord = t.activeFeature.geometry.coordinates;
+        marker.setLatLng(new LatLng(coord[1], coord[0]));
+      });
     });
 }
 

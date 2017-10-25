@@ -1,3 +1,4 @@
+import { computedFrom } from 'aurelia-binding';
 import { pad } from './../utils/utils';
 import { ITrackView } from 'models/track';
 import { IPropertyView } from 'models/property';
@@ -102,7 +103,10 @@ export class TrackViewModel implements ITrackView {
   public get activeTimeIndex() { return this.pActiveTimeIndex; }
   public set activeTimeIndex(i) { this.pActiveTimeIndex = `${i}`; }
 
-  public get activeFeature() { return this.pFeatures[this.pActiveTimeIndex]; }
+  @computedFrom('pActiveTimeIndex', 'pFeatures')
+  public get activeFeature(): FeatureViewModel {
+    return this.pFeatures[this.pActiveTimeIndex];
+  }
 
   public get title() { return this.pTitle; }
   public set title(t) {
