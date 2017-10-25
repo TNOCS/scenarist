@@ -214,7 +214,9 @@ export class ScenarioEditor {
     // const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize, className: (track.isSelected ? 'marker-selected' : '') }) }; // http://leafletjs.com/examples/custom-icons/
     const options = { icon: icon({ iconUrl: et.imgDataUrl, iconSize }) }; // http://leafletjs.com/examples/custom-icons/
     const marker = { type: 'marker', latLng, id, options, click: this.markerClicked(track) } as ILayerDefinition;
-    if (track.isSelected) { setTimeout(() => this.trackSelectionChanged(track)); }
+    if (track.isSelected) {
+      setTimeout(() => this.trackSelectionChanged(track));
+    }
     return marker;
   }
 
@@ -268,7 +270,6 @@ export class ScenarioEditor {
 
   private updateEntityPositions(time: Date) {
     if (!this.isActive) { return; }
-    console.warn('Updating entity positions');
     const base = this.layers.base;
     let overlay = this.layers.overlay;
     const newOverlay: ILayerDefinition[] = [];
