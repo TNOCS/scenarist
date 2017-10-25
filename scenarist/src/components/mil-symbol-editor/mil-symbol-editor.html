@@ -2,8 +2,1228 @@
   <md-card md-title="Edit symbol">
     <img src.bind="entityType.imgDataUrl" alt="Enity image">
     <div>
-      <md-input md-label="SIDC" md-value.bind="entityType.sidc"></md-input>
+      <md-input md-label="SIDC" md-value.bind="sidc"></md-input>
     </div>
+
+    <div class="row">
+      Default:
+      <ul md-tabs class="z-depth-1">
+        <li md-waves="color: primary;">
+          <a class="active" href="#tab_1">MIL-STD-2525C</a>
+        </li>
+        <li md-waves="color: primary;">
+          <a href="#tab_2">Info</a>
+        </li>
+      </ul>
+    </div>
+    <div id="tab_1" class="tab-content z-depth-1">
+      <select md-select="label: Coding scheme" value.two-way="codingScheme">
+        <option value="S">Warfighting</option>
+        <option value="I">Intelligence</option>
+        <option value="O">Stability Operations</option>
+        <option value="E">Emergency Management Symbols</option>
+      </select>
+      <select md-select="label:Affiliation" value.two-way="affiliation">
+        <option value="P">Pending</option>
+        <option value="U">Unknown</option>
+        <option value="A">Assumed friend</option>
+        <option value="F">Friend</option>
+        <option value="N">Neutral</option>
+        <option value="S">Suspect</option>
+        <option value="H">Hostile</option>
+        <option value="G">Exercise pending</option>
+        <option value="W">Exercise unknown</option>
+        <option value="D">Exercise friend</option>
+        <option value="L">Exercise neutral</option>
+        <option value="M">Exercise assumed friend</option>
+        <option value="J">Joker</option>
+        <option value="K">Faker</option>
+        <option value="O">None specified</option>
+      </select>
+      <select md-select="label:Battle dimension" value.two-way="battleDimension">
+        <option value="P">Space</option>
+        <option value="A">Air</option>
+        <option value="G">Ground</option>
+        <option value="S">Sea surface</option>
+        <option value="U">Sea subsurface</option>
+        <option value="F">SOF</option>
+      </select>
+      <select md-select="label:Status" value.two-way="status">
+        <option value="-">-</option>
+        <option value="A">Anticipated / planned</option>
+        <option value="P">Present</option>
+        <option value="C">Present / fully capable</option>
+        <option value="D">Present / damaged</option>
+        <option value="X">Present / destroyed</option>
+        <option value="F">Present / full to capacity</option>
+      </select>
+      <div if.bind="battleDimension == 'P'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Space Track</option>
+        <option value="S-----">Satellite</option>
+        <option value="V-----">Crewed Space Vehicle</option>
+        <option value="T-----">Space Station</option>
+        <option value="L-----">Space Launch Vehicle</option>
+      </select>
+      </div>
+      <div if.bind="battleDimension == 'F'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Special Operations Forces (SOF) Unit</option>
+        <option value="A-----">SOF Unit Aviation</option>
+        <option value="AF----">SOF Unit Aviation.SOF Unit Fixed Wing</option>
+        <option value="AFA---">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Attack</option>
+        <option value="AFK---">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Refuel</option>
+        <option value="AFU---">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Utility</option>
+        <option value="AFUL--">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Utility.SOF Unit Utility (Light)</option>
+        <option value="AFUM--">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Utility.SOF Unit Utility (Medium)</option>
+        <option value="AFUH--">SOF Unit Aviation.SOF Unit Fixed Wing.SOF Unit Utility.SOF Unit Utility (Heavy)</option>
+        <option value="AV----">SOF Unit Aviation.SOF Unit V/stol</option>
+        <option value="AH----">SOF Unit Aviation.SOF Unit Rotary Wing</option>
+        <option value="AHH---">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Combat Search And Rescue</option>
+        <option value="AHA---">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Attack</option>
+        <option value="AHU---">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Utility</option>
+        <option value="AHUL--">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Utility.SOF Unit Utility (Light)</option>
+        <option value="AHUM--">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Utility.SOF Unit Utility (Medium)</option>
+        <option value="AHUH--">SOF Unit Aviation.SOF Unit Rotary Wing.SOF Unit Utility.SOF Unit Utility (Heavy)</option>
+        <option value="N-----">SOF Unit SOF Unit Naval</option>
+        <option value="NS----">SOF Unit SOF Unit Naval.SOF Unit Seal</option>
+        <option value="NU----">SOF Unit SOF Unit Naval.SOF Unit Underwater Demolition Team</option>
+        <option value="NB----">SOF Unit SOF Unit Naval.SOF Unit Special Boat</option>
+        <option value="NN----">SOF Unit SOF Unit Naval.SOF Unit Special Ssnr</option>
+        <option value="G-----">SOF Unit Ground</option>
+        <option value="GS----">SOF Unit Ground.SOF Unit Special Forces</option>
+        <option value="GR----">SOF Unit Ground.SOF Unit Ranger</option>
+        <option value="GP----">SOF Unit Ground.SOF Unit Psychological Operations (Psyop)</option>
+        <option value="GPA---">SOF Unit Ground.SOF Unit Psychological Operations (Psyop).SOF Unit Fixed Wing Aviation</option>
+        <option value="GC----">SOF Unit Ground.SOF Unit Civil Affairs</option>
+        <option value="B-----">SOF Unit Support</option>
+      </select>
+      </div>
+      <div if.bind="battleDimension == 'A'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Air Track</option>
+        <option value="M-----">Military</option>
+        <option value="MF----">Military.Fixed Wing</option>
+        <option value="MFB---">Military.Fixed Wing.Bomber</option>
+        <option value="MFF---">Military.Fixed Wing.Fighter</option>
+        <option value="MFFI--">Military.Fixed Wing.Fighter.Interceptor</option>
+        <option value="MFT---">Military.Fixed Wing.Trainer</option>
+        <option value="MFA---">Military.Fixed Wing.Attack/strike</option>
+        <option value="MFL---">Military.Fixed Wing.V/stol</option>
+        <option value="MFK---">Military.Fixed Wing.Tanker</option>
+        <option value="MFKB--">Military.Fixed Wing.Tanker.Tanker Boom-only</option>
+        <option value="MFKD--">Military.Fixed Wing.Tanker.Tanker Drogue-only</option>
+        <option value="MFC---">Military.Fixed Wing.Cargo Airlift (Transport)</option>
+        <option value="MFCL--">Military.Fixed Wing.Cargo Airlift (Transport).Cargo Airlift (Light)</option>
+        <option value="MFCM--">Military.Fixed Wing.Cargo Airlift (Transport).Cargo Airlift (Medium)</option>
+        <option value="MFCH--">Military.Fixed Wing.Cargo Airlift (Transport).Cargo Airlift (Heavy)</option>
+        <option value="MFJ---">Military.Fixed Wing.Electronic Countermeasures (Ecm/jammer)</option>
+        <option value="MFO---">Military.Fixed Wing.Medical Evacuation (Medevac)</option>
+        <option value="MFR---">Military.Fixed Wing.Reconnaissance</option>
+        <option value="MFRW--">Military.Fixed Wing.Reconnaissance.Airborne Early Warning (Aew)</option>
+        <option value="MFRZ--">Military.Fixed Wing.Reconnaissance.Electronic Surveillance Measures</option>
+        <option value="MFRX--">Military.Fixed Wing.Reconnaissance.Photographic</option>
+        <option value="MFP---">Military.Fixed Wing.Patrol</option>
+        <option value="MFPN--">Military.Fixed Wing.Patrol.Antisurface Warfare (Asuw)</option>
+        <option value="MFPM--">Military.Fixed Wing.Patrol.Mine Countermeasures</option>
+        <option value="MFU---">Military.Fixed Wing.Utility</option>
+        <option value="MFUL--">Military.Fixed Wing.Utility.Utility (Light)</option>
+        <option value="MFUM--">Military.Fixed Wing.Utility.Utility (Medium)</option>
+        <option value="MFUH--">Military.Fixed Wing.Utility.Utility (Heavy)</option>
+        <option value="MFY---">Military.Fixed Wing.Communications</option>
+        <option value="MFH---">Military.Fixed Wing.Combat Search And Rescue (Csar)</option>
+        <option value="MFD---">Military.Fixed Wing.Airborne Command Post (C2)</option>
+        <option value="MFQ---">Military.Fixed Wing.Drone (Rpv/ua)</option>
+        <option value="MFQA--">Military.Fixed Wing.Drone (Rpv/ua).Attack</option>
+        <option value="MFQB--">Military.Fixed Wing.Drone (Rpv/ua).Bomber</option>
+        <option value="MFQC--">Military.Fixed Wing.Drone (Rpv/ua).Cargo</option>
+        <option value="MFQD--">Military.Fixed Wing.Drone (Rpv/ua).Airborne Command Post</option>
+        <option value="MFQF--">Military.Fixed Wing.Drone (Rpv/ua).Fighter</option>
+        <option value="MFQH--">Military.Fixed Wing.Drone (Rpv/ua).Search &amp; Rescue (Csar)</option>
+        <option value="MFQJ--">Military.Fixed Wing.Drone (Rpv/ua).Electronic Countermeasures (Jammer)</option>
+        <option value="MFQK--">Military.Fixed Wing.Drone (Rpv/ua).Tanker</option>
+        <option value="MFQL--">Military.Fixed Wing.Drone (Rpv/ua).V/stol</option>
+        <option value="MFQM--">Military.Fixed Wing.Drone (Rpv/ua).Special Operations Forces (Sof)</option>
+        <option value="MFQI--">Military.Fixed Wing.Drone (Rpv/ua).Mine Countermeasures</option>
+        <option value="MFQN--">Military.Fixed Wing.Drone (Rpv/ua).Antisurface Warfare (Asuw)</option>
+        <option value="MFQP--">Military.Fixed Wing.Drone (Rpv/ua).Patrol</option>
+        <option value="MFQR--">Military.Fixed Wing.Drone (Rpv/ua).Reconnaissance</option>
+        <option value="MFQRW-">Military.Fixed Wing.Drone (Rpv/ua).Reconnaissance.Airborne Early Warning (Aew)</option>
+        <option value="MFQRZ-">Military.Fixed Wing.Drone (Rpv/ua).Reconnaissance.Electronic Surveillance Measures</option>
+        <option value="MFQRX-">Military.Fixed Wing.Drone (Rpv/ua).Reconnaissance.Photographic</option>
+        <option value="MFQS--">Military.Fixed Wing.Drone (Rpv/ua).Antisubmarine Warfare (Asw)</option>
+        <option value="MFQT--">Military.Fixed Wing.Drone (Rpv/ua).Trainer</option>
+        <option value="MFQU--">Military.Fixed Wing.Drone (Rpv/ua).Utility</option>
+        <option value="MFQY--">Military.Fixed Wing.Drone (Rpv/ua).Communications</option>
+        <option value="MFQO--">Military.Fixed Wing.Drone (Rpv/ua).Medevac</option>
+        <option value="MFS---">Military.Fixed Wing.Antisubmarine Warfare (Asw) Carrier Based</option>
+        <option value="MFM---">Military.Fixed Wing.Special Operations Forces (Sof)</option>
+        <option value="MH----">Military.Rotary Wing</option>
+        <option value="MHA---">Military.Rotary Wing.Attack</option>
+        <option value="MHS---">Military.Rotary Wing.Antisubmarine Warfare/mpa</option>
+        <option value="MHU---">Military.Rotary Wing.Utility</option>
+        <option value="MHUL--">Military.Rotary Wing.Utility.Utility (Light)</option>
+        <option value="MHUM--">Military.Rotary Wing.Utility.Utility (Medium)</option>
+        <option value="MHUH--">Military.Rotary Wing.Utility.Utility (Heavy)</option>
+        <option value="MHI---">Military.Rotary Wing.Mine Countermeasures</option>
+        <option value="MHH---">Military.Rotary Wing.Combat Search And Rescue (Csar)</option>
+        <option value="MHR---">Military.Rotary Wing.Reconnaissance</option>
+        <option value="MHQ---">Military.Rotary Wing.Drone (Rpv/ua)</option>
+        <option value="MHC---">Military.Rotary Wing.Cargo Airlift (Transport)</option>
+        <option value="MHCL--">Military.Rotary Wing.Cargo Airlift (Transport).Cargo Airlift (Light)</option>
+        <option value="MHCM--">Military.Rotary Wing.Cargo Airlift (Transport).Cargo Airlift (Medium)</option>
+        <option value="MHCH--">Military.Rotary Wing.Cargo Airlift (Transport).Cargo Airlift (Heavy)</option>
+        <option value="MHT---">Military.Rotary Wing.Trainer</option>
+        <option value="MHO---">Military.Rotary Wing.Medevac</option>
+        <option value="MHM---">Military.Rotary Wing.Special Operations Forces (Sof)</option>
+        <option value="MHD---">Military.Rotary Wing.Airborne Command Post (C2)</option>
+        <option value="MHK---">Military.Rotary Wing.Tanker</option>
+        <option value="MHJ---">Military.Rotary Wing.Electronic Countermeasures (Ecm/jammer)</option>
+        <option value="ML----">Military.Lighter Than Air</option>
+        <option value="MV----">Military.Very Important Person (Vip)</option>
+        <option value="ME----">Military.Escort</option>
+        <option value="W-----">Weapon</option>
+        <option value="WM----">Weapon.Missile In Flight</option>
+        <option value="WMS---">Weapon.Missile In Flight.Surface Launched Missile</option>
+        <option value="WMSS--">Weapon.Missile In Flight.Surface Launched Missile.Surface-to-surface Missile (Ssm)</option>
+        <option value="WMSA--">Weapon.Missile In Flight.Surface Launched Missile.Surface-to-air Missile (Sam)</option>
+        <option value="WMSU--">Weapon.Missile In Flight.Surface Launched Missile.Surface-to-subsurface Missile</option>
+        <option value="WMSB--">Weapon.Missile In Flight.Surface Launched Missile.Antiballistic Missile (Abm)</option>
+        <option value="WMA---">Weapon.Missile In Flight.Air Launched Missile</option>
+        <option value="WMAS--">Weapon.Missile In Flight.Air Launched Missile.Air-to-surface Missile (Asm)</option>
+        <option value="WMAA--">Weapon.Missile In Flight.Air Launched Missile.Air-to-air Missile (Aam)</option>
+        <option value="WMAP--">Weapon.Missile In Flight.Air Launched Missile.Air-to-space Missile</option>
+        <option value="WMU---">Weapon.Missile In Flight.Subsurface-to-surface Missile (S/ssm)</option>
+        <option value="WMCM--">Weapon.Missile In Flight.Cruise Missile</option>
+        <option value="WMB---">Weapon.Missile In Flight.Ballistic Missile</option>
+        <option value="WB----">Weapon.Bomb</option>
+        <option value="WD----">Weapon.Decoy</option>
+        <option value="C-----">Civil Aircraft</option>
+        <option value="CF----">Civil Aircraft.Fixed Wing</option>
+        <option value="CH----">Civil Aircraft.Rotary Wing</option>
+        <option value="CL----">Civil Aircraft.Lighter Than Air</option>
+      </select>
+      </div>
+      <div if.bind="battleDimension == 'G'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Ground Track</option>
+        <option value="U-----">Unit</option>
+        <option value="UC----">Unit.Combat</option>
+        <option value="UCD---">Unit.Combat.Air Defense</option>
+        <option value="UCDS--">Unit.Combat.Air Defense.Short Range</option>
+        <option value="UCDSC-">Unit.Combat.Air Defense.Short Range.Chaparral</option>
+        <option value="UCDSS-">Unit.Combat.Air Defense.Short Range.Stinger</option>
+        <option value="UCDSV-">Unit.Combat.Air Defense.Short Range.Vulcan</option>
+        <option value="UCDM--">Unit.Combat.Air Defense.Air Defense Missile</option>
+        <option value="UCDML-">Unit.Combat.Air Defense.Air Defense Missile.Air Defense Missile Light</option>
+        <option value="UCDMLA">Unit.Combat.Air Defense.Air Defense Missile.Air Defense Missile Light.Air Defense Missile Motorized (Avenger)</option>
+        <option value="UCDMM-">Unit.Combat.Air Defense.Air Defense Missile.Air Defense Missile Medium</option>
+        <option value="UCDMH-">Unit.Combat.Air Defense.Air Defense Missile.Air Defense Missile Heavy</option>
+        <option value="UCDH--">Unit.Combat.Air Defense.Air Defense Missile.H/mad</option>
+        <option value="UCDHH-">Unit.Combat.Air Defense.Air Defense Missile.H/mad.Hawk</option>
+        <option value="UCDHP-">Unit.Combat.Air Defense.Air Defense Missile.H/mad.Patriot</option>
+        <option value="UCDG--">Unit.Combat.Air Defense.Gun Unit</option>
+        <option value="UCDC--">Unit.Combat.Air Defense.Composite</option>
+        <option value="UCDT--">Unit.Combat.Air Defense.Targeting Unit</option>
+        <option value="UCDO--">Unit.Combat.Air Defense.Theater Missile Defense Unit</option>
+        <option value="UCA---">Unit.Combat.Armor</option>
+        <option value="UCAT--">Unit.Combat.Armor.Armor Track</option>
+        <option value="UCATA-">Unit.Combat.Armor.Armor Track.Armor Track Airborne</option>
+        <option value="UCATW-">Unit.Combat.Armor.Armor Track.Armor Track Amphibious</option>
+        <option value="UCATWR">Unit.Combat.Armor.Armor Track.Armor Track Amphibious.Armor Track Amphibious Recovery</option>
+        <option value="UCATL-">Unit.Combat.Armor.Armor Track.Armor Track, Light</option>
+        <option value="UCATM-">Unit.Combat.Armor.Armor Track.Armor Track, Medium</option>
+        <option value="UCATH-">Unit.Combat.Armor.Armor Track.Armor Track, Heavy</option>
+        <option value="UCATR-">Unit.Combat.Armor.Armor Track.Armor Track, Recovery</option>
+        <option value="UCAW--">Unit.Combat.Armor.Armor, Wheeled</option>
+        <option value="UCAWS-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Air Assault</option>
+        <option value="UCAWA-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Airborne</option>
+        <option value="UCAWW-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Amphibious</option>
+        <option value="UCAWWR">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Amphibious.Armor, Wheeled Amphibious Recovery</option>
+        <option value="UCAWL-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Light</option>
+        <option value="UCAWM-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Medium</option>
+        <option value="UCAWH-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Heavy</option>
+        <option value="UCAWR-">Unit.Combat.Armor.Armor, Wheeled.Armor, Wheeled Recovery</option>
+        <option value="UCAA--">Unit.Combat.Antiarmor</option>
+        <option value="UCAAD-">Unit.Combat.Antiarmor.Antiarmor Dismounted</option>
+        <option value="UCAAL-">Unit.Combat.Antiarmor.Antiarmor Light</option>
+        <option value="UCAAM-">Unit.Combat.Antiarmor.Antiarmor Airborne</option>
+        <option value="UCAAS-">Unit.Combat.Antiarmor.Antiarmor Air Assault</option>
+        <option value="UCAAU-">Unit.Combat.Antiarmor.Antiarmor Mountain</option>
+        <option value="UCAAC-">Unit.Combat.Antiarmor.Antiarmor Arctic</option>
+        <option value="UCAAA-">Unit.Combat.Antiarmor.Antiarmor Armored</option>
+        <option value="UCAAAT">Unit.Combat.Antiarmor.Antiarmor Armored.Antiarmor Armored Tracked</option>
+        <option value="UCAAAW">Unit.Combat.Antiarmor.Antiarmor Armored.Antiarmor Armored Wheeled</option>
+        <option value="UCAAAS">Unit.Combat.Antiarmor.Antiarmor Armored.Antiarmor Armored Air Assault</option>
+        <option value="UCAAO-">Unit.Combat.Antiarmor.Antiarmor Motorized</option>
+        <option value="UCAAOS">Unit.Combat.Antiarmor.Antiarmor Motorized.Antiarmor Motorized Air Assault</option>
+        <option value="UCV---">Unit.Combat.Aviation</option>
+        <option value="UCVF--">Unit.Combat.Aviation.Fixed Wing</option>
+        <option value="UCVFU-">Unit.Combat.Aviation.Fixed Wing.Utility Fixed Wing</option>
+        <option value="UCVFA-">Unit.Combat.Aviation.Fixed Wing.Attack Fixed Wing</option>
+        <option value="UCVFR-">Unit.Combat.Aviation.Fixed Wing.Recon Fixed Wing</option>
+        <option value="UCVR--">Unit.Combat.Aviation.Rotary Wing</option>
+        <option value="UCVRA-">Unit.Combat.Aviation.Rotary Wing.Attack Rotary Wing</option>
+        <option value="UCVRS-">Unit.Combat.Aviation.Rotary Wing.Scout Rotary Wing</option>
+        <option value="UCVRW-">Unit.Combat.Aviation.Rotary Wing.Antisubmarine Warfare Rotary Wing</option>
+        <option value="UCVRU-">Unit.Combat.Aviation.Rotary Wing.Utility Rotary Wing</option>
+        <option value="UCVRUL">Unit.Combat.Aviation.Rotary Wing.Utility Rotary Wing.Light Utility Rotary Wing</option>
+        <option value="UCVRUM">Unit.Combat.Aviation.Rotary Wing.Utility Rotary Wing.Medium Utility Rotary Wing</option>
+        <option value="UCVRUH">Unit.Combat.Aviation.Rotary Wing.Utility Rotary Wing.Heavy Utility Rotary Wing</option>
+        <option value="UCVRUC">Unit.Combat.Aviation.Rotary Wing.C2 Rotary Wing</option>
+        <option value="UCVRUE">Unit.Combat.Aviation.Rotary Wing.Medevac Rotary Wing</option>
+        <option value="UCVRM-">Unit.Combat.Aviation.Rotary Wing.Mine Countermeasure Rotary Wing</option>
+        <option value="UCVS--">Unit.Combat.Aviation.Search And Rescue</option>
+        <option value="UCVC--">Unit.Combat.Aviation.Composite</option>
+        <option value="UCVV--">Unit.Combat.Aviation.Vertical And/or Short Takeoff And Landing Aircraft(v/stol)</option>
+        <option value="UCVU--">Unit.Combat.Aviation.Unmanned Aircraft</option>
+        <option value="UCVUF-">Unit.Combat.Aviation.Unmanned Aircraft.Unmanned Aircraft Fixed Wing</option>
+        <option value="UCVUR-">Unit.Combat.Aviation.Unmanned Aircraft.Unmanned Aircraft Rotary Wing</option>
+        <option value="UCI---">Unit.Combat.Infantry</option>
+        <option value="UCIL--">Unit.Combat.Infantry.Infantry Light</option>
+        <option value="UCIM--">Unit.Combat.Infantry.Infantry Motorized</option>
+        <option value="UCIO--">Unit.Combat.Infantry.Infantry Mountain</option>
+        <option value="UCIA--">Unit.Combat.Infantry.Infantry Airborne</option>
+        <option value="UCIS--">Unit.Combat.Infantry.Infantry Air Assault</option>
+        <option value="UCIZ--">Unit.Combat.Infantry.Infantry Mechanized</option>
+        <option value="UCIN--">Unit.Combat.Infantry.Infantry Naval</option>
+        <option value="UCII--">Unit.Combat.Infantry.Infantry Fighting Vehicle</option>
+        <option value="UCIC--">Unit.Combat.Infantry.Infantry Arctic</option>
+        <option value="UCE---">Unit.Combat.Engineer</option>
+        <option value="UCEC--">Unit.Combat.Engineer.Engineer Combat</option>
+        <option value="UCECS-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Air Assault</option>
+        <option value="UCECA-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Airborne</option>
+        <option value="UCECC-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Arctic</option>
+        <option value="UCECL-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Light (Sapper)</option>
+        <option value="UCECM-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Medium</option>
+        <option value="UCECH-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Heavy</option>
+        <option value="UCECT-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Mechanized (Track)</option>
+        <option value="UCECW-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Motorized</option>
+        <option value="UCECO-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Mountain</option>
+        <option value="UCECR-">Unit.Combat.Engineer.Engineer Combat.Engineer Combat Recon</option>
+        <option value="UCEN--">Unit.Combat.Engineer.Engineer Construction</option>
+        <option value="UCENN-">Unit.Combat.Engineer.Engineer Construction.Engineer Naval Construction</option>
+        <option value="UCF---">Unit.Combat.Field Artillery</option>
+        <option value="UCFH--">Unit.Combat.Field Artillery.Howitzer/gun</option>
+        <option value="UCFHE-">Unit.Combat.Field Artillery.Howitzer/gun.Self-propelled</option>
+        <option value="UCFHS-">Unit.Combat.Field Artillery.Howitzer/gun.Air Assault</option>
+        <option value="UCFHA-">Unit.Combat.Field Artillery.Howitzer/gun.Airborne</option>
+        <option value="UCFHC-">Unit.Combat.Field Artillery.Howitzer/gun.Arctic</option>
+        <option value="UCFHO-">Unit.Combat.Field Artillery.Howitzer/gun.Mountain</option>
+        <option value="UCFHL-">Unit.Combat.Field Artillery.Howitzer/gun.Light</option>
+        <option value="UCFHM-">Unit.Combat.Field Artillery.Howitzer/gun.Medium</option>
+        <option value="UCFHH-">Unit.Combat.Field Artillery.Howitzer/gun.Heavy</option>
+        <option value="UCFHX-">Unit.Combat.Field Artillery.Howitzer/gun.Amphibious</option>
+        <option value="UCFR--">Unit.Combat.Field Artillery.Rocket</option>
+        <option value="UCFRS-">Unit.Combat.Field Artillery.Rocket.Single Rocket Launcher</option>
+        <option value="UCFRSS">Unit.Combat.Field Artillery.Rocket.Single Rocket Launcher.Single Rocket Self-propelled</option>
+        <option value="UCFRSR">Unit.Combat.Field Artillery.Rocket.Single Rocket Launcher.Single Rocket Truck</option>
+        <option value="UCFRST">Unit.Combat.Field Artillery.Rocket.Single Rocket Launcher.Single Rocket Towed</option>
+        <option value="UCFRM-">Unit.Combat.Field Artillery.Rocket.Multiple Rocket Launcher</option>
+        <option value="UCFRMS">Unit.Combat.Field Artillery.Rocket.Multiple Rocket Launcher.Multiple Rocket Self-propelled</option>
+        <option value="UCFRMR">Unit.Combat.Field Artillery.Rocket.Multiple Rocket Launcher.Multiple Rocket Truck</option>
+        <option value="UCFRMT">Unit.Combat.Field Artillery.Rocket.Multiple Rocket Launcher.Multiple Rocket Towed</option>
+        <option value="UCFT--">Unit.Combat.Field Artillery.Target Acquisition</option>
+        <option value="UCFTR-">Unit.Combat.Field Artillery.Target Acquisition.Radar</option>
+        <option value="UCFTS-">Unit.Combat.Field Artillery.Target Acquisition.Sound</option>
+        <option value="UCFTF-">Unit.Combat.Field Artillery.Target Acquisition.Flash (Optical)</option>
+        <option value="UCFTC-">Unit.Combat.Field Artillery.Target Acquisition.Colt/fist</option>
+        <option value="UCFTCD">Unit.Combat.Field Artillery.Target Acquisition.Colt/fist.Dismounted Colt/fist</option>
+        <option value="UCFTCM">Unit.Combat.Field Artillery.Target Acquisition.Colt/fist.Tracked Colt/fist</option>
+        <option value="UCFTA-">Unit.Combat.Field Artillery.Target Acquisition.Anglico</option>
+        <option value="UCFM--">Unit.Combat.Field Artillery.Mortar</option>
+        <option value="UCFMS-">Unit.Combat.Field Artillery.Mortar.Self-propelled (Sp) Tracked Mortar</option>
+        <option value="UCFMW-">Unit.Combat.Field Artillery.Mortar.Sp Wheeled Mortar</option>
+        <option value="UCFMT-">Unit.Combat.Field Artillery.Mortar.Towed Mortar</option>
+        <option value="UCFMTA">Unit.Combat.Field Artillery.Mortar.Towed Mortar.Towed Airborne Mortar</option>
+        <option value="UCFMTS">Unit.Combat.Field Artillery.Mortar.Towed Mortar.Towed Air Assault Mortar</option>
+        <option value="UCFMTC">Unit.Combat.Field Artillery.Mortar.Towed Mortar.Towed Arctic Mortar</option>
+        <option value="UCFMTO">Unit.Combat.Field Artillery.Mortar.Towed Mortar.Towed Mountain Mortar</option>
+        <option value="UCFML-">Unit.Combat.Field Artillery.Mortar.Amphibious Mortar</option>
+        <option value="UCFS--">Unit.Combat.Field Artillery.Artillery Survey</option>
+        <option value="UCFSS-">Unit.Combat.Field Artillery.Artillery Survey.Air Assault</option>
+        <option value="UCFSA-">Unit.Combat.Field Artillery.Artillery Survey.Airborne</option>
+        <option value="UCFSL-">Unit.Combat.Field Artillery.Artillery Survey.Light</option>
+        <option value="UCFSO-">Unit.Combat.Field Artillery.Artillery Survey.Mountain</option>
+        <option value="UCFO--">Unit.Combat.Field Artillery.Meteorological</option>
+        <option value="UCFOS-">Unit.Combat.Field Artillery.Meteorological.Air Assault Meteorological</option>
+        <option value="UCFOA-">Unit.Combat.Field Artillery.Meteorological.Airborne Meteorological</option>
+        <option value="UCFOL-">Unit.Combat.Field Artillery.Meteorological.Light Meteorological</option>
+        <option value="UCFOO-">Unit.Combat.Field Artillery.Meteorological.Mountain Meteorological</option>
+        <option value="UCR---">Unit.Combat.Reconnaissance</option>
+        <option value="UCRH--">Unit.Combat.Reconnaissance.Reconnaissance Horse</option>
+        <option value="UCRV--">Unit.Combat.Reconnaissance.Reconnaissance Cavalry</option>
+        <option value="UCRVA-">Unit.Combat.Reconnaissance.Reconnaissance Cavalry.Reconnaissance Cavalry Armored</option>
+        <option value="UCRVM-">Unit.Combat.Reconnaissance.Reconnaissance Cavalry.Reconnaissance Cavalry Motorized</option>
+        <option value="UCRVG-">Unit.Combat.Reconnaissance.Reconnaissance Cavalry.Reconnaissance Cavalry Ground</option>
+        <option value="UCRVO-">Unit.Combat.Reconnaissance.Reconnaissance Cavalry.Reconnaissance Cavalry Air</option>
+        <option value="UCRC--">Unit.Combat.Reconnaissance.Reconnaissance Arctic</option>
+        <option value="UCRS--">Unit.Combat.Reconnaissance.Reconnaissance Air Assault</option>
+        <option value="UCRA--">Unit.Combat.Reconnaissance.Reconnaissance Airborne</option>
+        <option value="UCRO--">Unit.Combat.Reconnaissance.Reconnaissance Mountain</option>
+        <option value="UCRL--">Unit.Combat.Reconnaissance.Reconnaissance Light</option>
+        <option value="UCRR--">Unit.Combat.Reconnaissance.Reconnaissance Marine</option>
+        <option value="UCRRD-">Unit.Combat.Reconnaissance.Reconnaissance Marine.Reconnaissance Marine Division</option>
+        <option value="UCRRF-">Unit.Combat.Reconnaissance.Reconnaissance Marine.Reconnaissance Marine Force</option>
+        <option value="UCRRL-">Unit.Combat.Reconnaissance.Reconnaissance Marine.Reconnaissance Marine Light Armored Reconnaissnace (Lar)</option>
+        <option value="UCRX--">Unit.Combat.Reconnaissance.Reconnaissance Long Range Surveillance (Lrs)</option>
+        <option value="UCM---">Unit.Combat.Missile (Surf-surf)</option>
+        <option value="UCMT--">Unit.Combat.Missile (Surf-surf).Missile (Surf-surf) Tactical</option>
+        <option value="UCMS--">Unit.Combat.Missile (Surf-surf).Missile (Surf-surf) Strategic</option>
+        <option value="UCS---">Unit.Combat.Internal Security Forces</option>
+        <option value="UCSW--">Unit.Combat.Internal Security Forces.Riverine</option>
+        <option value="UCSG--">Unit.Combat.Internal Security Forces.Ground</option>
+        <option value="UCSGD-">Unit.Combat.Internal Security Forces.Ground.Dismounted Ground</option>
+        <option value="UCSGM-">Unit.Combat.Internal Security Forces.Ground.Motorized Ground</option>
+        <option value="UCSGA-">Unit.Combat.Internal Security Forces.Ground.Mechanized Ground</option>
+        <option value="UCSM--">Unit.Combat.Internal Security Forces.Wheeled Mechanized</option>
+        <option value="UCSR--">Unit.Combat.Internal Security Forces.Railroad</option>
+        <option value="UCSA--">Unit.Combat.Internal Security Forces.Aviation</option>
+        <option value="UU----">Unit.Combat Support</option>
+        <option value="UUA---">Unit.Combat Support.Combat Support Cbrn</option>
+        <option value="UUAC--">Unit.Combat Support.Combat Support Cbrn.Chemical</option>
+        <option value="UUACC-">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke/decon</option>
+        <option value="UUACCK">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke/decon.Mechanized Smoke/decon</option>
+        <option value="UUACCM">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke/decon.Motorized Smoke/decon</option>
+        <option value="UUACS-">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke</option>
+        <option value="UUACSM">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke.Motorized Smoke</option>
+        <option value="UUACSA">Unit.Combat Support.Combat Support Cbrn.Chemical.Smoke.Armor Smoke</option>
+        <option value="UUACR-">Unit.Combat Support.Combat Support Cbrn.Chemical.Chemical Recon</option>
+        <option value="UUACRW">Unit.Combat Support.Combat Support Cbrn.Chemical.Chemical Recon.Chemical Wheeled Armored Vehicle</option>
+        <option value="UUACRS">Unit.Combat Support.Combat Support Cbrn.Chemical.Chemical Recon.Chemical Wheeled Armored Vehicle Reconnaissance
+        </option>
+        <option value="UUAN--">Unit.Combat Support.Combat Support Cbrn.Nuclear</option>
+        <option value="UUAB--">Unit.Combat Support.Combat Support Cbrn.Biological</option>
+        <option value="UUABR-">Unit.Combat Support.Combat Support Cbrn.Biological.Recon Equipped</option>
+        <option value="UUAD--">Unit.Combat Support.Combat Support Cbrn.Decontamination</option>
+        <option value="UUM---">Unit.Combat Support.Military Intelligence</option>
+        <option value="UUMA--">Unit.Combat Support.Military Intelligence.Aerial Exploitation</option>
+        <option value="UUMS--">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint)</option>
+        <option value="UUMSE-">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare</option>
+        <option value="UUMSEA">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Armored Wheeled Vehicle</option>
+        <option value="UUMSED">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Direction Finding</option>
+        <option value="UUMSEI">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Intercept</option>
+        <option value="UUMSEJ">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Jamming</option>
+        <option value="UUMSET">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Theater</option>
+        <option value="UUMSEC">Unit.Combat Support.Military Intelligence.Signal Intelligence (Sigint).Electronic Warfare.Corps</option>
+        <option value="UUMC--">Unit.Combat Support.Military Intelligence.Counterintelligence</option>
+        <option value="UUMR--">Unit.Combat Support.Military Intelligence.Surveillance</option>
+        <option value="UUMRG-">Unit.Combat Support.Military Intelligence.Surveillance.Ground Surveillance Radar</option>
+        <option value="UUMRS-">Unit.Combat Support.Military Intelligence.Surveillance.Sensor</option>
+        <option value="UUMRSS">Unit.Combat Support.Military Intelligence.Surveillance.Sensor.Sensor Scm</option>
+        <option value="UUMRX-">Unit.Combat Support.Military Intelligence.Surveillance.Ground Station Module</option>
+        <option value="UUMMO-">Unit.Combat Support.Military Intelligence.Surveillance.Meteorological</option>
+        <option value="UUMO--">Unit.Combat Support.Military Intelligence.Operations</option>
+        <option value="UUMT--">Unit.Combat Support.Military Intelligence.Tactical Exploit</option>
+        <option value="UUMQ--">Unit.Combat Support.Military Intelligence.Interrogation</option>
+        <option value="UUMJ--">Unit.Combat Support.Military Intelligence.Joint Intelligence Center</option>
+        <option value="UUL---">Unit.Combat Support.Law Enforcement Unit</option>
+        <option value="UULS--">Unit.Combat Support.Law Enforcement Unit.Shore Patrol</option>
+        <option value="UULM--">Unit.Combat Support.Law Enforcement Unit.Military Police</option>
+        <option value="UULC--">Unit.Combat Support.Law Enforcement Unit.Civilian Law Enforcement</option>
+        <option value="UULF--">Unit.Combat Support.Law Enforcement Unit.Security Police (Air)</option>
+        <option value="UULD--">Unit.Combat Support.Law Enforcement Unit.Central Intelligence Division (Cid)</option>
+        <option value="UUS---">Unit.Combat Support.Signal Unit</option>
+        <option value="UUSA--">Unit.Combat Support.Signal Unit.Area</option>
+        <option value="UUSC--">Unit.Combat Support.Signal Unit.Communication Configured Package</option>
+        <option value="UUSCL-">Unit.Combat Support.Signal Unit.Communication Configured Package.Large Communication Configured Package (Lccp)</option>
+        <option value="UUSO--">Unit.Combat Support.Signal Unit.Command Operations</option>
+        <option value="UUSF--">Unit.Combat Support.Signal Unit.Forward Communications</option>
+        <option value="UUSM--">Unit.Combat Support.Signal Unit.Multiple Subscriber Element</option>
+        <option value="UUSMS-">Unit.Combat Support.Signal Unit.Multiple Subscriber Element.Small Extension Node</option>
+        <option value="UUSML-">Unit.Combat Support.Signal Unit.Multiple Subscriber Element.Large Extension Node</option>
+        <option value="UUSMN-">Unit.Combat Support.Signal Unit.Multiple Subscriber Element.Node Center</option>
+        <option value="UUSR--">Unit.Combat Support.Signal Unit.Radio Unit</option>
+        <option value="UUSRS-">Unit.Combat Support.Signal Unit.Radio Unit.Tactical Satellite</option>
+        <option value="UUSRT-">Unit.Combat Support.Signal Unit.Radio Unit.Teletype Center</option>
+        <option value="UUSRW-">Unit.Combat Support.Signal Unit.Radio Unit.Relay</option>
+        <option value="UUSS--">Unit.Combat Support.Signal Unit.Signal Support</option>
+        <option value="UUSW--">Unit.Combat Support.Signal Unit.Telephone Switch</option>
+        <option value="UUSX--">Unit.Combat Support.Signal Unit.Electronic Ranging</option>
+        <option value="UUI---">Unit.Combat Support.Information Warfare Unit</option>
+        <option value="UUP---">Unit.Combat Support.Landing Support</option>
+        <option value="UUE---">Unit.Combat Support.Explosive Ordnance Disposal</option>
+        <option value="US----">Unit.Combat Service Support</option>
+        <option value="USA---">Unit.Combat Service Support.Administrative (Admin)</option>
+        <option value="USAT--">Unit.Combat Service Support.Administrative (Admin).Admin Theater</option>
+        <option value="USAC--">Unit.Combat Service Support.Administrative (Admin).Admin Corps</option>
+        <option value="USAJ--">Unit.Combat Service Support.Administrative (Admin).Judge Advocate General (Jag)</option>
+        <option value="USAJT-">Unit.Combat Service Support.Administrative (Admin).Judge Advocate General (Jag).Jag Theater
+        </option>
+        <option value="USAJC-">Unit.Combat Service Support.Administrative (Admin).Judge Advocate General (Jag).Jag Corps
+        </option>
+        <option value="USAO--">Unit.Combat Service Support.Administrative (Admin).Postal</option>
+        <option value="USAOT-">Unit.Combat Service Support.Administrative (Admin).Postal.Postal Theater</option>
+        <option value="USAOC-">Unit.Combat Service Support.Administrative (Admin).Postal.Postal Corps</option>
+        <option value="USAF--">Unit.Combat Service Support.Administrative (Admin).Finance</option>
+        <option value="USAFT-">Unit.Combat Service Support.Administrative (Admin).Finance.Finance Theater</option>
+        <option value="USAFC-">Unit.Combat Service Support.Administrative (Admin).Finance.Finance Corps</option>
+        <option value="USAS--">Unit.Combat Service Support.Administrative (Admin).Personnel Services</option>
+        <option value="USAST-">Unit.Combat Service Support.Administrative (Admin).Personnel Services.Personnel Theater
+        </option>
+        <option value="USASC-">Unit.Combat Service Support.Administrative (Admin).Personnel Services.Personnel Corps
+        </option>
+        <option value="USAM--">Unit.Combat Service Support.Administrative (Admin).Mortuary/graves Registry</option>
+        <option value="USAMT-">Unit.Combat Service Support.Administrative (Admin).Mortuary/graves Registry.Mortuary/graves Registry Theater</option>
+        <option value="USAMC-">Unit.Combat Service Support.Administrative (Admin).Mortuary/graves Registry.Mortuary/graves Registry Corps</option>
+        <option value="USAR--">Unit.Combat Service Support.Administrative (Admin).Religious/chaplain</option>
+        <option value="USART-">Unit.Combat Service Support.Administrative (Admin).Religious/chaplain.Religious/chaplain Theater
+        </option>
+        <option value="USARC-">Unit.Combat Service Support.Administrative (Admin).Religious/chaplain.Religious/chaplain Corps
+        </option>
+        <option value="USAP--">Unit.Combat Service Support.Administrative (Admin).Public Affairs</option>
+        <option value="USAPT-">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Theater</option>
+        <option value="USAPC-">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Corps</option>
+        <option value="USAPB-">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Broadcast</option>
+        <option value="USAPBT">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Broadcast.Public Affairs Broadcast
+          Theater
+        </option>
+        <option value="USAPBC">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Broadcast.Public Affairs Broadcast
+          Corps
+        </option>
+        <option value="USAPM-">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Joint Information Bureau (Jib)</option>
+        <option value="USAPMT">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Joint Information Bureau (Jib).Public
+          Affairs Jib Theater</option>
+        <option value="USAPMC">Unit.Combat Service Support.Administrative (Admin).Public Affairs.Public Affairs Joint Information Bureau (Jib).Public
+          Affairs Jib Corps</option>
+        <option value="USAX--">Unit.Combat Service Support.Administrative (Admin).Replacement Holding Unit (Rhu)</option>
+        <option value="USAXT-">Unit.Combat Service Support.Administrative (Admin).Replacement Holding Unit (Rhu).Rhu Theater</option>
+        <option value="USAXC-">Unit.Combat Service Support.Administrative (Admin).Replacement Holding Unit (Rhu).Rhu Corps</option>
+        <option value="USAL--">Unit.Combat Service Support.Administrative (Admin).Labor</option>
+        <option value="USALT-">Unit.Combat Service Support.Administrative (Admin).Labor.Labor Theater
+        </option>
+        <option value="USALC-">Unit.Combat Service Support.Administrative (Admin).Labor.Labor Corps
+        </option>
+        <option value="USAW--">Unit.Combat Service Support.Administrative (Admin).Morale, Welfare, Recreation (Mwr)</option>
+        <option value="USAWT-">Unit.Combat Service Support.Administrative (Admin).Morale, Welfare, Recreation (Mwr).Mwr Theater</option>
+        <option value="USAWC-">Unit.Combat Service Support.Administrative (Admin).Morale, Welfare, Recreation (Mwr).Mwr Corps</option>
+        <option value="USAQ--">Unit.Combat Service Support.Administrative (Admin).Quartermaster (Supply)
+        </option>
+        <option value="USAQT-">Unit.Combat Service Support.Administrative (Admin).Quartermaster (Supply).Quartermaster (Supply) Theater</option>
+        <option value="USAQC-">Unit.Combat Service Support.Administrative (Admin).Quartermaster (Supply).Quartermaster (Supply) Corps</option>
+        <option value="USM---">Unit.Combat Service Support.Medical</option>
+        <option value="USMT--">Unit.Combat Service Support.Medical.Medical Theater</option>
+        <option value="USMC--">Unit.Combat Service Support.Medical.Medical Corps</option>
+        <option value="USMM--">Unit.Combat Service Support.Medical.Medical Treatment Facility
+        </option>
+        <option value="USMMT-">Unit.Combat Service Support.Medical.Medical Treatment Facility.Medical Treatment Facility Theater
+        </option>
+        <option value="USMMC-">Unit.Combat Service Support.Medical.Medical Treatment Facility.Medical Treatment Facility Corps
+        </option>
+        <option value="USMV--">Unit.Combat Service Support.Medical.Medical Veterinary
+        </option>
+        <option value="USMVT-">Unit.Combat Service Support.Medical.Medical Veterinary.Medical Veterinary Theater</option>
+        <option value="USMVC-">Unit.Combat Service Support.Medical.Medical Veterinary.Medical Veterinary Corps</option>
+        <option value="USMD--">Unit.Combat Service Support.Medical.Medical Dental
+        </option>
+        <option value="USMDT-">Unit.Combat Service Support.Medical.Medical Dental.Medical Dental Theater</option>
+        <option value="USMDC-">Unit.Combat Service Support.Medical.Medical Dental.Medical Dental Corps</option>
+        <option value="USMP--">Unit.Combat Service Support.Medical.Medical Psychological
+        </option>
+        <option value="USMPT-">Unit.Combat Service Support.Medical.Medical Psychological.Medical Psychological Theater
+        </option>
+        <option value="USMPC-">Unit.Combat Service Support.Medical.Medical Psychological.Medical Psychological Corps
+        </option>
+        <option value="USS---">Unit.Combat Service Support.Supply</option>
+        <option value="USST--">Unit.Combat Service Support.Supply.Supply Theater
+        </option>
+        <option value="USSC--">Unit.Combat Service Support.Supply.Supply Corps
+        </option>
+        <option value="USS1--">Unit.Combat Service Support.Supply.Supply Class I</option>
+        <option value="USS1T-">Unit.Combat Service Support.Supply.Supply Class I.Supply Class I Theater</option>
+        <option value="USS1C-">Unit.Combat Service Support.Supply.Supply Class I.Supply Class I Corps</option>
+        <option value="USS2--">Unit.Combat Service Support.Supply.Supply Class Ii</option>
+        <option value="USS2T-">Unit.Combat Service Support.Supply.Supply Class Ii.Supply Class Ii Theater</option>
+        <option value="USS2C-">Unit.Combat Service Support.Supply.Supply Class Ii.Supply Class Ii Corps</option>
+        <option value="USS3--">Unit.Combat Service Support.Supply.Supply Class Iii</option>
+        <option value="USS3T-">Unit.Combat Service Support.Supply.Supply Class Iii.Supply Class Iii Theater</option>
+        <option value="USS3C-">Unit.Combat Service Support.Supply.Supply Class Iii.Supply Class Iii Corps</option>
+        <option value="USS3A-">Unit.Combat Service Support.Supply.Supply Class Iii.Supply Class Iii Aviation</option>
+        <option value="USS3AT">Unit.Combat Service Support.Supply.Supply Class Iii.Supply Class Iii Aviation.Supply Class Iii Aviation Theater
+        </option>
+        <option value="USS3AC">Unit.Combat Service Support.Supply.Supply Class Iii.Supply Class Iii Aviation.Supply Class Iii Aviation Corps
+        </option>
+        <option value="USS4--">Unit.Combat Service Support.Supply.Supply Class Iv</option>
+        <option value="USS4T-">Unit.Combat Service Support.Supply.Supply Class Iv.Supply Class Iv Theater</option>
+        <option value="USS4C-">Unit.Combat Service Support.Supply.Supply Class Iv.Supply Class Iv Corps
+        </option>
+        <option value="USS5--">Unit.Combat Service Support.Supply.Supply Class V</option>
+        <option value="USS5T-">Unit.Combat Service Support.Supply.Supply Class V.Supply Class V Theater</option>
+        <option value="USS5C-">Unit.Combat Service Support.Supply.Supply Class V.Supply Class V Corps</option>
+        <option value="USS6--">Unit.Combat Service Support.Supply.Supply Class Vi
+        </option>
+        <option value="USS6T-">Unit.Combat Service Support.Supply.Supply Class Vi.Supply Class Vi Theater
+        </option>
+        <option value="USS6C-">Unit.Combat Service Support.Supply.Supply Class Vi.Supply Class Vi Corps
+        </option>
+        <option value="USS7--">Unit.Combat Service Support.Supply.Supply Class Vii
+        </option>
+        <option value="USS7T-">Unit.Combat Service Support.Supply.Supply Class Vii.Supply Class Vii Theater
+        </option>
+        <option value="USS7C-">Unit.Combat Service Support.Supply.Supply Class Vii.Supply Class Vii Corps
+        </option>
+        <option value="USS8--">Unit.Combat Service Support.Supply.Supply Class Viii
+        </option>
+        <option value="USS8T-">Unit.Combat Service Support.Supply.Supply Class Viii.Supply Class Viii Theater
+        </option>
+        <option value="USS8C-">Unit.Combat Service Support.Supply.Supply Class Viii.Supply Class Viii Corps
+        </option>
+        <option value="USS9--">Unit.Combat Service Support.Supply.Supply Class Ix
+        </option>
+        <option value="USS9T-">Unit.Combat Service Support.Supply.Supply Class Ix.Supply Class Ix Theater
+        </option>
+        <option value="USS9C-">Unit.Combat Service Support.Supply.Supply Class Ix.Supply Class Ix Corps
+        </option>
+        <option value="USSX--">Unit.Combat Service Support.Supply.Supply Class X
+        </option>
+        <option value="USSXT-">Unit.Combat Service Support.Supply.Supply Class X.Supply Class X Theater
+        </option>
+        <option value="USSXC-">Unit.Combat Service Support.Supply.Supply Class X.Supply Class X Corps
+        </option>
+        <option value="USSL--">Unit.Combat Service Support.Supply.Supply Laundry/bath
+        </option>
+        <option value="USSLT-">Unit.Combat Service Support.Supply.Supply Laundry/bath.Supply Laundry/bath Theater
+        </option>
+        <option value="USSLC-">Unit.Combat Service Support.Supply.Supply Laundry/bath.Supply Laundry/bath Corps
+        </option>
+        <option value="USSW--">Unit.Combat Service Support.Supply.Supply Water
+        </option>
+        <option value="USSWT-">Unit.Combat Service Support.Supply.Supply Water.Supply Water Theater
+        </option>
+        <option value="USSWC-">Unit.Combat Service Support.Supply.Supply Water.Supply Water Corps
+        </option>
+        <option value="USSWP-">Unit.Combat Service Support.Supply.Supply Water.Supply Water Purification
+        </option>
+        <option value="USSWPT">Unit.Combat Service Support.Supply.Supply Water.Supply Water Purification.Supply Water Purification Theater
+        </option>
+        <option value="USSWPC">Unit.Combat Service Support.Supply.Supply Water.Supply Water Purification.Supply Water Purification Corps
+        </option>
+        <option value="UST---">Unit.Combat Service Support.Transportation
+        </option>
+        <option value="USTT--">Unit.Combat Service Support.Transportation.Transportation Theater
+        </option>
+        <option value="USTC--">Unit.Combat Service Support.Transportation.Transportation Corps
+        </option>
+        <option value="USTM--">Unit.Combat Service Support.Transportation.Movement Control Center (Mcc)
+        </option>
+        <option value="USTMT-">Unit.Combat Service Support.Transportation.Movement Control Center (Mcc).Mcc Theater
+        </option>
+        <option value="USTMC-">Unit.Combat Service Support.Transportation.Movement Control Center (Mcc).Mcc Corps
+        </option>
+        <option value="USTR--">Unit.Combat Service Support.Transportation.Railhead
+        </option>
+        <option value="USTRT-">Unit.Combat Service Support.Transportation.Railhead.Railhead Theater
+        </option>
+        <option value="USTRC-">Unit.Combat Service Support.Transportation.Railhead.Railhead Corps
+        </option>
+        <option value="USTS--">Unit.Combat Service Support.Transportation.Spod/spoe
+        </option>
+        <option value="USTST-">Unit.Combat Service Support.Transportation.Spod/spoe.Spod/spoe Theater
+        </option>
+        <option value="USTSC-">Unit.Combat Service Support.Transportation.Spod/spoe.Spod/spoe Corps
+        </option>
+        <option value="USTA--">Unit.Combat Service Support.Transportation.Apod/apoe
+        </option>
+        <option value="USTAT-">Unit.Combat Service Support.Transportation.Apod/apoe.Apod/apoe Theater
+        </option>
+        <option value="USTAC-">Unit.Combat Service Support.Transportation.Apod/apoe.Apod/apoe Corps
+        </option>
+        <option value="USTI--">Unit.Combat Service Support.Transportation.Missile
+        </option>
+        <option value="USTIT-">Unit.Combat Service Support.Transportation.Missile.Missile Theater
+        </option>
+        <option value="USTIC-">Unit.Combat Service Support.Transportation.Missile.Missile Corps
+        </option>
+        <option value="USX---">Unit.Combat Service Support.Maintenance
+        </option>
+        <option value="USXT--">Unit.Combat Service Support.Maintenance.Maintenance Theater
+        </option>
+        <option value="USXC--">Unit.Combat Service Support.Maintenance.Maintenance Corps
+        </option>
+        <option value="USXH--">Unit.Combat Service Support.Maintenance.Maintenance Heavy
+        </option>
+        <option value="USXHT-">Unit.Combat Service Support.Maintenance.Maintenance Heavy.Maintenance Heavy Theater
+        </option>
+        <option value="USXHC-">Unit.Combat Service Support.Maintenance.Maintenance Heavy.Maintenance Heavy Corps
+        </option>
+        <option value="USXR--">Unit.Combat Service Support.Maintenance.Maintenance Recovery
+        </option>
+        <option value="USXRT-">Unit.Combat Service Support.Maintenance.Maintenance Recovery.Maintenance Recovery Theater
+        </option>
+        <option value="USXRC-">Unit.Combat Service Support.Maintenance.Maintenance Recovery.Maintenance Recovery Corps
+        </option>
+        <option value="USXO--">Unit.Combat Service Support.Maintenance.Ordnance
+        </option>
+        <option value="USXOT-">Unit.Combat Service Support.Maintenance.Ordnance.Ordnance Theater
+        </option>
+        <option value="USXOC-">Unit.Combat Service Support.Maintenance.Ordnance.Ordnance Corps
+        </option>
+        <option value="USXOM-">Unit.Combat Service Support.Maintenance.Ordnance.Ordnance Missile
+        </option>
+        <option value="USXOMT">Unit.Combat Service Support.Maintenance.Ordnance.Ordnance Missile.Ordnance Missile Theater
+        </option>
+        <option value="USXOMC">Unit.Combat Service Support.Maintenance.Ordnance.Ordnance Missile.Ordnance Missile Corps
+        </option>
+        <option value="USXE--">Unit.Combat Service Support.Maintenance.Electro-optical
+        </option>
+        <option value="USXET-">Unit.Combat Service Support.Maintenance.Electro-optical.Electro-optical Theater
+        </option>
+        <option value="USXEC-">Unit.Combat Service Support.Maintenance.Electro-optical.Electro-optical Corps
+        </option>
+        <option value="UH----">Unit.Special C2 Headquarters Component
+        </option>
+        <option value="E-----">Ground Track Equipment
+        </option>
+        <option value="EW----">Ground Track Equipment.Weapon
+        </option>
+        <option value="EWM---">Ground Track Equipment.Weapon.Missile Launcher
+        </option>
+        <option value="EWMA--">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher
+        </option>
+        <option value="EWMAS-">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Short Range Ad Missile Launcher
+        </option>
+        <option value="EWMASR">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Short Range Ad Missile Launcher.Transporter
+          Launcher And Radar (Tlar)
+        </option>
+        <option value="EWMASE">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Short Range Ad Missile Launcher.Transporter
+          Erector Launcher And Radar (Telar)
+        </option>
+        <option value="EWMAI-">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Intermediate Range Ad Missile Launcher
+        </option>
+        <option value="EWMAIR">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Intermediate Range Ad Missile Launcher.Transporter
+          Launcher And Radar (Tlar)
+        </option>
+        <option value="EWMAIE">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Intermediate Range Ad Missile Launcher.Transporter
+          Erector Launcher And Radar (Telar)
+        </option>
+        <option value="EWMAL-">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Long Range Ad Missile Launcher
+        </option>
+        <option value="EWMALR">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Long Range Ad Missile Launcher.Transporter
+          Launcher And Radar (Tlar)
+        </option>
+        <option value="EWMALE">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Long Range Ad Missile Launcher.Transporter
+          Erector Launcher And Radar (Telar)
+        </option>
+        <option value="EWMAT-">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Ad Missile Launcher Theater
+        </option>
+        <option value="EWMATR">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Ad Missile Launcher Theater.Transporter
+          Launcher And Radar (Tlar)
+        </option>
+        <option value="EWMATE">Ground Track Equipment.Weapon.Missile Launcher.Air Defense (Ad) Missile Launcher.Ad Missile Launcher Theater.Transporter
+          Erector Launcher And Radar (Telar)
+        </option>
+        <option value="EWMS--">Ground Track Equipment.Weapon.Missile Launcher.Surf-surf (Ss) Missile Launcher
+        </option>
+        <option value="EWMSS-">Ground Track Equipment.Weapon.Missile Launcher.Surf-surf (Ss) Missile Launcher.Short Range Ss Missile Launcher
+        </option>
+        <option value="EWMSI-">Ground Track Equipment.Weapon.Missile Launcher.Surf-surf (Ss) Missile Launcher.Intermediate Range Ss Missile Launcher
+        </option>
+        <option value="EWMSL-">Ground Track Equipment.Weapon.Missile Launcher.Surf-surf (Ss) Missile Launcher.Long Range Ss Missile Launcher
+        </option>
+        <option value="EWMT--">Ground Track Equipment.Weapon.Missile Launcher.Missile Launcher Antitank (At)
+        </option>
+        <option value="EWMTL-">Ground Track Equipment.Weapon.Missile Launcher.Missile Launcher Antitank (At).Missile Launcher At Light
+        </option>
+        <option value="EWMTM-">Ground Track Equipment.Weapon.Missile Launcher.Missile Launcher Antitank (At).Missile Launcher At Medium
+        </option>
+        <option value="EWMTH-">Ground Track Equipment.Weapon.Missile Launcher.Missile Launcher Antitank (At).Missile Launcher At Heavy
+        </option>
+        <option value="EWS---">Ground Track Equipment.Weapon.Single Rocket Launcher
+        </option>
+        <option value="EWSL--">Ground Track Equipment.Weapon.Single Rocket Launcher.Single Rocket Launcher Light
+        </option>
+        <option value="EWSM--">Ground Track Equipment.Weapon.Single Rocket Launcher.Single Rocket Launcher Medium
+        </option>
+        <option value="EWSH--">Ground Track Equipment.Weapon.Single Rocket Launcher.Single Rocket Launcher Heavy
+        </option>
+        <option value="EWX---">Ground Track Equipment.Weapon.Multiple Rocket Launcher
+        </option>
+        <option value="EWXL--">Ground Track Equipment.Weapon.Multiple Rocket Launcher.Multiple Rocket Launcher Light
+        </option>
+        <option value="EWXM--">Ground Track Equipment.Weapon.Multiple Rocket Launcher.Multiple Rocket Launcher Medium
+        </option>
+        <option value="EWXH--">Ground Track Equipment.Weapon.Multiple Rocket Launcher.Multiple Rocket Launcher Heavy
+        </option>
+        <option value="EWT---">Ground Track Equipment.Weapon.Antitank Rocket Launcher
+        </option>
+        <option value="EWTL--">Ground Track Equipment.Weapon.Antitank Rocket Launcher.Antitank Rocket Launcher Light
+        </option>
+        <option value="EWTM--">Ground Track Equipment.Weapon.Antitank Rocket Launcher.Antitank Rocket Launcher Medium
+        </option>
+        <option value="EWTH--">Ground Track Equipment.Weapon.Antitank Rocket Launcher.Antitank Rocket Launcher Heavy
+        </option>
+        <option value="EWR---">Ground Track Equipment.Weapon.Rifle/automatic Weapon
+        </option>
+        <option value="EWRR--">Ground Track Equipment.Weapon.Rifle/automatic Weapon.Rifle
+        </option>
+        <option value="EWRL--">Ground Track Equipment.Weapon.Rifle/automatic Weapon.Light Machine Gun
+        </option>
+        <option value="EWRH--">Ground Track Equipment.Weapon.Rifle/automatic Weapon.Heavy Machine Gun
+        </option>
+        <option value="EWZ---">Ground Track Equipment.Weapon.Grenade Launcher
+        </option>
+        <option value="EWZL--">Ground Track Equipment.Weapon.Grenade Launcher.Grenade Launcher Light
+        </option>
+        <option value="EWZM--">Ground Track Equipment.Weapon.Grenade Launcher.Grenade Launcher Medium
+        </option>
+        <option value="EWZH--">Ground Track Equipment.Weapon.Grenade Launcher.Grenade Launcher Heavy
+        </option>
+        <option value="EWO---">Ground Track Equipment.Weapon.Mortar
+        </option>
+        <option value="EWOL--">Ground Track Equipment.Weapon.Mortar.Mortar Light
+        </option>
+        <option value="EWOM--">Ground Track Equipment.Weapon.Mortar.Mortar Medium
+        </option>
+        <option value="EWOH--">Ground Track Equipment.Weapon.Mortar.Mortar Heavy
+        </option>
+        <option value="EWH---">Ground Track Equipment.Weapon.Howitzer
+        </option>
+        <option value="EWHL--">Ground Track Equipment.Weapon.Howitzer.Howitzer Light
+        </option>
+        <option value="EWHLS-">Ground Track Equipment.Weapon.Howitzer.Howitzer Light.Howitzer Light Self-propelled
+        </option>
+        <option value="EWHM--">Ground Track Equipment.Weapon.Howitzer.Howitzer Medium
+        </option>
+        <option value="EWHMS-">Ground Track Equipment.Weapon.Howitzer.Howitzer Medium.Howitzer Medium Self-propelled
+        </option>
+        <option value="EWHH--">Ground Track Equipment.Weapon.Howitzer.Howitzer Heavy
+        </option>
+        <option value="EWHHS-">Ground Track Equipment.Weapon.Howitzer.Howitzer Heavy.Howitzer Heavy Self-propelled
+        </option>
+        <option value="EWG---">Ground Track Equipment.Weapon.Antitank Gun
+        </option>
+        <option value="EWGL--">Ground Track Equipment.Weapon.Antitank Gun.Antitank Gun Light
+        </option>
+        <option value="EWGM--">Ground Track Equipment.Weapon.Antitank Gun.Antitank Gun Medium
+        </option>
+        <option value="EWGH--">Ground Track Equipment.Weapon.Antitank Gun.Antitank Gun Heavy
+        </option>
+        <option value="EWGR--">Ground Track Equipment.Weapon.Antitank Gun.Antitank Gun Recoilless
+        </option>
+        <option value="EWD---">Ground Track Equipment.Weapon.Direct Fire Gun
+        </option>
+        <option value="EWDL--">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Light
+        </option>
+        <option value="EWDLS-">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Light.Direct Fire Gun Light Self-propelled
+        </option>
+        <option value="EWDM--">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Medium
+        </option>
+        <option value="EWDMS-">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Medium.Direct Fire Gun Medium Self-propelled
+        </option>
+        <option value="EWDH--">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Heavy
+        </option>
+        <option value="EWDHS-">Ground Track Equipment.Weapon.Direct Fire Gun.Direct Fire Gun Heavy.Direct Fire Gun Heavy Self-propelled
+        </option>
+        <option value="EWA---">Ground Track Equipment.Weapon.Air Defense Gun
+        </option>
+        <option value="EWAL--">Ground Track Equipment.Weapon.Air Defense Gun.Air Defense Gun Light
+        </option>
+        <option value="EWAM--">Ground Track Equipment.Weapon.Air Defense Gun.Air Defense Gun Medium
+        </option>
+        <option value="EWAH--">Ground Track Equipment.Weapon.Air Defense Gun.Air Defense Gun Heavy
+        </option>
+        <option value="EV----">Ground Track Equipment.Ground Vehicle
+        </option>
+        <option value="EVA---">Ground Track Equipment.Ground Vehicle.Armored Vehicle
+        </option>
+        <option value="EVAT--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank
+        </option>
+        <option value="EVATL-">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Light
+        </option>
+        <option value="EVATLR">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Light.Tank Light Recovery
+        </option>
+        <option value="EVATM-">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Medium
+        </option>
+        <option value="EVATMR">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Medium.Tank Medium Recovery
+        </option>
+        <option value="EVATH-">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Heavy
+        </option>
+        <option value="EVATHR">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Tank.Tank Heavy.Tank Heavy Recovery
+        </option>
+        <option value="EVAA--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Armored Personnel Carrier
+        </option>
+        <option value="EVAAR-">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Armored Personnel Carrier.Armored Personnel Carrier Recovery
+        </option>
+        <option value="EVAI--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Armored Infantry
+        </option>
+        <option value="EVAC--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.C2v/acv
+        </option>
+        <option value="EVAS--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Combat Service Support Vehicle
+        </option>
+        <option value="EVAL--">Ground Track Equipment.Ground Vehicle.Armored Vehicle.Light Armored Vehicle
+        </option>
+        <option value="EVU---">Ground Track Equipment.Ground Vehicle.Utility Vehicle
+        </option>
+        <option value="EVUB--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Bus
+        </option>
+        <option value="EVUS--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Semi
+        </option>
+        <option value="EVUSL-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Semi.Semi Light
+        </option>
+        <option value="EVUSM-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Semi.Semi Medium
+        </option>
+        <option value="EVUSH-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Semi.Semi Heavy
+        </option>
+        <option value="EVUL--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Limited Cross-country Truck
+        </option>
+        <option value="EVUX--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Cross-country Truck
+        </option>
+        <option value="EVUR--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Water Craft
+        </option>
+        <option value="EVUT--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Tow Truck
+        </option>
+        <option value="EVUTL-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Tow Truck.Tow Truck Light
+        </option>
+        <option value="EVUTH-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Tow Truck.Tow Truck Heavy
+        </option>
+        <option value="EVUA--">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Ambulance
+        </option>
+        <option value="EVUAA-">Ground Track Equipment.Ground Vehicle.Utility Vehicle.Ambulance.Armored Ambulance
+        </option>
+        <option value="EVE---">Ground Track Equipment.Ground Vehicle.Engineer Vehicle
+        </option>
+        <option value="EVEB--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Bridge
+        </option>
+        <option value="EVEE--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Earthmover
+        </option>
+        <option value="EVEC--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Construction Vehicle
+        </option>
+        <option value="EVEM--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Laying Vehicle
+        </option>
+        <option value="EVEMV-">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Laying Vehicle.Armored Carrier With Volcano
+        </option>
+        <option value="EVEML-">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Laying Vehicle.Truck Mounted With Volcano
+        </option>
+        <option value="EVEA--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Clearing Vehicle
+        </option>
+        <option value="EVEAA-">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Clearing Vehicle.Armored Mounted Mine Clearing Vehicle
+        </option>
+        <option value="EVEAT-">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Mine Clearing Vehicle.Trailer Mounted Mine Clearing Vehicle
+        </option>
+        <option value="EVED--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Dozer
+        </option>
+        <option value="EVEDA-">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Dozer.Armored Dozer
+        </option>
+        <option value="EVES--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Armored Assault
+        </option>
+        <option value="EVER--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Armored Engineer Recon Vehicle (Aerv)
+        </option>
+        <option value="EVEH--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Backhoe
+        </option>
+        <option value="EVEF--">Ground Track Equipment.Ground Vehicle.Engineer Vehicle.Ferry Transporter
+        </option>
+        <option value="EVT---">Ground Track Equipment.Ground Vehicle.Train Locomotive
+        </option>
+        <option value="EVC---">Ground Track Equipment.Ground Vehicle.Civilian Vehicle
+        </option>
+        <option value="EVCA--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Automobile
+        </option>
+        <option value="EVCAL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Automobile.Compact Automobile
+        </option>
+        <option value="EVCAM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Automobile.Midsize Automobile
+        </option>
+        <option value="EVCAH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Automobile.Sedan Automobile
+        </option>
+        <option value="EVCO--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Open-bed Truck
+        </option>
+        <option value="EVCOL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Open-bed Truck.Pickup Open-bed Truck
+        </option>
+        <option value="EVCOM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Open-bed Truck.Small Open-bed Truck
+        </option>
+        <option value="EVCOH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Open-bed Truck.Large Open-bed Truck
+        </option>
+        <option value="EVCM--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Multiple Passenger Vehicle
+        </option>
+        <option value="EVCML-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Multiple Passenger Vehicle.Van Multiple Passenger Vehicle
+        </option>
+        <option value="EVCMM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Multiple Passenger Vehicle.Small Bus Multiple Passenger Vehicle
+        </option>
+        <option value="EVCMH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Multiple Passenger Vehicle.Large Bus Multiple Passenger Vehicle
+        </option>
+        <option value="EVCU--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Utility Vehicle
+        </option>
+        <option value="EVCUL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Utility Vehicle.Sport Utility Vehicle (Suv), Utility Vehicle
+        </option>
+        <option value="EVCUM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Utility Vehicle.Small Box Truck, Utility Vehicle
+        </option>
+        <option value="EVCUH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Utility Vehicle.Large Box Truck, Utility Vehicle
+        </option>
+        <option value="EVCJ--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Jeep Type Vehicle
+        </option>
+        <option value="EVCJL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Jeep Type Vehicle.Small/light Jeep Type Vehicle
+        </option>
+        <option value="EVCJM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Jeep Type Vehicle.Medium Jeep Type Vehicle
+        </option>
+        <option value="EVCJH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Jeep Type Vehicle.Large/heavy Jeep Type Vehicle
+        </option>
+        <option value="EVCT--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Box Trailer
+        </option>
+        <option value="EVCTL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Box Trailer.Small/light Box Trailer,
+          Tractor Trailer Truck
+        </option>
+        <option value="EVCTM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Box Trailer.Medium Box Trailer,
+          Tractor Trailer Truck
+        </option>
+        <option value="EVCTH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Box Trailer.Large/heavy Box Trailer,
+          Tractor Trailer Truck
+        </option>
+        <option value="EVCF--">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Flatbed Trailer
+        </option>
+        <option value="EVCFL-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Flatbed Trailer.Small/light Flatbed
+          Trailer, Tractor Trailer Truck
+        </option>
+        <option value="EVCFM-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Flatbed Trailer.Medium Flatbed
+          Trailer, Tractor Trailer Truck
+        </option>
+        <option value="EVCFH-">Ground Track Equipment.Ground Vehicle.Civilian Vehicle.Tractor Trailer Truck With Flatbed Trailer.Large/heavy Flatbed
+          Trailer, Tractor Trailer Truck
+        </option>
+        <option value="EVM---">Ground Track Equipment.Ground Vehicle.Pack Animal(s)
+        </option>
+        <option value="EVS---">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle
+        </option>
+        <option value="EVST--">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle.Missile Support Vehicle Transloader
+        </option>
+        <option value="EVSR--">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle.Missile Support Vehicle Transporter
+        </option>
+        <option value="EVSC--">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle.Missile Support Vehicle Crane/loading Device
+        </option>
+        <option value="EVSP--">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle.Missile Support Vehicle Propellant Transporter
+        </option>
+        <option value="EVSW--">Ground Track Equipment.Ground Vehicle.Missile Support Vehicle.Missile Support Vehicle Warhead Transporter
+        </option>
+        <option value="ES----">Ground Track Equipment.Sensor
+        </option>
+        <option value="ESR---">Ground Track Equipment.Sensor.Radar
+        </option>
+        <option value="ESE---">Ground Track Equipment.Sensor.Emplaced Sensor
+        </option>
+        <option value="EX----">Ground Track Equipment.Special Equipment
+        </option>
+        <option value="EXI---">Ground Track Equipment.Special Equipment.Improvised Explosive Device
+        </option>
+        <option value="EXL---">Ground Track Equipment.Special Equipment.Laser
+        </option>
+        <option value="EXN---">Ground Track Equipment.Special Equipment.Cbrn Equipment
+        </option>
+        <option value="EXF---">Ground Track Equipment.Special Equipment.Flame Thrower
+        </option>
+        <option value="EXM---">Ground Track Equipment.Special Equipment.Land Mines
+        </option>
+        <option value="EXMC--">Ground Track Equipment.Special Equipment.Land Mines.Claymore
+        </option>
+        <option value="EXML--">Ground Track Equipment.Special Equipment.Land Mines.Less Than Lethal
+        </option>
+      </select>
+      </div>
+      <div if.bind="battleDimension == 'S'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Sea Surface Track</option>
+        <option value="C-----">Combatant</option>
+        <option value="CL----">Combatant.Line</option>
+        <option value="CLCV--">Combatant.Line.Carrier</option>
+        <option value="CLBB--">Combatant.Line.Battleship</option>
+        <option value="CLCC--">Combatant.Line.Cruiser</option>
+        <option value="CLDD--">Combatant.Line.Destroyer</option>
+        <option value="CLFF--">Combatant.Line.Frigate/corvette</option>
+        <option value="CLLL--">Combatant.Line.Littoral Combatant</option>
+        <option value="CLLLAS">Combatant.Line.Littoral Combatant.Antisubmarine Warfare Mission Package</option>
+        <option value="CLLLMI">Combatant.Line.Littoral Combatant.Mine Warfare Mission Package</option>
+        <option value="CLLLSU">Combatant.Line.Littoral Combatant.Surface Warfare (Suw) Mission Package</option>
+        <option value="CA----">Combatant.Amphibious Warfare Ship</option>
+        <option value="CALA--">Combatant.Amphibious Warfare Ship.Assault Vessel</option>
+        <option value="CALS--">Combatant.Amphibious Warfare Ship.Landing Ship</option>
+        <option value="CALSM-">Combatant.Amphibious Warfare Ship.Landing Ship.Landing Ship Medium</option>
+        <option value="CALST-">Combatant.Amphibious Warfare Ship.Landing Ship.Landing Ship Tank</option>
+        <option value="CALC--">Combatant.Amphibious Warfare Ship.Landing Craft</option>
+        <option value="CM----">Combatant.Mine Warfare Vessel</option>
+        <option value="CMML--">Combatant.Mine Warfare Vessel.Minelayer</option>
+        <option value="CMMS--">Combatant.Mine Warfare Vessel.Minesweeper</option>
+        <option value="CMMH--">Combatant.Mine Warfare Vessel.Minehunter</option>
+        <option value="CMMA--">Combatant.Mine Warfare Vessel.Mcm Support</option>
+        <option value="CP----">Combatant.Patrol</option>
+        <option value="CPSB--">Combatant.Patrol.Antisubmarine Warfare</option>
+        <option value="CPSU--">Combatant.Patrol.Antisurface Warfare</option>
+        <option value="CPSUM-">Combatant.Patrol.Antisurface Warfare.Antiship Missile Patrol Craft</option>
+        <option value="CPSUT-">Combatant.Patrol.Antisurface Warfare.Torpedo Patrol Craft</option>
+        <option value="CPSUG-">Combatant.Patrol.Antisurface Warfare.Gun Patrol Craft</option>
+        <option value="CH----">Combatant.Hovercraft</option>
+        <option value="G-----">Combatant.Navy Group</option>
+        <option value="GT----">Combatant.Navy Group.Navy Task Force</option>
+        <option value="GG----">Combatant.Navy Group.Navy Task Group</option>
+        <option value="GU----">Combatant.Navy Group.Navy Task Unit</option>
+        <option value="GC----">Combatant.Navy Group.Convoy</option>
+        <option value="CD----">Combatant.Surface Decoy</option>
+        <option value="CU----">Combatant.Unmanned Surface Vehicle</option>
+        <option value="CUM---">Combatant.Unmanned Surface Vehicle.Mine Countermeasures Surface Drone</option>
+        <option value="CUS---">Combatant.Unmanned Surface Vehicle.Antisubmarine Warfare Surface Drone</option>
+        <option value="CUN---">Combatant.Unmanned Surface Vehicle.Antisurface Warfare Surface Drone</option>
+        <option value="CUR---">Combatant.Unmanned Surface Vehicle.Remote Multimission Vehicle</option>
+        <option value="N-----">Noncombatant</option>
+        <option value="NR----">Noncombatant.Underway Replenishment</option>
+        <option value="NF----">Noncombatant.Fleet Support</option>
+        <option value="NI----">Noncombatant.Intelligence</option>
+        <option value="NS----">Noncombatant.Service &amp; Support Harbor</option>
+        <option value="NM----">Noncombatant.Hospital Ship</option>
+        <option value="NH----">Noncombatant.Hovercraft</option>
+        <option value="X-----">Non-military</option>
+        <option value="XM----">Non-military.Merchant</option>
+        <option value="XMC---">Non-military.Merchant.Cargo</option>
+        <option value="XMR---">Non-military.Merchant.Roll On/roll Off</option>
+        <option value="XMO---">Non-military.Merchant.Oiler/tanker</option>
+        <option value="XMTU--">Non-military.Merchant.Tug</option>
+        <option value="XMF---">Non-military.Merchant.Ferry</option>
+        <option value="XMP---">Non-military.Merchant.Passenger</option>
+        <option value="XMH---">Non-military.Merchant.Hazardous Materials (Hazmat)</option>
+        <option value="XMTO--">Non-military.Merchant.Towing Vessel</option>
+        <option value="XF----">Non-military.Fishing</option>
+        <option value="XFDF--">Non-military.Fishing.Drifter</option>
+        <option value="XFDR--">Non-military.Fishing.Dredge</option>
+        <option value="XFTR--">Non-military.Fishing.Trawler</option>
+        <option value="XR----">Non-military.Leisure Craft</option>
+        <option value="XL----">Non-military.Law Enforcement Vessel</option>
+        <option value="XH----">Non-military.Hovercraft</option>
+        <option value="XA----">Non-military.Fast Recreactional Craft</option>
+        <option value="XAR---">Non-military.Fast Recreactional Craft.Rigid-hull Inflatable Boat</option>
+        <option value="XAS---">Non-military.Fast Recreactional Craft.Speed Boat</option>
+        <option value="XP----">Non-military.Personal Watercraft</option>
+        <option value="O-----">Own Track</option>
+      </select>
+      </div>
+      <div if.bind="battleDimension == 'U'">
+        <select md-select="label:Function ID" value.two-way="functionID">
+        <option value="------">Subsurface Track</option>
+        <option value="S-----">Submarine</option>
+        <option value="SF----">Submarine.Surfaced Submarine</option>
+        <option value="SB----">Submarine.Bottomed</option>
+        <option value="SR----">Submarine.Certain Submarine</option>
+        <option value="SX----">Submarine.Nonsubmarine</option>
+        <option value="SN----">Submarine.Nuclear Propulsion</option>
+        <option value="SNF---">Submarine.Nuclear Propulsion.Surfaced Nuclear Propulsion Submarine</option>
+        <option value="SNA---">Submarine.Nuclear Propulsion.Attack Submarine (Ssn)</option>
+        <option value="SNM---">Submarine.Nuclear Propulsion.Missile Submarine (Type Unknown)</option>
+        <option value="SNG---">Submarine.Nuclear Propulsion.Guided Missile Submarine (Ssgn)</option>
+        <option value="SNB---">Submarine.Nuclear Propulsion.Ballistic Missile Submarine (Ssbn)</option>
+        <option value="SC----">Submarine.Conventional Propulsion</option>
+        <option value="SCF---">Submarine.Conventional Propulsion.Surfaced Conventional Propulsion Submarine</option>
+        <option value="SCA---">Submarine.Conventional Propulsion.Attack Submarine (Ss)</option>
+        <option value="SCM---">Submarine.Conventional Propulsion.Missile Submarine (Type Unknown)</option>
+        <option value="SCG---">Submarine.Conventional Propulsion.Guided Missile Submarine (Ssg)</option>
+        <option value="SCB---">Submarine.Conventional Propulsion.Ballistic Missile Submarine (Ssb)</option>
+        <option value="SO----">Submarine.Other Submersible</option>
+        <option value="SOF---">Submarine.Other Submersible.Surfaced Other Submersible</option>
+        <option value="SU----">Submarine.Unmanned Underwater Vehicle (Uuv)</option>
+        <option value="SUM---">Submarine.Unmanned Underwater Vehicle (Uuv).Mine Warfare Subsurface Drone</option>
+        <option value="SUS---">Submarine.Unmanned Underwater Vehicle (Uuv).Antisubmarine Warfare Subsurface Drone</option>
+        <option value="SUN---">Submarine.Unmanned Underwater Vehicle (Uuv).Antisurface Warfare Subsurface Drone</option>
+        <option value="S1----">Submarine.Possible Submarine 1</option>
+        <option value="S2----">Submarine.Possible Submarine 2</option>
+        <option value="S3----">Submarine.Possible Submarine 3</option>
+        <option value="S4----">Submarine.Possible Submarine 4</option>
+        <option value="SL----">Submarine.Probable Submarine</option>
+        <option value="SK----">Submarine.Snorkeling Submarine</option>
+        <option value="W-----">Underwater Weapon</option>
+        <option value="WT----">Underwater Weapon.Torpedo</option>
+        <option value="WM----">Underwater Weapon.Sea Mine</option>
+        <option value="WMD---">Underwater Weapon.Sea Mine.Sea Mine Neutralized</option>
+        <option value="WMG---">Underwater Weapon.Sea Mine.Sea Mine (Ground)</option>
+        <option value="WMGD--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Sea Mine (Ground) Neutralized</option>
+        <option value="WMGX--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Ground (Bottom) Exercise Mine</option>
+        <option value="WMGE--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Ground (Bottom) Mine-like Echo (Milec)</option>
+        <option value="WMGC--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Ground (Bottom) Mine-like Contact (Milco)</option>
+        <option value="WMGR--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Ground (Bottom) Negative Reacquisition</option>
+        <option value="WMGO--">Underwater Weapon.Sea Mine.Sea Mine (Ground).Ground (Bottom) Non-mine Mine-like Contact</option>
+        <option value="WMM---">Underwater Weapon.Sea Mine.Sea Mine (Moored)</option>
+        <option value="WMMD--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Sea Mine (Moored) Neutralized</option>
+        <option value="WMMX--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Moored Exercise Mine</option>
+        <option value="WMME--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Moored Mine-like Echo</option>
+        <option value="WMMC--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Moored Mine-like Contact</option>
+        <option value="WMMR--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Moored Negative Reacquisition</option>
+        <option value="WMMO--">Underwater Weapon.Sea Mine.Sea Mine (Moored).Moored Non-mine Mine-like Object</option>
+        <option value="WMF---">Underwater Weapon.Sea Mine.Sea Mine (Floating)</option>
+        <option value="WMFD--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Sea Mine (Floating) Neutralized</option>
+        <option value="WMFX--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Floating Exercise Mine</option>
+        <option value="WMFE--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Floating Mine-like Echo (Milec)</option>
+        <option value="WMFC--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Floating Mine-like Contact (Milco)</option>
+        <option value="WMFR--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Floating Negative Reacquisition</option>
+        <option value="WMFO--">Underwater Weapon.Sea Mine.Sea Mine (Floating).Floating Non-mine Mine-like Contact</option>
+        <option value="WMO---">Underwater Weapon.Sea Mine.Sea Mine (Other Position)</option>
+        <option value="WMOD--">Underwater Weapon.Sea Mine.Sea Mine (Other Position).Sea Mine (Other Position) Neutralized</option>
+        <option value="WMX---">Underwater Weapon.Sea Mine.General Exercise Mine</option>
+        <option value="WME---">Underwater Weapon.Sea Mine.General Mine-like Echo (Milec)</option>
+        <option value="WMA---">Underwater Weapon.Sea Mine.General Mine Anchor</option>
+        <option value="WMC---">Underwater Weapon.Sea Mine.General Mine-like Contact (Milco)</option>
+        <option value="WMR---">Underwater Weapon.Sea Mine.General Negative Reacquisition</option>
+        <option value="WMB---">Underwater Weapon.Sea Mine.General Obstructor</option>
+        <option value="WMBD--">Underwater Weapon.Sea Mine.General Obstructor.General Neutralized Obstructor</option>
+        <option value="WMN---">Underwater Weapon.Sea Mine.General Non-mine Mine-like Object</option>
+        <option value="WMS---">Underwater Weapon.Sea Mine.Rising Mine</option>
+        <option value="WMSX--">Underwater Weapon.Sea Mine.Rising Mine.Rising Exercise Mine</option>
+        <option value="WMSD--">Underwater Weapon.Sea Mine.Rising Mine.Rising Neutralized Mine</option>
+        <option value="WD----">Underwater Decoy</option>
+        <option value="WDM---">Underwater Decoy.Sea Mine Decoy</option>
+        <option value="WDMG--">Underwater Decoy.Sea Mine Decoy.Ground (Bottom) Decoy</option>
+        <option value="WDMM--">Underwater Decoy.Sea Mine Decoy.Moored Decoy</option>
+        <option value="N-----">Non-submarine</option>
+        <option value="ND----">Non-submarine.Diver</option>
+        <option value="E-----">Environmental Report Location</option>
+        <option value="V-----">Dive Report Location</option>
+        <option value="X-----">Unexploded Ordnance Area</option>
+      </select>
+      </div>
+      <select md-select="label:Symbol modifier 1" value.two-way="symbolModifier1">
+        <option value="-">-</option>
+        <option value="A">Headquarters</option>
+        <option value="B">Task Force HQ</option>
+        <option value="C">Feint Dummy HQ</option>
+        <option value="D">Feint Dummy/Task Force HQ</option>
+        <option value="E">Task Force</option>
+        <option value="F">Feint Dummy</option>
+        <option value="G">Feint Dummy/Task Force</option>
+        <option value="H">Installation</option>
+        <option value="M">Mobility</option>
+        <option value="N">Towed Array</option>
+      </select>
+      <select md-select="label:Symbol modifier 2" value.two-way="symbolModifier2">
+        <option value="-">-</option>
+        <option value="A">Team/Crew</option>
+        <option value="B">Squad</option>
+        <option value="C">Section</option>
+        <option value="D">Platoon/Detachment</option>
+        <option value="E">Company/Battery/Troop</option>
+        <option value="F">Battalion/Squadron</option>
+        <option value="G">Regiment/Group</option>
+        <option value="H">Brigade</option>
+        <option value="I">Division</option>
+        <option value="J">Corps/Mef</option>
+        <option value="K">Army</option>
+        <option value="L">Army Group/Front</option>
+        <option value="M">Region</option>
+        <option value="N">Command</option>
+      </select>
+    </div>
+    <div id="tab_2" class="tab-content z-depth-1">
+      <md-input md-label="Additional information" md-value.bind="additionalInformation"></md-input>
+      <md-input md-label="Altitude / depth" md-value.bind="altitude"></md-input>
+      <md-input md-label="Combat effectiveness" md-value.bind="combatEffectiveness"></md-input>
+      <md-input md-label="Direction" md-type="number" md-min="0" md-max="9999" md-value.bind="direction"></md-input>
+      <md-input md-label="DTG" md-value.bind="dtg"></md-input>
+      <md-input md-label="Evaluation Rating" md-value.bind="evaluationRating"></md-input>
+      <md-input md-label="Higher Formation" md-value.bind="higherFormation"></md-input>
+      <md-input md-label="Hostile" md-value.bind="hostile"></md-input>
+      <md-input md-label="IFF/SIF" md-value.bind="iff"></md-input>
+      <md-input md-label="Location" md-value.bind="location"></md-input>
+      <md-input md-label="Quantity" md-value.bind="quantity"></md-input>
+      <md-input md-label="Reinforced or Reduced" md-value.bind="reinforcedReduced"></md-input>
+      <md-input md-label="Signature Equipment" md-value.bind="signatureEquipment"></md-input>
+      <md-input md-label="Special Headquarters" md-value.bind="specialHeadquarters"></md-input>
+      <md-input md-label="Speed" md-value.bind="speed"></md-input>
+      <md-input md-label="Staff comments" md-value.bind="staffComments"></md-input>
+      <md-input md-label="Type" md-value.bind="mtype"></md-input>
+      <md-input md-label="Unique designation" md-value.bind="uniqueDesignation"></md-input>
+    </div>
+
+
   </md-card>
   <div class="button-row right">
     <button md-button click.delegate="redraw()">

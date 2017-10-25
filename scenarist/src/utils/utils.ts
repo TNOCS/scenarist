@@ -68,4 +68,34 @@ export const dateParser = () => {
     // important: you need to return any values you're not parsing, or they die...
     return value;
   };
-}
+};
+
+/**
+ * Replace the character at _index_ with _replacement_.
+ *
+ * @param {string} str
+ * @param {number} index
+ * @param {string} replacement
+ * @returns
+ */
+export const replaceAt = (str: string, index = 0, replacement = '') => {
+  return str.substr(0, index) + replacement + str.substr(index + replacement.length);
+};
+
+
+/**
+ * Clean the object and remove empty properties.
+ *
+ * @see https://stackoverflow.com/a/286162/319711
+ * @param {Object} obj
+ */
+export const clean = (obj: Object) => {
+  const propNames = Object.getOwnPropertyNames(obj);
+  for (let i = 0; i < propNames.length; i++) {
+    const propName = propNames[i];
+    if (obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+  return obj;
+};
