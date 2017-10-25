@@ -4,17 +4,17 @@
       <div>
         <md-input md-label="Name" md-value.bind="track.title"></md-input>
         <md-input md-label="Description" md-value.bind="track.description"></md-input>
-        <select md-select="label: key frame; enable-option-observer: true;" value.two-way="activeFeature" change.delegate="timeIndexChanged(track)">
-          <option value="" disabled selected>select key frame</option>
-          <option repeat.for="feature of track.features" model.bind="feature">${ $index }</option>
-        </select>
+        <div style="text-align: center;">
+          <md-pagination md-on-page-changed.delegate="timeIndexChanged(track)" md-show-first-last="false" md-show-prev-next="true"
+            md-show-page-links="true" md-pages.bind="track.features.length - 1" md-visible-page-links="3" md-active-page.bind="activeTimeIndex"></md-pagination>
+        </div>
         <div repeat.for="prop of createEntityViewModel(track.activeTimeIndex, track)">
           <div if.bind="prop.propertyType == 'date'" ref="dpWrapper">
             <input md-datepicker="container.bind: dpWrapper; value.two-way: activeDate;" type="date" placeholder="${prop.title}"></input>
           </div>
           <div if.bind="prop.propertyType == 'time'">
             <md-input md-label.one-time="prop.title" md-type="time" md-step="1" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"
-            change.delegate="keyframesUpdated(track)"></md-input>
+              change.delegate="keyframesUpdated(track)"></md-input>
           </div>
           <div if.bind="prop.propertyType != 'date' && prop.propertyType != 'time'">
             <md-input md-label.one-time="prop.title" md-type.bind="prop.propertyType" md-value.bind="track.features[track.activeTimeIndex].properties[prop.id]"></md-input>

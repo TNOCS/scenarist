@@ -29,6 +29,9 @@ export class EntityPropertyEditorCustomElement {
     this.track.activeTimeIndex = '' + this.track.features.indexOf(v);
   }
 
+  public get activeTimeIndex(): number { return this.track ? +this.track.activeTimeIndex : 0; }
+  public set activeTimeIndex(v: number) { this.track.activeTimeIndex = '' + v; }
+
   public attached() {
     this.subscriptions.push(this.ea.subscribe('trackSelectionChanged', (track: ITrackView) => this.trackSelectionChanged(track)));
     this.scenario = this.state.scenario;
