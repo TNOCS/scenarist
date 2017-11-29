@@ -1,4 +1,3 @@
-import { computedFrom } from 'aurelia-binding';
 import { IEntityType } from 'models/entity';
 import { IScenario } from 'models/scenario';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
@@ -7,7 +6,6 @@ import { autoinject, bindable } from 'aurelia-framework';
 import { ITrackView } from 'models/track';
 import { IProperty, IPropertyView } from 'models/property';
 import { clone } from 'utils/utils';
-import { FeatureViewModel } from 'models/feature';
 
 @autoinject
 export class EntityPropertyEditorCustomElement {
@@ -22,15 +20,15 @@ export class EntityPropertyEditorCustomElement {
 
   constructor(private state: State, private ea: EventAggregator) { }
 
-  public get activeFeature(): FeatureViewModel {
+  public get activeFeature() {
     return this.track ? this.track.activeFeature : null;
   }
-  public set activeFeature(v: FeatureViewModel) {
-    this.track.activeTimeIndex = '' + this.track.features.indexOf(v);
+  public set activeFeature(v) {
+    this.track.activeTimeIndex = this.track.features.indexOf(v);
   }
 
   public get activeTimeIndex(): number { return this.track ? +this.track.activeTimeIndex : 0; }
-  public set activeTimeIndex(v: number) { this.track.activeTimeIndex = '' + v; }
+  public set activeTimeIndex(v: number) { this.track.activeTimeIndex = v; }
 
   public attached() {
     this.subscriptions.push(this.ea.subscribe('trackSelectionChanged', (track: ITrackView) => this.trackSelectionChanged(track)));
@@ -74,7 +72,7 @@ export class EntityPropertyEditorCustomElement {
       ? new Date(Date.parse(this.scenario.start.date))
       : this.scenario.start.date;
     track.addFeature(startDate, time);
-    this.activeFeature = this.track.features[this.track.activeTimeIndex];
+    this.activeFeature = this.track.activeFeature;
     this.keyframesUpdated(track);
   }
 
@@ -93,7 +91,7 @@ export class EntityPropertyEditorCustomElement {
   }
 
   public timeIndexChanged(track: ITrackView) {
-    track.activeTimeIndex = '' + track.features.indexOf(this.activeFeature);
+    track.activeTimeIndex = track.features.indexOf(this.activeFeature);
     this.ea.publish('timeIndexChanged', track);
   }
 
@@ -111,7 +109,7 @@ export class EntityPropertyEditorCustomElement {
       this.activeFeature = null;
     } else {
       this.track = this.selectedTracks[Math.min(this.selectedTracks.length, e.detail) - 1];
-      this.activeFeature = this.track.features[this.track.activeTimeIndex];
+      this.activeFeature = this.track.activeFeature;
     }
   }
 
@@ -126,7 +124,7 @@ export class EntityPropertyEditorCustomElement {
     }
     setTimeout(() => {
       this.track = this.selectedTracks.length === 0 ? null : this.selectedTracks[this.activePage - 1];
-      this.activeFeature = this.track ? this.track.features[this.track.activeTimeIndex] : null;
+      this.activeFeature = this.track ? this.track.activeFeature : null;
     });
   }
 }

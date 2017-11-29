@@ -9,8 +9,8 @@ import { ILayerDefinition } from 'models/layer';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject } from 'aurelia-dependency-injection';
 import { IScenario } from 'models/scenario';
-import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, Layer, LatLngBounds, LatLng } from 'leaflet';
-import { MdModal } from 'aurelia-materialize-bridge';
+import { MapOptions, Map, icon, Point, Marker, LeafletMouseEvent, LatLng } from 'leaflet';
+import { MdModal, MdToastService } from 'aurelia-materialize-bridge';
 import { IdType } from 'models/model';
 import { clone } from 'utils/utils';
 
@@ -47,7 +47,7 @@ export class ScenarioEditor {
   private deletingTrack: ITrackView;
   private subscriptions: Subscription[] = [];
 
-  constructor(private state: State, private ea: EventAggregator) { }
+  constructor(private state: State, private ea: EventAggregator, private toast: MdToastService) { }
 
   public attached() {
     this.resizeMap();
@@ -185,8 +185,19 @@ export class ScenarioEditor {
 
   public deleteKeyframe() {
     console.warn('Delete keyframe called');
-    delete this.deletingTrack.features[this.deletingTrack.activeTimeIndex];
-    this.state.save('tracks', this.deletingTrack);
+    // delete this.deletingTrack .features[this.deletingTrack.activeTimeIndex];
+    const isSuccess = this.deletingTrack.deleteFeature();
+    if (isSuccess) {
+      this.state.save('tracks', this.deletingTrack);
+    } else {
+      this.toastMessage('Cannot delete the last feature. Please delete the entity instead.', true);
+    }
+  }
+
+  public addKeyframe() {
+    this.tracks.filter(t => t.isSelected).forEach(t => {
+      t.addFeature(this.startTime, this.currentTime);
+    });
   }
 
   private resizeMap() {
@@ -349,5 +360,9 @@ export class ScenarioEditor {
 
   private tracksToViewModels() {
     return this.state.tracks.map(t => new TrackViewModel(t));
+  }
+
+  private toastMessage(msg: string, isError = false) {
+    this.toast.show(msg, isError ? 2000 : 4000, isError ? 'red' : 'green');
   }
 }

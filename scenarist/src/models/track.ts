@@ -27,7 +27,7 @@ export interface ITrack extends IModel {
  * @extends {ITrack}
  */
 export interface ITrackView extends ITrack {
-  activeTimeIndex: string;
+  activeTimeIndex: number;
   activeFeature: FeatureViewModel;
   isVisible: boolean;
   isSelected: boolean;
@@ -47,6 +47,10 @@ export interface ITrackView extends ITrack {
    * @memberof ITrackView
    */
   addFeature(startDate: Date, time?: Date): void;
+  /**
+   * Deletes the currently (active) feature, unless it is the last one.
+   */
+  deleteFeature();
 }
 
 export class TrackViewModel implements ITrackView {
@@ -58,7 +62,7 @@ export class TrackViewModel implements ITrackView {
   private pDescription: string;
   private pEntityTypeId: number;
   private pFeatures: FeatureViewModel[];
-  private pActiveTimeIndex = '0';
+  private pActiveTimeIndex = 0;
 
   constructor(private track: ITrack) {
     this.restore();
@@ -101,7 +105,7 @@ export class TrackViewModel implements ITrackView {
    * @memberof TrackViewModel
    */
   public get activeTimeIndex() { return this.pActiveTimeIndex; }
-  public set activeTimeIndex(i) { this.pActiveTimeIndex = `${i}`; }
+  public set activeTimeIndex(i) { this.pActiveTimeIndex = i; }
 
   @computedFrom('pActiveTimeIndex', 'pFeatures')
   public get activeFeature(): FeatureViewModel {
@@ -136,6 +140,22 @@ export class TrackViewModel implements ITrackView {
     this.hasChanged = true;
   }
 
+  public deleteFeature() {
+    const index = +this.activeTimeIndex;
+    if (!index) {
+      console.warn('Could not delete feature');
+      return false;
+    }
+    if (index === 0 && this.track.features.length === 1) {
+      console.warn('Cannot delete the only feature.');
+      return false;
+    }
+    this.pFeatures.splice(index, 1);
+    this.track.features.splice(index, 1);
+    if (index > this.pFeatures.length) { this.activeTimeIndex = this.pFeatures.length - 1; }
+    return true;
+  }
+
   public addFeature(startDate: Date, time?: Date) {
     const index = time
       ? this.findLastKeyframe(startDate, time)
@@ -152,7 +172,7 @@ export class TrackViewModel implements ITrackView {
     this.track.features.splice(index, 0, newFeature);
     const fvm = new FeatureViewModel(newFeature, this.featureHasChangedHandler);
     this.features.splice(index, 0, fvm);
-    this.activeTimeIndex = `${index + 1}`;
+    this.activeTimeIndex = index;
     return fvm;
   }
 
